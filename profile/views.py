@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 
-def main(request):
+def newsfeed(request):
 	return TemplateResponse(
 		request,
-		'main/index.html', 
-		{"page": ""}
-		)
+		'profile/newsfeed.html', 
+		{"page": "profile"}
+	)

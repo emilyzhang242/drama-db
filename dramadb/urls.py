@@ -17,8 +17,10 @@ from django.conf import settings
 from django.conf.urls import url, include
 from actors.views import actors_home
 from main.views import main
+from profile.views import newsfeed
 
 urlpatterns = [
-	url(r'^$', include('main.urls')), # this is temporary
+	url(r'^$', include('main.urls')),
+	url(r'^profile/', include('profile.urls')),
     url(r'^actors/', include('actors.urls')),
 ]

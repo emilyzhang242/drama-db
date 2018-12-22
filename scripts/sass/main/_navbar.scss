@@ -1,8 +1,8 @@
 #navbar {
 	height: 50px;
-	-webkit-box-shadow: 0 0 5px #999;
-    -moz-box-shadow: 0 0 5px #999;
-    box-shadow: 0 0 5px #999;
+	-webkit-box-shadow: 0 0 5px $grey;
+    -moz-box-shadow: 0 0 5px $grey;
+    box-shadow: 0 0 5px $grey;
     border-bottom: 0.5px solid $grey;
 }
 
@@ -13,6 +13,17 @@
 
 #navbar-options {
 	margin-left: -10%;
+}
+
+.nav-item {
+	position: relative;
+}
+
+.navbar-active {
+	position: absolute;
+	border-bottom: 4px solid white; 
+	margin-left: 15%;
+	width: 70%;
 }
 
 .nav-link {
@@ -31,10 +42,6 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-}
-
-.navbar-favicon i {
-	-webkit-text-stroke: 1px blue !important;
 }
 
 /*----- dropdown ------ */

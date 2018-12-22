@@ -18,28 +18,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript">var csrf_token = "{{ csrf_token }}";var static_url = "{{ STATIC_URL }}";</script>
+    <script type="text/javascript" src="{% static 'js/base.min.js' %}"></script>
     {% block extra_head %}{% endblock %}
   </head>
   <body>
   	<nav class="navbar navbar-expand-lg background-blue row" id='navbar'>
-    <a class="navbar-brand ml-3 font-caviar font-weight-bold font-light col-2" id='navbar-title' href="#">MyDramaDB</a>
+    <a class="navbar-brand ml-3 font-caviar font-weight-bold font-light col-2" id='navbar-title' href="{% url 'main'%}">MyDramaDB</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
   <div class="collapse navbar-collapse col-6" id="navbarSupportedContent">
+    <input type="hidden" name="navbar-choice" id="navbar-choice" value="{{ page }}" />
     <ul class="navbar-nav mr-auto nav-fill w-100" id='navbar-options'>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">My Profile <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a id="navbar-profile" class="nav-link" href="{% url 'profile-newsfeed' %}">My Profile</a>
+        <div class='navbar-highlight'></div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">People</a>
+        <a id="navbar-people" class="nav-link" href="#">People</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Shows</a>
+        <a id="navbar-shows" class="nav-link" href="#">Shows</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Users</a>
+        <a id="navbar-users" class="nav-link" href="#">Users</a>
       </li>
       </ul>
   </div>
@@ -50,6 +53,7 @@
   </div>
 </div>
  </nav>
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% endblock %}
   </body>
 </html>

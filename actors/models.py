@@ -1,5 +1,6 @@
 from django.db import models
 
-class Actor(models.Model):
+class Actors(models.Model):
     name = models.CharField(max_length=200, null=False)
     age = models.DateTimeField(null=True)
+    native_name = models.CharField(max_length=200, null=False)
