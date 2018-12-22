@@ -1,0 +1,21 @@
+body {
+	font-family: $open-sans;
+	letter-spacing: 0.8px;
+	font-weight: 300;
+}
+
+.background-blue {
+	background-color: $primary-blue;
+}
+
+.font-light {
+	color: $light-grey;
+}
+
+.font-caviar {
+	font-family: $caviar-dreams;
+}
+
+.circular {
+	border-radius: 50%;
+}

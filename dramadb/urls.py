@@ -16,8 +16,9 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from actors.views import actors_home
+from main.views import main
 
 urlpatterns = [
-	url(r'^$', actors_home), # this is temporary
+	url(r'^$', include('main.urls')), # this is temporary
     url(r'^actors/', include('actors.urls')),
 ]

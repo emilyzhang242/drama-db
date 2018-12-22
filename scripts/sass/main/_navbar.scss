@@ -1,0 +1,34 @@
+#navbar {
+	height: 50px;
+	-webkit-box-shadow: 0 0 5px #999;
+    -moz-box-shadow: 0 0 5px #999;
+    box-shadow: 0 0 5px #999;
+    border-bottom: 0.5px solid $grey;
+}
+
+#navbar-title {
+	font-size: 24px;
+	letter-spacing: 1px;
+}
+
+#navbar-options {
+	margin-left: -10%;
+}
+
+.nav-link {
+	color: $light-grey;
+}
+
+#navbar-search {
+	margin: -3%;
+}
+
+#searchbar {
+	width: 60%;
+}
+
+.avatar-div {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+}

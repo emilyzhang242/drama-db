@@ -1,0 +1,36 @@
+
+/*----- CAVIAR DREAMS -------*/
+@font-face {
+	font-family: "Caviar Dreams";
+	src: url("../../../static/fonts/caviar_dreams/CaviarDreams.ttf");
+}
+
+@font-face {
+	font-family: "Caviar Dreams";
+	src: url("../../../static/fonts/caviar_dreams/CaviarDreams_Bold.ttf");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Caviar Dreams";
+	src: url("../../../static/fonts/caviar_dreams/CaviarDreams_Italic.ttf");
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "Caviar Dreams";
+	src: url("../../../static/fonts/caviar_dreams/CaviarDreams_BoldItalic.ttf");
+	font-weight: bold;
+	font-style: italic;
+}
+
+/*------ OPEN SANS -------*/
+@font-face {
+	font-family: "Open Sans";
+	src: url('https://fonts.googleapis.com/css?family=Open+Sans:300, 400');
+}
+
+
+
+$caviar-dreams: 'Caviar Dreams';
+$open-sans: 'Open Sans';
