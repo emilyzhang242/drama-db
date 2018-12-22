@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
+from actors.views import actors_home
 
 urlpatterns = [
+	url(r'^$', actors_home), # this is temporary
+    url(r'^actors/', include('actors.urls')),
 ]
