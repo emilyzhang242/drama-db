@@ -32,3 +32,13 @@
 	height: 30px;
 	border-radius: 50%;
 }
+
+.navbar-favicon i {
+	-webkit-text-stroke: 1px blue !important;
+}
+
+/*----- dropdown ------ */
+
+.dropdown-toggle::after {
+    display: none;
+}
