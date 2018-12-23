@@ -2,21 +2,77 @@
 {% load static %}
 {% block title %}{{actor.stage_name}}{% endblock %}
 {% block content %}
-	<div id="actor-image" style="background-image:url({% static '/images/neo_hou.jpg' %})">
+<div id="actor-image" style="background-image:url({% static '/images/neo_hou.jpg' %})">
+	<div id='actor-box'>
+		<h2 class='black text-center pt-3'>{{actor.stage_name}}</h2>
+		<p class='text-center pt-1'><span class='font-weight-bold'>Other Names: </span>{{actor.native_name}}</p>
+		<div class='text-center'>
+			<button class="btn rounded-btn mr-3 pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-plus primary-blue pr-2'></i>Follow</button>
+			<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-heart red pr-2'></i>Favorite</button>
+		</div>
+	</div>
+	<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
+</div>
 
-		<div id='actor-box'>
-			<h2 class='black text-center pt-3'>{{actor.stage_name}}</h2>
-			<p class='text-center pt-1'><span class='font-weight-bold'>Other Names: </span>{{actor.native_name}}</p>
-			<div class='text-center'>
-				<button class="btn rounded-btn mr-3 pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-plus primary-blue pr-2'></i>Follow</button>
-				<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-heart red pr-2'></i>Favorite</button>
+<div id='actor-content'>
+	<div class="row">
+		<!-- scrollbar --> 
+		<div class='col-2 content-scrollbar mt-4 mb-4'>
+			<ul class='list-group'>
+				<li class="list-group-item content-nav ml-3 mt-2"><a href="#">Overview</a></li>
+				<li class="list-group-item content-nav ml-3"><a href="#">About</a></li>
+				<li class="list-group-item content-nav ml-3"><a href="#">Shows</a></li>
+				<li class="list-group-item content-nav ml-3"><a href="#">Resources</a></li>
+			</ul>
+		</div>
+
+		<!-- actual content --> 
+		<div class='col-10 content-main' dir="rtl">
+			<div class="col-md-2" dir='ltr'>
+				<ul class="nav nav-pills nav-stacked anyClass">
+					<li class="nav-item">
+						<a class="nav-link active" href="#">Active</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Disabled</a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
 	</div>
-	<div id='actor-content'>
-		<p class="mt-3">FUCK</p>
-	</div>
+</div>
+
 {% endblock %}
 {% block scripts %}
+	<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
 {% endblock %}

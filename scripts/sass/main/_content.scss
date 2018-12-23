@@ -1,0 +1,27 @@
+/*-------- content (actors and shows) --------*/
+
+.content-scrollbar {
+	border-right: 1px solid $dark-border;
+}
+
+.content-nav {
+	border: none;
+	font-family: $open-sans;
+	font-size: 14px;
+	background-color: $white;
+}
+
+.content-main {
+	height: 400px;
+	overflow-y: scroll;
+}
+
+/*--------- scrollbar ---------- */
+
+/* make scrollbar disappear */
+.content-main {
+	/* width */
+	&::-webkit-scrollbar {
+  		width: 0px;
+	}
+}

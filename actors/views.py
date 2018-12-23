@@ -58,8 +58,10 @@ def create_actor(request):
 
 def find_actor(request, stagename):
 	actor = Actors.objects.get(url=stagename)
+	image_url = "/images/"+actor.url+".jpg"
 	parameters={
-		"actor": actor
+		"actor": actor,
+		"image": image_url
 	}
 
 	return TemplateResponse(

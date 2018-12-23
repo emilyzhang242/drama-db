@@ -19,6 +19,10 @@ a {
 	color: $soft-black;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 .btn a:hover {
 	text-decoration: none;
 	color: $soft-black;
