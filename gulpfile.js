@@ -24,7 +24,7 @@ gulp.task('style', function(){
     }))
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest(function( file ) { return path.join(path.dirname(file.path), 'static/css'); } ));
+    .pipe(gulp.dest('static/css'));
 });
 
 // minify and combine 3rd party scripts into one.
@@ -39,7 +39,7 @@ gulp.task('script-lib', function(){
     .pipe(concat('lib.js'))
     .pipe(rename('lib.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(function( file ) { return path.join(path.dirname(file.path), 'static/js'); } ));
+    .pipe(gulp.dest("static/js"));
 });
 
 // minify custom scripts used in the website.
@@ -55,7 +55,7 @@ gulp.task('script-custom', function(){
     .pipe(jshint.reporter(stylish))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
-    .pipe(gulp.dest(function( file ) { return path.join(path.dirname(file.path), 'static/js'); } ));
+    .pipe(gulp.dest('static/js'));
 });
 
 gulp.task('script', ['script-lib', 'script-custom'], function(){});

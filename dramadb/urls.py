@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
+from django.contrib import admin
 from actors.views import actors_home
-from main.views import main
-from profile.views import newsfeed
+import main.views
+import profile.views
+import actors.views
 
 urlpatterns = [
-	url(r'^$', include('main.urls')),
+	url('', include('main.urls')),
 	url(r'^profile/', include('profile.urls')),
     url(r'^actors/', include('actors.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('django.contrib.auth.urls'))
 ]
