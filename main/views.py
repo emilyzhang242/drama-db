@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.contrib.auth.models import User
-from profile.models import Users
+from profile.models import UserProfile
 
 def main(request):
 	return TemplateResponse(
