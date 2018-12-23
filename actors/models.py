@@ -10,3 +10,4 @@ class Actors(models.Model):
     gender = models.IntegerField(default=0) #0 is male, 1 is female
     url = models.CharField(max_length=200, null=True)
     added_by = models.ForeignKey(User, null=True)
+    pageviews = models.IntegerField(null=False, default=0)

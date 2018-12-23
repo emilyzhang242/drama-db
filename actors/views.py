@@ -45,9 +45,5 @@ def create_actor(request):
 
 		#scrapeBaidu(baidu)
 
-		return TemplateResponse(
-			request,
-			'actors/actors_home.html',
-			{"page": "people"}
-			)
+		return redirect('actors-home')
 
