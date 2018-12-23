@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+    <!-- google fonts --> 
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600|Open+Sans:300,400" rel="stylesheet">
     <noscript>
       Your browser does not support JavaScript or JavaScript was disabled. DramaDatabase may not work correctly without JavaScript.
     </noscript>
@@ -32,17 +34,17 @@
     <input type="hidden" name="navbar-choice" id="navbar-choice" value="{{ page }}" />
     <ul class="navbar-nav mr-auto nav-fill w-100" id='navbar-options'>
       <li class="nav-item">
-        <a id="navbar-profile" class="nav-link" href="{% url 'profile-newsfeed' %}">My Profile</a>
+        <a id="navbar-profile" class="nav-link main-nav" href="{% url 'profile-newsfeed' %}">My Profile</a>
         <div class='navbar-highlight'></div>
       </li>
       <li class="nav-item">
-        <a id="navbar-people" class="nav-link" href="#">People</a>
+        <a id="navbar-people" class="main-nav nav-link" href="#">People</a>
       </li>
       <li class="nav-item">
-        <a id="navbar-shows" class="nav-link" href="#">Shows</a>
+        <a id="navbar-shows" class="main-nav nav-link" href="#">Shows</a>
       </li>
       <li class="nav-item">
-        <a id="navbar-users" class="nav-link" href="#">Users</a>
+        <a id="navbar-users" class="main-nav nav-link" href="#">Users</a>
       </li>
       </ul>
   </div>
@@ -53,7 +55,7 @@
   </div>
 </div>
  </nav>
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
+    {% block scripts %}{% endblock %}
   </body>
 </html>

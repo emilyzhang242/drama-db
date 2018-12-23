@@ -1,7 +1,13 @@
 body {
-	font-family: $open-sans;
+	background-color: $background;
+	font-family: $nunito;
 	letter-spacing: 0.8px;
 	font-weight: 300;
+	color: $soft-black;
+}
+
+a {
+	color: $soft-black;
 }
 
 .background-blue {

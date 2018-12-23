@@ -1,5 +1,21 @@
 {% extends "../base.html" %}
+{% load static %}
 {% block title %}Newsfeed{% endblock %}
 {% block content %}
+<div class="text-center nav-fill w-100">
+	<h1>News Feed</h1>
+</div>
+<div class='row'>
+	<div class='col-3 text-center'>
+		{% include "../profile/sidebar.html" %}
+	</div>
+	<div class='col-6'>
+	</div>
+	<div class='col-3'>
+	</div>
+</div>
     
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
 {% endblock %}

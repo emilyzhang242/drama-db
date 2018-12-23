@@ -24,13 +24,6 @@
 	font-style: italic;
 }
 
-/*------ OPEN SANS -------*/
-@font-face {
-	font-family: "Open Sans";
-	src: url('https://fonts.googleapis.com/css?family=Open+Sans:300, 400');
-}
-
-
-
 $caviar-dreams: 'Caviar Dreams';
-$open-sans: 'Open Sans';
+$open-sans: 'Open Sans', sans-serif;
+$nunito: 'Nunito Sans', sans-serif;
