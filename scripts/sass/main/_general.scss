@@ -6,6 +6,8 @@ body {
 	color: $soft-black;
 }
 
+/*------ fonts -------- */
+
 p {
 	font-size: 14px;
 }
@@ -15,9 +17,15 @@ h2 {
 	font-weight: 600;
 }
 
+h5 {
+	font-family: $open-sans;
+	font-size: 20px;
+}
+
 a {
 	color: $soft-black;
 }
+
 
 a:hover {
 	text-decoration: none;
