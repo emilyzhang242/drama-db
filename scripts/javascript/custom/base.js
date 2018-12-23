@@ -1,6 +1,7 @@
 $(document).ready(function() {
-	//navbar 
-   	var page = $("#navbar-choice").val();
-   	$("#navbar-"+page).siblings(".navbar-highlight").addClass("navbar-active");
 
+	var page = $("#navbar-choice").val();
+	$(".navbar-highlight").removeClass("navbar-active");
+   	$("#navbar-"+page).siblings(".navbar-highlight").addClass("navbar-active");
+	//navbar 
 });

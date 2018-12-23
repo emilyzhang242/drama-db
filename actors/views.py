@@ -4,7 +4,8 @@ from django.template.response import TemplateResponse
 def actors_home(request):
 	return TemplateResponse(
 		request,
-		'actors/actors_home.html'
+		'actors/actors_home.html',
+		{"page": "people"}
 		)
 
 def add_actor(request): 

@@ -1,8 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	{% block title %}<title>Actor</title>{% endblock %}
-</head>
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}People{% endblock %}
 {% block content %}
-<a href="{% url 'add-actor' %}">Add Actor</a>
+<div class='row'>
+	<div class='col-3 text-center'>
+	</div>
+	<div class='col-6'>
+	</div>
+	<div class='col-3'>
+	</div>
+</div>
+    
+{% endblock %}
+{% block scripts %}
 {% endblock %}
