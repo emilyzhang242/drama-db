@@ -1,10 +1,9 @@
 from django.conf.urls import url, include
 
-from actors.views import (
-	actors_home, 
-	add_actor)
+from actors import views as actor_views
 
 urlpatterns = [
-    url(r'^$', actors_home, name='actors-home'),
-    url(r'^add_actor$', add_actor, name='add-actor')
+    url(r'^$', actor_views.actors_home, name='actors-home'),
+    url(r'^add_actor$', actor_views.add_actor, name='add-actor'),
+    url(r'^create_actor/$', actor_views.create_actor, name='create-actor')
 ]

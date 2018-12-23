@@ -9,21 +9,36 @@
 	<div class='col-3 text-center'>
 	</div>
 	<div class='col-6'>
-		<form class="mt-5">
+		<form class="mt-5" action="/actors/create_actor/" type="POST">
+			{% csrf_token %}
 			<div class="form-group">
-				<label for="exampleInputEmail1">Email Address</label>
-				<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-				<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+				<label for="stagename">Stage Name</label>
+				<input type="text" name="stagename" class="form-control" id="create_stagename" aria-describedby="emailHelp" placeholder="Enter Stage Name">
 			</div>
 			<div class="form-group">
-				<label for="exampleInputPassword1">Password</label>
-				<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+				<label for="birthname">Birth Name</label>
+				<input type="text" name="birthname" class="form-control" id="create_birthname" aria-describedby="emailHelp" placeholder="Enter Birth Name">
 			</div>
-			<div class="form-check">
-				<input type="checkbox" class="form-check-input" id="exampleCheck1">
-				<label class="form-check-label" for="exampleCheck1">Check me out</label>
+			<div class="form-group">
+				<label for="baidu">Baidu URL</label>
+				<input type="text" name="baidu" class="form-control" id="create_baidu" aria-describedby="emailHelp" placeholder="Baidu">
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<div class="form-group">
+				<label for="nativename">Native Name</label>
+				<input type="text" name="nativename" class="form-control" id="create_nativename" aria-describedby="emailHelp" placeholder="Enter Native Name">
+			</div>
+			<div class="form-group">
+				<label for="nationality">Nationality</label>
+				<input type="text" name="stagename" class="form-control" id="create_nationality" aria-describedby="emailHelp" placeholder="Stagename">
+			</div>
+			<div class="form-group">
+				<label for="gender">Gender</label>
+				<select name='gender' class="form-control" id="create_gender">
+					<option val='0'>Male</option>
+					<option val='1'>Female</option>
+				</select>
+			</div>
+			<button type="submit" formmethod="post" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 	<div class='col-3'>
