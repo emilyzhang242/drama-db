@@ -4,11 +4,23 @@ from django.contrib.auth.decorators import login_required
 from actors.models import Actors
 from django.contrib.auth.models import User
 
+#All of the "page" parameters will create the underline for the navbar
+
 def actors_home(request):
+
+	#grab actor info from models
+	actors = Actors.objects.all()
+
+
+	parameters = {
+		"page": "people",
+		"actors": actors
+	}
+
 	return TemplateResponse(
 		request,
 		'actors/actors_home.html',
-		{"page": "people"}
+		parameters
 		)
 
 @login_required(login_url = 'login')
@@ -26,8 +38,9 @@ def create_actor(request):
 		birthname = request.POST.get("birthname")
 		nativename = request.POST.get("nativename")
 		nationality = request.POST.get("nationality")
-		url = request.POST.get("baidu")
+		external_url = request.POST.get("baidu")
 		gender = request.POST.get("gender")
+		url = "_".join(stagename.split(" "))
 		user = User.objects.get(id=request.user.id)
 
 		#alter gender status
@@ -37,13 +50,13 @@ def create_actor(request):
 			gender = 1
 
 		#creating instance in DB
-		a = Actors(stage_name=stagename, birth_name=birthname, native_name=nativename,
-			nationality=nationality, url=url, gender=gender, added_by=user)
+		a = Actors(stage_name=stagename, external_url=external_url, birth_name=birthname, 
+			native_name=nativename, nationality=nationality, url=url, gender=gender, added_by=user)
 		a.save()
 
-		print("Actor Saved: " + stagename)
-
-		#scrapeBaidu(baidu)
-
 		return redirect('actors-home')
+
+def find_actor(request, stagename):
+	print stagename
+
 

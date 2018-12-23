@@ -19,6 +19,13 @@
 				</select>
 			</div>
 		</form>
+		<div class='actor-main-div mt-5'>
+		{% for actor in actors %}
+			<div class='actor-div'>
+			<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
+			</div>
+		{% endfor %}
+		</div>
 	</div>
 	<div class='col-3'>	
 		<div class='actor-sidebar text-center pb-3'>
