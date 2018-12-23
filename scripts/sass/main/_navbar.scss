@@ -31,6 +31,10 @@
 	font-family: $open-sans;
 }
 
+a:hover {
+	color: $grey;
+}
+
 #navbar-search {
 	margin: -3%;
 }
