@@ -12,7 +12,7 @@
 }
 
 #navbar-options {
-	margin-left: -10%;
+	margin-left: -14%;
 }
 
 .nav-item {
@@ -32,17 +32,36 @@
 }
 
 #navbar-search {
-	margin: -3%;
+	margin: -7%;
 }
 
 #searchbar {
 	width: 60%;
 }
 
+.circle {
+	background-color: $soft-black; 
+	border-radius: 50%;
+	width: 35px;
+	height: 35px;
+}
+
 .avatar-div {
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
+} 
+
+#login-dropdown {
+	margin-left: 40%;
+}
+
+#navbar-logged-in {
+	margin-left: 160%;
+}
+
+#navbar-login-text {
+	font-size: 12px;
 }
 
 /*----- dropdown ------ */
