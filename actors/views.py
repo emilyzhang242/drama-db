@@ -11,5 +11,6 @@ def actors_home(request):
 def add_actor(request): 
 	return TemplateResponse(
 		request,
-		'actors/add_actor.html'
+		'actors/add_actor.html',
+		{"page": "people"}
 		)
