@@ -57,6 +57,16 @@ def create_actor(request):
 		return redirect('actors-home')
 
 def find_actor(request, stagename):
-	print stagename
+	actor = Actors.objects.get(url=stagename)
+	parameters={
+		"actor": actor
+	}
+
+	return TemplateResponse(
+		request,
+		'actors/actor_page.html',
+		parameters
+	)
+
 
 

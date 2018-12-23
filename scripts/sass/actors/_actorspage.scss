@@ -1,0 +1,27 @@
+#actor-image {
+	height: 600px;
+	background-size: 100%;
+	overflow: hidden;
+}
+
+#actor-box {
+	margin-left: 2%;
+	margin-top: 3%;
+	width: 30%;
+	height: 27%;
+	background-color: $white;
+	opacity: 0.8;
+}
+
+#actor-followers {
+	margin-top: -14%;
+	border: none;
+	opacity: 0.6;
+}
+
+#actor-content {
+	margin-top: -150px !important;
+	background-color: $white;
+	width: 85%;
+	margin: auto;
+}

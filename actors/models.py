@@ -12,3 +12,10 @@ class Actors(models.Model):
     url = models.CharField(max_length=200, null=True)
     added_by = models.ForeignKey(User, null=True)
     pageviews = models.IntegerField(null=False, default=0)
+    last_updated = models.DateTimeField(null=True)
+    follower_count = models.IntegerField(default=0)
+
+
+class ActorAlternateNames(models.Model):
+    actor = models.ForeignKey(Actors)
+

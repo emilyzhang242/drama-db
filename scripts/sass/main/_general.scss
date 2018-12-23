@@ -10,6 +10,11 @@ p {
 	font-size: 14px;
 }
 
+h2 {
+	font-family: $open-sans;
+	font-weight: 600;
+}
+
 a {
 	color: $soft-black;
 }
@@ -17,10 +22,6 @@ a {
 .btn a:hover {
 	text-decoration: none;
 	color: $soft-black;
-}
-
-.background-blue {
-	background-color: $primary-blue;
 }
 
 .font-light {
@@ -35,9 +36,28 @@ a {
 	border-radius: 50%;
 }
 
+/*------- background colors -------- */
+
+.background-blue {
+	background-color: $primary-blue;
+}
+
+.background-light-blue {
+	background-color: $light-blue;
+}
+
 /*------- colors -------- */
+
 .primary-blue {
 	color: $primary-blue;
+}
+
+.black {
+	color: $black;
+}
+
+.red {
+	color: $red;
 }
 
 /*------- buttons -------- */
@@ -51,6 +71,10 @@ a {
 
 .rounded-btn:hover {
 	background-color: $light-blue;
+}
+
+.rounded-btn.blue-btn:hover {
+	background-color: $white;
 }
 
 /*------- advertisements -------- */ 
