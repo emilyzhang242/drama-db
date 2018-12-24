@@ -17,18 +17,27 @@
 <div id='actor-content'>
 	<div class="row">
 		<!-- scrollbar --> 
+
+
 		<div class='col-2 content-scrollbar mt-4 mb-4'>
-			<ul class='list-group'>
-				<li class="list-group-item content-nav ml-3 mt-2"><a href="#">Overview</a></li>
-				<li class="list-group-item content-nav ml-3"><a href="#">About</a></li>
-				<li class="list-group-item content-nav ml-3"><a href="#">Shows</a></li>
-				<li class="list-group-item content-nav ml-3"><a href="#">Resources</a></li>
-			</ul>
+
+			<!--scrollbar dot --> 
+			<div class='sticky-top'>
+			<div id='scrollbar-dot' class='circular'></div>
+				<ul class='list-group'>
+					<li class="list-group-item content-nav ml-3 mt-2"><a href="#actor-overview">Overview</a></li>
+					<li class="list-group-item content-nav ml-3"><a href="#actor-about">About</a></li>
+					<li class="list-group-item content-nav ml-3"><a href="#actor-shows">Shows</a></li>
+					<li class="list-group-item content-nav ml-3"><a href="#">Resources</a></li>
+				</ul>
+			</div>
 		</div>
+
 
 		<!-- actual content --> 
 		<div class='col-10 content-main'>
-			<div class='row'>
+			<!-- overview -->
+			<div class='row scrollable-point' id='actor-overview'>
 				<div class='col-6 popular-shows'>
 					<h5 class='mt-5 ml-3'>Popular Shows</h5>
 					<div class="row ml-1 mt-3">
@@ -39,10 +48,34 @@
 						{% endfor %}
 					</div>
 				</div>
-				<div class='col-6'>
+				<div class='col-6 related-celebs'>
 					<h5 class='mt-5 ml-3'>Related Celebrities</h5>
+					<div class="row ml-1 mt-3">
+						{% for i in "xxxx" %}
+						<div class='col-5'>
+							<div class='related-pics circular mb-4'></div>
+						</div>
+						{% endfor %}
+					</div>
 				</div>
+			</div>
+			<!-- about section -->
+			<h5 class='mt-5 ml-3 pt-5 scrollable-point' id='actor-about'>About</h5>
+			<div class="row mt-3 ml-1">
+				<div class='col-2'>
+					<div class='picture-preview'></div>
+				</div>
+				<div class='col-6'>
+					<p class='font-open-sans'>This is a short summary of the actor. YESSSSS</p>
+				</div>
+				<div class='col-4'>
+					<div class='actor-stats'></div>
+				</div>
+			</div>
 
+			<!-- shows --> 
+			<h5 class='mt-1 ml-3 pt-5 scrollable-point' id='actor-shows'>Shows</h5>
+			<div class='row'>
 			</div>
 		</div>
 	</div>

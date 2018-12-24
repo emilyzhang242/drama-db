@@ -12,7 +12,7 @@
 }
 
 .content-main {
-	height: 400px;
+	height: 800px;
 	overflow-y: scroll;
 }
 
@@ -24,4 +24,20 @@
 	&::-webkit-scrollbar {
   		width: 0px;
 	}
+}
+
+.active-link {
+	color: $primary-blue;
+}
+
+/*--------- scrollbar dot ---------- */
+
+#scrollbar-dot {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	background-color: $pale-blue;
+	border: 1px solid $dark-border;
+	margin-left: 103%;
+	margin-top: 13%;
 }
