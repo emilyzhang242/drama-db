@@ -23,9 +23,6 @@ def create_account(request):
 		user.save()
 
 	#TODO: perform checks to see if they exist already!! 
-
-
 	return TemplateResponse(
 		request,
 		'main/index.html')
-
