@@ -63,20 +63,29 @@ def create_actor(request):
 
 '''This method determines whether actor info should be updated'''
 def find_actor(request, stagename):
+	print('finding actor')
 	actor = Actors.objects.get(url=stagename)
+	info = []
 
-	now = datetime.datetime.now()
-	print(now)
+	now = datetime.date.today()
 	if actor.last_updated is not None: 
-		time_diff = (now-actor.last_updated).total_seconds()/3600
+		time_is_same = (now == actor.last_updated)
 
-	if actor.last_updated is None or time_diff >= 24: 
+	if actor.last_updated is None or not time_is_same: 
 		updateActorInfo(actor)
+		
+	roles = ActorRoles.objects.filter(actor_id=actor.id)
+	for role in roles: 
+		ind_dict = {}
+		ind_dict["role_name"] = role.role_name
+		ind_dict["show"] = Shows.objects.get(id=role.show_id)
+		info.append(ind_dict)
 
 	image_url = "/images/"+actor.url+".jpg"
 	parameters={
 		"actor": actor,
-		"image": image_url
+		"image": image_url,
+		"info": info
 	}
 
 	return TemplateResponse(
@@ -88,22 +97,33 @@ def find_actor(request, stagename):
 def updateActorInfo(actor):
 
 	info = parseExternalURL(actor.external_url)
-	print(info)
 	if info: 
 		for show in info: 
-			title = show['chinese_title']
+			title = show['title']
 			year = show['year']
-			s = Shows(title=title, year=year)
-			s.save()
-			#then actor roles 
-			role = show["role"]
-			a = ActorRoles(show=s, actor=actor, role_name=role)
-			a.save()
-	else:
-		print("WRONG URL, CAN'T PARSE")
 
-	#for show in info: 
-	# add into the database
+			#performs a check to make sure that the show title isn't already in the db
+			try:
+				Shows.objects.get(title=title)
+				print(title + " already exists in DB")
+			except:
+				try:
+					s = Shows(title=title, year=year)
+					s.save()
+					#then actor roles 
+					role = show["role"]
+					a = ActorRoles(show=s, actor=actor, role_name=role)
+					a.save()
+				except:
+					print("saving in updateActorInfo didn't work")
+		#update the last time the actor was updated so it won't do it every time
+		try:
+			actor.last_updated = datetime.date.today()
+			actor.save()
+		except:
+			print("updateActorInfo: actor didn't save")
+	else:
+		print("URL PROBLEM, CAN'T PARSE")
 
 def parseExternalURL(url):
 	s = requests.Session()
@@ -134,11 +154,13 @@ def parseBaiduURL(soup):
 
 	info = []
 	for drama in dramas: 
+
+		title = drama.find_all("b", {"class":"title"})[0].text
+		
 		ind_drama = {}
 		ind_drama["title"] = ""
 
-		chinese_title = drama.find_all("b", {"class":"title"})[0].text
-		ind_drama["chinese_title"] = chinese_title
+		ind_drama["title"] = title
 
 		year = drama.select("b")[1].text[:4]
 		ind_drama["year"] = year

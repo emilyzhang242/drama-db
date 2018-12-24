@@ -1,6 +1,9 @@
 $actor-picture-height: 160px;
 $actor-picture-width: 130px;
 
+$actor-preview-height: 120px;
+$actor-preview-width: 90px;
+
 #actor-image {
 	height: 600px;
 	width: 102.5%;
@@ -41,6 +44,12 @@ $actor-picture-width: 130px;
 	border: 1px solid $dark-border;
 }
 
+.show-list-preview {
+	height: $actor-preview-height;
+	width: $actor-preview-width;
+	border: 1px solid $dark-border;
+}
+
 .related-celebs {
 	height: 200px;
 }
@@ -56,4 +65,10 @@ $actor-picture-width: 130px;
 	width: 90%;
 	border: 1px solid $dark-border;
 	background: $background;
+}
+
+.show-divider {
+	width: 90%;
+	height: 1px; 
+	background-color: $light-border;
 }

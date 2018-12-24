@@ -73,13 +73,28 @@
 
 				<!-- shows --> 
 				<h5 class='mt-1 ml-3 pt-5 scrollable-point' id='actor-shows'>Shows</h5>
-				<div class='row'>
+				<div class='row ml-1'>
+					{% for show in info %}
+					<div class='col-6'>
+						<div class='row'>
+							<div class='col-4'>
+								<div class='show-list-preview mt-2'></div>
+							</div>
+							<div class='col-8'>
+							</div>
+						</div>
+					</div>
+
+					{% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
+						<div class='row show-divider ml-3 mt-4 mb-4'></div>
+					{% endif %}
+					{% endfor %}
 				</div>
 			</div>
 		</div>
 	</div>
 
-{% endblock %}
-{% block scripts %}
-<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
-{% endblock %}
+	{% endblock %}
+	{% block scripts %}
+	<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
+	{% endblock %}

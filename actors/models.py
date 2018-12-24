@@ -12,7 +12,7 @@ class Actors(models.Model):
     url = models.CharField(max_length=200, null=True)
     added_by = models.ForeignKey(User, null=True)
     pageviews = models.IntegerField(null=False, default=0)
-    last_updated = models.DateTimeField(null=True) #auto_now_add=True <- add this later 
+    last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
     follower_count = models.IntegerField(default=0)
     favorited_count = models.IntegerField(default=0)
 
