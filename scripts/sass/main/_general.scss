@@ -85,6 +85,14 @@ a:hover {
 	color: $black;
 }
 
+.soft-black {
+	color: $soft-black;
+}
+
+.grey {
+	color: $grey;
+}
+
 .red {
 	color: $red;
 }
@@ -96,6 +104,7 @@ a:hover {
 	border: 1px solid $primary-blue;
 	padding: 3px 40px 3px 40px;
 	border-radius: 10px;
+	color: $soft-black;
 }
 
 .rounded-btn:hover {

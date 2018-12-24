@@ -3,8 +3,10 @@ $actor-picture-width: 130px;
 
 #actor-image {
 	height: 600px;
+	width: 102.5%;
 	background-size: 100%;
 	overflow: hidden;
+	margin-left: -1.25%;
 }
 
 #actor-box {

@@ -93,7 +93,7 @@ def updateActorInfo(actor):
 		for show in info: 
 			title = show['chinese_title']
 			year = show['year']
-			s = Shows(chinese_title=title, year=year)
+			s = Shows(title=title, year=year)
 			s.save()
 			#then actor roles 
 			role = show["role"]
