@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
 from actors.models import Actors
@@ -37,26 +37,28 @@ def add_actor(request):
 @login_required(login_url = 'login')
 def create_actor(request): 
 	if request.method == "POST":
-		stagename = request.POST.get("stagename")
-		birthname = request.POST.get("birthname")
-		nativename = request.POST.get("nativename")
-		nationality = request.POST.get("nationality")
-		external_url = request.POST.get("baidu")
-		gender = request.POST.get("gender")
-		url = "_".join(stagename.split(" "))
-		user = User.objects.get(id=request.user.id)
+		try:
+			stagename = request.POST.get("stagename")
+			birthname = request.POST.get("birthname")
+			nativename = request.POST.get("nativename")
+			nationality = request.POST.get("nationality")
+			external_url = request.POST.get("baidu")
+			gender = request.POST.get("gender")
+			url = "_".join(stagename.split(" ")).lower()
+			user = User.objects.get(id=request.user.id)
 
-		#alter gender status
-		if gender == "Male": 
-			gender = 0 
-		elif gender == "Female": 
-			gender = 1
+			#alter gender status
+			if gender == "Male": 
+				gender = 0 
+			elif gender == "Female": 
+				gender = 1
 
-		#creating instance in DB
-		a = Actors(stage_name=stagename, external_url=external_url, birth_name=birthname, 
-			native_name=nativename, nationality=nationality, url=url, gender=gender, added_by=user)
-		a.save()
-
+			#creating instance in DB
+			a = Actors(stage_name=stagename, external_url=external_url, birth_name=birthname, 
+				native_name=nativename, nationality=nationality, url=url, gender=gender, added_by=user)
+			a.save()
+		except: 
+			print("create_actor failed")
 		return redirect('actors-home')
 
 '''This method determines whether actor info should be updated'''
