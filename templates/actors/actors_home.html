@@ -2,35 +2,37 @@
 {% load static %}
 {% block title %}People{% endblock %}
 {% block content %}
-<div class='topbar-ad'></div>
-<div class='row'>
-	<div class='col-3 text-center'>
-		<div class='actor-sidebar'>
-		</div>
-	</div>
-	<div class='col-6'>
-		<form class='float-right'>
-			<div class="form-group">
-				<select class="form-control form-control-sm input-small" id="actor-ordering">
-					<option>&nbsp;Most Popular&nbsp;&nbsp;</option>
-					<option>&nbsp;Alphabetical</option>
-					<option>&nbsp;Rising</option>
-					<option>&nbsp;Recent</option>
-				</select>
+<div class='container-fluid'>
+	<div class='topbar-ad'></div>
+	<div class='row'>
+		<div class='col-3 text-center'>
+			<div class='actor-sidebar'>
 			</div>
-		</form>
-		<div class='actor-main-div mt-5'>
-		{% for actor in actors %}
-			<div class='actor-div'>
-			<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
-			</div>
-		{% endfor %}
 		</div>
-	</div>
-	<div class='col-3'>	
-		<div class='actor-sidebar text-center pb-3'>
-			<p class="pt-3 pl-3 pr-3">Can't find the actor/actress you're searching for? Add them yourself!</p>
-			<button type="button" class='btn rounded-btn'><i class='fa fa-plus pr-3 primary-blue'></i><a href="{% url 'add-actor' %}">Add Actor</a></button>
+		<div class='col-6'>
+			<form class='float-right'>
+				<div class="form-group">
+					<select class="form-control form-control-sm input-small" id="actor-ordering">
+						<option>&nbsp;Most Popular&nbsp;&nbsp;</option>
+						<option>&nbsp;Alphabetical</option>
+						<option>&nbsp;Rising</option>
+						<option>&nbsp;Recent</option>
+					</select>
+				</div>
+			</form>
+			<div class='actor-main-div mt-5'>
+				{% for actor in actors %}
+				<div class='actor-div'>
+					<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class='col-3'>	
+			<div class='actor-sidebar text-center pb-3'>
+				<p class="pt-3 pl-3 pr-3">Can't find the actor/actress you're searching for? Add them yourself!</p>
+				<button type="button" class='btn rounded-btn'><i class='fa fa-plus pr-3 primary-blue'></i><a href="{% url 'add-actor' %}">Add Actor</a></button>
+			</div>
 		</div>
 	</div>
 </div>
