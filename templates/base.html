@@ -24,62 +24,64 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body>
- <nav class="navbar navbar-expand-lg background-blue row" id='navbar'>
-  <a class="navbar-brand ml-2 font-caviar font-weight-bold font-light col-2" id='navbar-title' href="{% url 'main'%}">MyDramaDB</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<div class='container-fluid'>
+    <nav class="navbar navbar-expand-lg background-blue row" id='navbar'>
+      <a class="navbar-brand ml-2 font-caviar font-weight-bold font-light col-2" id='navbar-title' href="{% url 'main'%}">MyDramaDB</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="collapse navbar-collapse col-6" id="navbarSupportedContent">
-    <input type="hidden" name="navbar-choice" id="navbar-choice" value="{{ page }}" />
-    <ul class="navbar-nav mr-auto nav-fill w-100" id='navbar-options'>
-      <li class="nav-item">
-        <a id="navbar-profile" class="nav-link main-nav" href="{% url 'profile-newsfeed' %}">My Profile</a>
-        <div class='navbar-highlight'></div>
-      </li>
-      <li class="nav-item">
-        <a id="navbar-people" class="main-nav nav-link" href="{% url 'actors-home' %}">People</a>
-        <div class='navbar-highlight'></div>
-      </li>
-      <li class="nav-item">
-        <a id="navbar-shows" class="main-nav nav-link" href="#">Shows</a>
-        <div class='navbar-highlight'></div>
-      </li>
-      <li class="nav-item">
-        <a id="navbar-users" class="main-nav nav-link" href="#">Users</a>
-        <div class='navbar-highlight'></div>
-      </li>
-    </ul>
+      <div class="collapse navbar-collapse col-6" id="navbarSupportedContent">
+        <input type="hidden" name="navbar-choice" id="navbar-choice" value="{{ page }}" />
+        <ul class="navbar-nav mr-auto nav-fill w-100" id='navbar-options'>
+          <li class="nav-item">
+            <a id="navbar-profile" class="nav-link main-nav" href="{% url 'profile-newsfeed' %}">My Profile</a>
+            <div class='navbar-highlight'></div>
+          </li>
+          <li class="nav-item">
+            <a id="navbar-people" class="main-nav nav-link" href="{% url 'actors-home' %}">People</a>
+            <div class='navbar-highlight'></div>
+          </li>
+          <li class="nav-item">
+            <a id="navbar-shows" class="main-nav nav-link" href="#">Shows</a>
+            <div class='navbar-highlight'></div>
+          </li>
+          <li class="nav-item">
+            <a id="navbar-users" class="main-nav nav-link" href="#">Users</a>
+            <div class='navbar-highlight'></div>
+          </li>
+        </ul>
+      </div>
+      <div class="input-group input-group-sm col-3" id="navbar-search">
+        <input type="text" class="form-control form-control-sm" placeholder="Find Actors or Shows" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+        </div>
+      </div>
+
+      {% if user.is_authenticated %}
+      <div class='btn-group col-1 text-center ml-5 dropdown'>
+
+        <button class="btn btn-primary dropdown-toggle circle" id='navbar-logged-in' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">T
+          <i class="fa fa-chevron-down ml-3"></i>
+        </button>
+        <div id='login-dropdown' class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Account</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </div>
+
+      {% else %}
+      <div class='col-2 ml-5'>
+        <a href="{% url 'login' %}" class='main-nav nav-link float-right' id='navbar-login-text'>Log in/Sign up</a>
+      </div>
+      {% endif %}
+    </nav>
   </div>
-  <div class="input-group input-group-sm col-3" id="navbar-search">
-    <input type="text" class="form-control form-control-sm" placeholder="Find Actors or Shows" aria-label="Recipient's username" aria-describedby="basic-addon2">
-    <div class="input-group-append">
-      <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
-    </div>
-  </div>
+  {% block content %}
 
-  {% if user.is_authenticated %}
-  <div class='btn-group col-1 text-center ml-5 dropdown'>
-
-    <button class="btn btn-primary dropdown-toggle circle" id='navbar-logged-in' type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">T
-      <i class="fa fa-chevron-down ml-3"></i>
-    </button>
-    <div id='login-dropdown' class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="#">Account</a>
-      <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-    </div>
-  </div>
-
-  {% else %}
-  <div class='col-2 ml-5'>
-    <a href="{% url 'login' %}" class='main-nav nav-link float-right' id='navbar-login-text'>Log in/Sign up</a>
-  </div>
-  {% endif %}
-</nav>
-{% block content %}
-
-{% endblock %}
-<div class="mb-5"></div>
-{% block scripts %}{% endblock %}
+  {% endblock %}
+  <div class="mb-5"></div>
+  {% block scripts %}{% endblock %}
 </body>
 </html>
