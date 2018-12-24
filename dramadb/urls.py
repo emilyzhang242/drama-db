@@ -20,11 +20,13 @@ from actors.views import actors_home
 import main.views
 import profile.views
 import actors.views
+import shows.views
 
 urlpatterns = [
 	url('', include('main.urls')),
 	url(r'^profile/', include('profile.urls')),
     url(r'^actors/', include('actors.urls')),
+    url(r'^shows/', include('shows.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls'))
 ]

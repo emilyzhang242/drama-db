@@ -1,0 +1,85 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+<div class='container-fluid'>
+	<div id="actor-image" style="background-image:url({% static '/images/neo_hou.jpg' %})">
+		<div id='actor-box'>
+			<h2 class='black text-center pt-3'>{{actor.stage_name}}</h2>
+			<p class='text-center pt-1'><span class='font-weight-bold'>Other Names: </span>{{actor.native_name}}</p>
+			<div class='text-center'>
+				<button class="btn rounded-btn mr-3 pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-plus primary-blue pr-2'></i>Follow</button>
+				<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-heart red pr-2'></i>Favorite</button>
+			</div>
+		</div>
+		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
+	</div>
+
+	<div id='actor-content'>
+		<div class="row">
+			<!-- scrollbar --> 
+			<div class='col-2 content-scrollbar mt-4 mb-4'>
+
+				<!--scrollbar dot --> 
+				<div class='sticky-top'>
+					<div id='scrollbar-dot' class='circular'></div>
+					<ul class='list-group'>
+						<li class="list-group-item content-nav ml-3 mt-2"><a href="#actor-overview">Overview</a></li>
+						<li class="list-group-item content-nav ml-3"><a href="#actor-about">About</a></li>
+						<li class="list-group-item content-nav ml-3"><a href="#actor-shows">Shows</a></li>
+						<li class="list-group-item content-nav ml-3"><a href="#">Resources</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- actual content --> 
+			<div class='col-10 content-main'>
+				<!-- overview -->
+				<div class='row scrollable-point' id='actor-overview'>
+					<div class='col-6 popular-shows'>
+						<h5 class='mt-5 ml-3'>Popular Shows</h5>
+						<div class="row ml-1 mt-3">
+							{% for i in "xxx" %}
+							<div class='col-4'>
+								<div class='show-preview'></div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class='col-6 related-celebs'>
+						<h5 class='mt-5 ml-3'>Related Celebrities</h5>
+						<div class="row ml-1 mt-3">
+							{% for i in "xxxx" %}
+							<div class='col-5'>
+								<div class='related-pics circular mb-4'></div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<!-- about section -->
+				<h5 class='mt-5 ml-3 pt-5 scrollable-point' id='actor-about'>About</h5>
+				<div class="row mt-3 ml-1">
+					<div class='col-2'>
+						<div class='picture-preview'></div>
+					</div>
+					<div class='col-6'>
+						<p class='font-open-sans'>This is a short summary of the actor. YESSSSS</p>
+					</div>
+					<div class='col-4'>
+						<div class='actor-stats'></div>
+					</div>
+				</div>
+
+				<!-- shows --> 
+				<h5 class='mt-1 ml-3 pt-5 scrollable-point' id='actor-shows'>Shows</h5>
+				<div class='row'>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block scripts %}
+<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
+{% endblock %}

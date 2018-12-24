@@ -41,3 +41,20 @@
 	margin-left: 103%;
 	margin-top: 13%;
 }
+
+/*----------- home page ------------- */
+
+.actor-div, .show-div {
+	background-color: $white;
+}
+
+.actor-sidebar, .show-sidebar {
+	background-color: $white;
+	display: inline-block;
+	border: 1px solid $light-border;
+	width: 85%;
+}
+
+.show-sidebar.top {
+	margin-bottom: -1px;
+}
