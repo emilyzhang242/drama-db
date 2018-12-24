@@ -24,5 +24,6 @@
 
 <h2>RESOURCES</h2>
 <p>Setting up the <a href="https://virtualenv.pypa.io/en/latest/userguide/">virtual environment</a>
-<p>Postgres app <a href="https://postgresapp.com/">here</a>
-<p>Setting up Postgres and making migrations <a href="https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989">here</a>
+<p>Postgres app <a href="https://postgresapp.com/">here</a></p>
+<p>Setting up Postgres and making migrations <a href="https://medium.com/agatha-codes/painless-postgresql-django-d4f03364989">here</a></p>
+<p>Setting up Scrapy in order to scrape web pages <a href="https://medium.com/@ali_oguzhan/how-to-use-scrapy-with-django-application-c16fabd0e62e">here</a></p>

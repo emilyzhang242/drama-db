@@ -3,6 +3,7 @@ from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
 from actors.models import Actors
 from django.contrib.auth.models import User
+import datetime
 
 #All of the "page" parameters will create the underline for the navbar
 
@@ -58,6 +59,15 @@ def create_actor(request):
 
 def find_actor(request, stagename):
 	actor = Actors.objects.get(url=stagename)
+
+	now = datetime.datetime.now()
+	print(now)
+	if actor.last_updated is not None: 
+		time_diff = (now-actor.last_updated).total_seconds()/3600
+
+	if actor.last_updated is None or time_diff >= 24: 
+		updateActorInfo(actor)
+
 	image_url = "/images/"+actor.url+".jpg"
 	parameters={
 		"actor": actor,
@@ -69,6 +79,19 @@ def find_actor(request, stagename):
 		'actors/actor_page.html',
 		parameters
 	)
+
+def updateActorInfo(actor):
+
+	info = parseExternalURL(actor.external_url)
+
+	#for show in info: 
+	# add into the database
+
+def parseExternalURL(url):
+	return None
+
+
+
 
 
 
