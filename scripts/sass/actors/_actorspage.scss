@@ -72,3 +72,12 @@ $actor-preview-width: 90px;
 	height: 1px; 
 	background-color: $light-border;
 }
+
+a.actor-show-title {
+	font-size: 14px;
+	color: $link-blue;
+}
+
+a.actor-show-title:hover {
+	text-decoration: underline;
+}
