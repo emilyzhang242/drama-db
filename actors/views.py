@@ -2,14 +2,11 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
 from actors.models import Actors
-from shows.models import Shows
+from shows.models import Shows, ActorRoles
 from django.contrib.auth.models import User
 import datetime
 import requests
 from bs4 import BeautifulSoup
-import urllib2
-import urllib
-import json
 
 #All of the "page" parameters will create the underline for the navbar
 
@@ -17,7 +14,6 @@ def actors_home(request):
 
 	#grab actor info from models
 	actors = Actors.objects.all()
-
 
 	parameters = {
 		"page": "people",
@@ -94,9 +90,13 @@ def updateActorInfo(actor):
 	if info: 
 		for show in info: 
 			title = show['chinese_title']
-			print(title)
-			s = Shows(chinese_title=title)
+			year = show['year']
+			s = Shows(chinese_title=title, year=year)
 			s.save()
+			#then actor roles 
+			role = show["role"]
+			a = ActorRoles(show=s, actor=actor, role_name=role)
+			a.save()
 	else:
 		print("WRONG URL, CAN'T PARSE")
 
@@ -109,14 +109,6 @@ def parseExternalURL(url):
 	page = s.get(url)
 	page.encoding = 'utf-8'
 	soup = BeautifulSoup(page.content, "html.parser")
-	#page_content = requests.get(url).content  # returns bytes
-
-	# html = urllib2.urlopen(url)
-	# content = html.read().decode('utf-8', 'ignore')
-	# soup = BeautifulSoup(content, features="lxml")
-
-	#new_url = urllib.urlopen(url).read()
-	#soup = BeautifulSoup(new_url.decode("utf-8"), 'lxml')
 
 	if findURLtype(url) == "baidu": 
 		return parseBaiduURL(soup)
@@ -134,11 +126,7 @@ def findURLtype(url):
 		return ""
 
 def parseBaiduURL(soup):
-	print('selecting...')
-	#print(soup.body)
 	movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
-	#movies_dramas = soup.select(".starMovieAndTvplay")
-	#print(movies_dramas)
 	dramas_string = movies_dramas[1]
 	dramas = dramas_string.select(".listItem .info")
 
@@ -146,9 +134,16 @@ def parseBaiduURL(soup):
 	for drama in dramas: 
 		ind_drama = {}
 		ind_drama["title"] = ""
+
 		chinese_title = drama.find_all("b", {"class":"title"})[0].text
 		ind_drama["chinese_title"] = chinese_title
-		#print(ind_drama)
+
+		year = drama.select("b")[1].text[:4]
+		ind_drama["year"] = year
+
+		role = drama.select("dd")[0].text
+		ind_drama["role"] = role
+
 		info.append(ind_drama)
 	return info
 

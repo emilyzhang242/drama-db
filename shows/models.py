@@ -8,6 +8,7 @@ class Shows(models.Model):
 	title = models.CharField(max_length=200, null=True)
 	chinese_title = models.CharField(max_length=300, null = True)
 	year = models.IntegerField(null=True)
+	followers = models.IntegerField(null=False, default=0)
 
 class ActorRoles(models.Model): 
 	show = models.ForeignKey(Shows)
