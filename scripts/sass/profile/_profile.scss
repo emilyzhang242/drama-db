@@ -29,6 +29,18 @@
 	border: 1px solid $medium-border !important;
 }
 
+.profile-row {
+	height: 65px;
+}
+
+.profile-actor-picture {
+	height: 36px;
+	width: 36px; 
+	border-radius: 50%;
+	border: 1px solid $dark-border;
+	margin-top: 15px;
+}
+
 /*-------- newsfeed -------- */
 
 #profile-top-newsfeed {

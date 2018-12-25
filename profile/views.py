@@ -25,18 +25,24 @@ def sign_up(request):
 	)
 
 @login_required(login_url = 'login')
-def people(request, filter):
+def people(request, filter, sort='engagement'):
 
 	profile = UserProfile.objects.get(user_id = request.user.id)
-	info = {"both":[], "followed":[], "favorited":[]}
+	info = []
 
 	for actor in Actors.objects.all():
+		actor_dict = {"actor": actor}
 		if profile.followed_actors.filter(id=actor.id).exists() and profile.favorited_actors.filter(id=actor.id).exists():
-			info["both"].append(actor)
+			actor_dict["followed"] = True
+			actor_dict["favorited"] = True
 		elif profile.followed_actors.filter(id=actor.id).exists(): 
-			info["followed"].append(actor)
+			actor_dict["followed"] = True
+			actor_dict["favorited"] = False
 		elif profile.favorited_actors.filter(id=actor.id).exists(): 
-			info["favorited"].append(actor)
+			actor_dict["followed"] = False
+			actor_dict["favorited"] = True
+		info.append(actor_dict)
+
 
 	parameters = {
 		'page': "profile",
