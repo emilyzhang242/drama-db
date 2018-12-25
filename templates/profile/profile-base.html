@@ -1,0 +1,38 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Profile: {{profile_page}}{% endblock %}
+{% block content %}
+<div class='container-fluid'>
+	<div class='mt-4 ml-5 row'>
+		<button class="btn btn-primary circle" id='profile-picture'>
+			{% with username=request.user.username|first %}
+			{{username|upper}}
+			{% endwith %}
+		</button>
+		<h5 class='ml-4 light' id='profile-username'>{{request.user.username|upper}}</h5>
+	</div>
+	<div class="text-center nav-fill w-100">
+		<h1 class='font-skia'>{{profile_page}}</h1>
+		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
+	</div>
+	<div class='row mt-4'>
+		<div class='col-3 col-2-5u text-center profile-sidebar-div'>
+			{% include "../profile/sidebar.html" %}
+		</div>
+		<div class='col-6 col-7u col-unique text-center'>
+			{% block profile_content %}
+			{% endblock %}
+		</div>
+		<div class='col-3 col-2-5u'>
+			{% block profile_searchbar %}
+			{% endblock %}
+			<div class='sidebar-advert'>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
+{% endblock %}

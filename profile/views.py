@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 def newsfeed(request):
 
 	parameters = {
-		'page': "profile"
+		'page': "profile",
+		'profile_page': "Newsfeed"
 	}
 	return TemplateResponse(
 		request,
@@ -27,7 +28,8 @@ def people(request, filter):
 
 	parameters = {
 		'page': "profile",
-		'filter': filter
+		'filter': filter, 
+		'profile_page': "People"
 	}
 	return TemplateResponse(
 		request,

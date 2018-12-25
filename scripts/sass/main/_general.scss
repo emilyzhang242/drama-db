@@ -149,6 +149,41 @@ a:hover {
 	background-color: $white;
 }
 
+/*------- adjustible columns -------- */ 
+
+.col-2-5u {
+	width: 22% !important;
+	flex: 0 0 22%;
+    max-width: 22%;
+}
+
+.col-7u {
+	width: 56%;
+	flex: 0 0 56%;
+    max-width: 56%;
+}
+
+/*------- search bar -------- */ 
+.search {
+	.input-group-prepend .input-group-text {
+		background-color: white;
+		border-right: none;
+	}
+
+	input {
+		border-left: none;
+	}
+
+	.input-group-append .input-group-text{
+		background-color: white;
+		border-left: none;
+	}
+
+	input {
+		border-right: none;
+	}
+}
+
 /*------- advertisements -------- */ 
 .topbar-ad {
 	height: 90px;
@@ -162,7 +197,6 @@ a:hover {
 .sidebar-advert {
   height: 600px;
   width: 200px;
-  margin-left: 13%;
   background-color: $medium-grey;
   border: 1px solid $grey;
 }

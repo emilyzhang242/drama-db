@@ -1,50 +1,43 @@
-{% extends "../base.html" %}
+{% extends "./profile-base.html" %}
 {% load static %}
-{% block title %}Profile: People{% endblock %}
-{% block content %}
-<div class='container-fluid'>
-	<div class='mt-4 ml-5 row'>
-		<button class="btn btn-primary circle" id='profile-picture'>
-			{% with username=request.user.username|first %}
-			{{username|upper}}
-			{% endwith %}
-		</button>
-		<h5 class='ml-4 light' id='profile-username'>{{request.user.username|upper}}</h5>
+{% block profile_content %}
+<!-- dropdown filter --> 
+<div class='row nav-fill w-100'>
+	<div class="form-group mb-0 mr-5 ml-0">
+		<select class="form-control form-control-sm" id="people-dropdown-filter">
+			<option>Engagement</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
 	</div>
-	<div class="text-center nav-fill w-100">
-		<h1 class='font-skia'>People</h1>
-		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
+	<!-- center filter --> 
+	<div class="btn-group btn-group-toggle profile-top-filter ml-4 mr-4" data-toggle="buttons" id='profile-top-people'>
+		<label class="btn btn-secondary active profile-filter-btn">
+			<input type="radio" name="options" id="option1" autocomplete="off" checked> All
+		</label>
+		<label class="btn btn-secondary profile-filter-btn">
+			<input type="radio" name="options" id="option2" autocomplete="off"> Favorite
+		</label>
+		<label class="btn btn-secondary profile-filter-btn">
+			<input type="radio" name="options" id="option3" autocomplete="off"> Following
+		</label>
 	</div>
-	<div class='row mt-4'>
-		<div class='col-3 text-center'>
-			{% include "../profile/sidebar.html" %}
-		</div>
-		<div class='col-6 text-center'>
-			<div class="btn-group btn-group-toggle profile-top-filter" data-toggle="buttons" id='profile-top-newsfeed'>
-				<label class="btn btn-secondary active profile-filter-btn">
-					<input type="radio" name="options" id="option1" autocomplete="off" checked> All News
-				</label>
-				<label class="btn btn-secondary profile-filter-btn">
-					<input type="radio" name="options" id="option2" autocomplete="off"> Shows
-				</label>
-				<label class="btn btn-secondary profile-filter-btn">
-					<input type="radio" name="options" id="option3" autocomplete="off"> People
-				</label>
-				<label class="btn btn-secondary profile-filter-btn">
-					<input type="radio" name="options" id="option3" autocomplete="off"> Users
-				</label>
-			</div>
-			<div id= 'newsfeed-settings' class='text-right'>
-				<i class='fa fa-cog'></i>
-			</div>
-		</div>
-		<div class='col-3'>
-			<div class='sidebar-advert'>
-			</div>
-		</div>
+
+	<!-- key --> 
+	<div id='profile-people-key'>
 	</div>
 </div>
 
+{% endblock %}
+{% block profile_searchbar %}
+<div class="input-group input-group-sm search col-12" id="profile-people-search">
+	<div class="input-group-prepend">
+		<span class="input-group-text"><i class="fa fa-search"></i></span>
+	</div>
+	<input type="text" class="form-control form-control-sm" placeholder="Search People" aria-label="Recipient's username" aria-describedby="basic-addon2">
+</div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
