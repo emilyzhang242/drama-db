@@ -2,7 +2,6 @@
 
 /* Fixed sidenav, full height */
 .sidenav {
-  height: 100%;
   width: 75%;
   margin-left: 15%;
   background-color: $white;
@@ -45,4 +44,8 @@
 /* Dropdown container (hidden by default). */
 .dropdown-container {
   display: none;
+}
+
+.sidebar-options {
+  font-weight: 300 !important;
 }

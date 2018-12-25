@@ -9,14 +9,14 @@
 			{{username|upper}}
 			{% endwith %}
 		</button>
-		<h5 class='ml-4' id='profile-username'>{{request.user.username}}</h5>
+		<h5 class='ml-4 light' id='profile-username'>{{request.user.username|upper}}</h5>
 	</div>
 	<div class="text-center nav-fill w-100">
 		<h1 class='font-skia'>News Feed</h1>
 		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
 	</div>
 	<div class='row mt-4'>
-		<div class='col-3 text-center mt-2'>
+		<div class='col-3 text-center'>
 			{% include "../profile/sidebar.html" %}
 		</div>
 		<div class='col-6 text-center'>

@@ -2,7 +2,7 @@ body {
 	background-color: $background;
 	font-family: $nunito;
 	letter-spacing: 0.8px;
-	font-weight: 300;
+	font-weight: 300 !important;
 	color: $soft-black;
 }
 
@@ -59,6 +59,10 @@ a:hover {
 
 .semi-bold {
 	font-weight: 600;
+}
+
+.light {
+	font-weight: 300;
 }
 
 /*-------- font families --------*/
