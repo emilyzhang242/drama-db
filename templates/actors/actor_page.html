@@ -8,8 +8,8 @@
 			<h2 class='black text-center pt-3'>{{actor.stage_name}}</h2>
 			<p class='text-center pt-1'><span class='font-weight-bold'>Other Names: </span>{{actor.native_name}}</p>
 			<div class='text-center'>
-				<input id='data-actor' type='hidden' data-actor={{actor.stage_name}}>
-				<button class="btn rounded-btn mr-3 pl-5 pr-5 background-light-blue blue-btn" id='follow-actor'><i class='fa fa-plus primary-blue pr-2'></i>Follow</button>
+				<input id='data-actor' type='hidden' data-actor={{actor.url}}>
+				<button class="btn rounded-btn mr-3 pl-5 pr-5 {% if following_actor == False %}background-light-blue blue-btn{% endif %}" id='follow-actor'><i class='fa fa-plus primary-blue pr-2'></i><span id='follow-actor-text'>{% if following_actor %}Followed{% else %}Follow{% endif %}</span></button>
 				<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn" id='favorite-actor'><i class='fa fa-heart red pr-2'></i>Favorite</button>
 			</div>
 		</div>
@@ -107,21 +107,39 @@
 		$(document).ready(function() {
 			// have user follow the actor
 			$("#follow-actor").on("click", function() {
-				console.log($("#data-actor").data("actor"));
+				
+				var following = true;
+				// this means that theyr'e not followed yet
+				if ($(this).hasClass("blue-btn")) {
+					following = false;
+				}
+
 				$.ajax({
 					type: "POST",
 					data: {
 						actor: $("#data-actor").data("actor"),
-						csrfmiddlewaretoken: '{{csrf_token}}'
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						follow: !following
 					},
 					url: "/actors/follow_actor/",
 					success: function(result){
-						console.log(result)
+						console.log(result);
 					},
 					error: function(result) {
 						console.log(result);
 					}
 				});
+
+				//change button appearance
+				if (!following) {
+					$(this).removeClass("background-light-blue");
+					$(this).removeClass("blue-btn");
+					$("#follow-actor-text").text("Followed");
+				} else {
+					$(this).addClass("background-light-blue");
+					$(this).addClass("blue-btn");
+					$("#follow-actor-text").text("Follow");
+				}
 			});
 		});
 	</script>

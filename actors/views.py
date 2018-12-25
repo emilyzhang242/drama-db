@@ -83,10 +83,23 @@ def find_actor(request, stagename):
 		info.append(ind_dict)
 
 	image_url = "/images/"+actor.url+".jpg"
+
+	#is the user following them? 
+	try: 
+		profile = UserProfile.objects.get(user_id=request.user.id)
+		if actor in profile.followed_actors.all():
+			following = True
+		else:
+			following = False
+	except:
+		following = False
+		print("couldnt find instance")
+
 	parameters={
 		"actor": actor,
 		"image": image_url,
-		"info": info
+		"info": info,
+		"following_actor": following
 	}
 
 	return TemplateResponse(
@@ -172,16 +185,25 @@ def parseBaiduURL(soup):
 		info.append(ind_drama)
 	return info
 
+@login_required(login_url = 'login')
 def follow_actor(request):
-	print("follow actor")
 	try: 
 		profile = UserProfile.objects.get(user_id=request.user.id)
-		print("got profile")
-		#actor = request.POST.get("actor")
-		#print(actor)
+		follow = request.POST.get("follow") #wow, what a gotcha. JS true and false is diff from python!
+		url = request.POST.get("actor")
+		actor = Actors.objects.get(url=url)
+		follower_num = actor.follower_count
+
+		if follow == "true": 
+			profile.followed_actors.add(actor)
+			actor.follower_count = follower_num + 1
+		else: 
+			profile.followed_actors.remove(actor)
+			actor.follower_count = follower_num - 1
+		actor.save()
 		return JsonResponse({"status":200})
 	except: 
-		return None
+		return JsonResponse({"status": 500, "message": "Unable to follow actor"})
 
 		
 
