@@ -38,3 +38,23 @@
 #profile-top-newsfeed label {
 	width: 25%;
 }
+
+#newsfeed-settings {
+	margin-left: 100%;
+	margin-top: -4.5%;
+}
+
+#newsfeed-settings .fa-cog {
+	font-size: 22px;
+	color: $medium-dark-grey;
+}
+
+#newsfeed-settings .fa-cog:hover {
+	cursor: pointer !important;
+}
+
+#newsfeed-settings .dropdown-menu {
+	font-size: 14px;
+	border: 1px solid $primary-blue;
+	padding: 2px;
+}

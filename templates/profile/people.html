@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
-{% block title %}Newsfeed{% endblock %}
+{% block title %}Profile: People{% endblock %}
 {% block content %}
 <div class='container-fluid'>
 	<div class='mt-4 ml-5 row'>
@@ -12,7 +12,7 @@
 		<h5 class='ml-4 light' id='profile-username'>{{request.user.username|upper}}</h5>
 	</div>
 	<div class="text-center nav-fill w-100">
-		<h1 class='font-skia'>News Feed</h1>
+		<h1 class='font-skia'>People</h1>
 		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
 	</div>
 	<div class='row mt-4'>
@@ -34,14 +34,9 @@
 					<input type="radio" name="options" id="option3" autocomplete="off"> Users
 				</label>
 			</div>
-			<!-- settings dropdown menu --> 
-			<div id= 'newsfeed-settings' class='text-right dropdown show'>
-				<i class='fa fa-cog dropdown-toggle' role='button' id="newsfeed-cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-				<div class="dropdown-menu" aria-labelledby="newsfeed-cog">
-					<a class="dropdown-item" href="#">Delete All News</a>
-				</div>
+			<div id= 'newsfeed-settings' class='text-right'>
+				<i class='fa fa-cog'></i>
 			</div>
-
 		</div>
 		<div class='col-3'>
 			<div class='sidebar-advert'>
