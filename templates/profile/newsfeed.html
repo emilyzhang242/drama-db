@@ -3,16 +3,41 @@
 {% block title %}Newsfeed{% endblock %}
 {% block content %}
 <div class='container-fluid'>
-	<div class="text-center nav-fill w-100">
-		<h1>News Feed</h1>
+	<div class='mt-4 ml-5 row'>
+		<button class="btn btn-primary circle" id='profile-picture'>
+			{% with username=request.user.username|first %}
+			{{username|upper}}
+			{% endwith %}
+		</button>
+		<h5 class='ml-4' id='profile-username'>{{request.user.username}}</h5>
 	</div>
-	<div class='row'>
-		<div class='col-3 text-center'>
+	<div class="text-center nav-fill w-100">
+		<h1 class='font-skia'>News Feed</h1>
+		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
+	</div>
+	<div class='row mt-4'>
+		<div class='col-3 text-center mt-2'>
 			{% include "../profile/sidebar.html" %}
 		</div>
-		<div class='col-6'>
+		<div class='col-6 text-center'>
+			<div class="btn-group btn-group-toggle profile-top-filter" data-toggle="buttons" id='profile-top-newsfeed'>
+				<label class="btn btn-secondary active profile-filter-btn">
+					<input type="radio" name="options" id="option1" autocomplete="off" checked> All News
+				</label>
+				<label class="btn btn-secondary profile-filter-btn">
+					<input type="radio" name="options" id="option2" autocomplete="off"> Shows
+				</label>
+				<label class="btn btn-secondary profile-filter-btn">
+					<input type="radio" name="options" id="option3" autocomplete="off"> People
+				</label>
+				<label class="btn btn-secondary profile-filter-btn">
+					<input type="radio" name="options" id="option3" autocomplete="off"> Users
+				</label>
+			</div>
 		</div>
 		<div class='col-3'>
+			<div class='sidebar-advert'>
+			</div>
 		</div>
 	</div>
 </div>

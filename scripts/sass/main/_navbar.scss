@@ -29,6 +29,7 @@
 #navbar .nav-link {
 	color: $light-grey;
 	font-family: $open-sans;
+	letter-spacing: 1.2px;
 }
 
 #navbar-search {
@@ -58,6 +59,7 @@
 
 #navbar-logged-in {
 	margin-left: 160%;
+	border: 1px solid $dark-border;
 }
 
 #navbar-login-text {

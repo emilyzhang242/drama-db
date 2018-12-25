@@ -1,0 +1,40 @@
+/*--------- common ----------- */
+#profile-picture {
+	height: 90px;
+	width: 90px;
+	border: 1px solid $dark-border;
+}
+
+#profile-username {
+	margin-top: 35px;
+}
+
+.profile-top-filter label {
+	background-color: $white;
+	color: $soft-black;
+	font-weight: 300 !important;
+	font-size: 14px;
+	border: 1px solid $medium-border;
+}
+
+.profile-filter-btn.active {
+	background-color: $pale-blue !important;
+	color: $soft-black !important;
+	border: 1px solid $medium-border !important;
+}
+
+.profile-filter-btn:hover {
+	background-color: $light-blue !important;
+	color: $soft-black !important;
+	border: 1px solid $medium-border !important;
+}
+
+/*-------- newsfeed -------- */
+
+#profile-top-newsfeed {
+	width: 90%;
+}
+
+#profile-top-newsfeed label {
+	width: 25%;
+}

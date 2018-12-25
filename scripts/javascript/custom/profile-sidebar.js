@@ -12,6 +12,13 @@ $(document).ready(function(){
 			} else {
 				dropdownContent.style.display = "block";
 			}
+			// add the boxshadow if active 
+			$(".sidebar-main").removeClass("sidenav-boxshadow");
+			$(".sidebar-main.active").addClass("sidenav-boxshadow");
 		});
 	}
+
+	//Figure out which part in sidebar to highlight
+	var page = $("#sidebar-input").data("page");
+	$("#"+page).addClass("background-light-blue");
 });
