@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from actors.models import Actors
 from profile.models import UserProfile
 from shows.models import Shows, ActorRoles
@@ -37,18 +38,21 @@ def add_actor(request):
 		)
 
 @login_required(login_url = 'login')
+@require_POST
 def create_actor(request): 
-	if request.method == "POST":
-		try:
-			stagename = request.POST.get("stagename")
-			birthname = request.POST.get("birthname")
-			nativename = request.POST.get("nativename")
-			nationality = request.POST.get("nationality")
-			external_url = request.POST.get("baidu")
-			gender = request.POST.get("gender")
-			url = "_".join(stagename.split(" ")).lower()
-			user = User.objects.get(id=request.user.id)
+	try:
+		stagename = request.POST.get("stagename")
+		nativename = request.POST.get("nativename")
+		nationality = request.POST.get("nationality")
+		external_url = request.POST.get("baidu")
+		gender = request.POST.get("gender")
+		url = "_".join(stagename.split(" ")).lower()
+		user = User.objects.get(id=request.user.id)
 
+		#either stage or native name is the same
+		exists = Actors.objects.filter(url=url).exists() or Actors.objects.filter(native_name=nativename).exists()
+
+		if not exists:
 			#alter gender status
 			if gender == "Male": 
 				gender = 0 
@@ -56,12 +60,14 @@ def create_actor(request):
 				gender = 1
 
 			#creating instance in DB
-			a = Actors(stage_name=stagename, external_url=external_url, birth_name=birthname, 
-				native_name=nativename, nationality=nationality, url=url, gender=gender, added_by=user)
+			a = Actors(stage_name=stagename, external_url=external_url, native_name=nativename, 
+				nationality=nationality, url=url, gender=gender, added_by=user)
 			a.save()
-		except: 
-			print("create_actor failed")
-		return redirect('actors-home')
+			return JsonResponse({"status": 200})
+		else: 
+			return JsonResponse({"status": 500, "message": "actor already exists in the database."})
+	except: 
+		return JsonResponse({"status": 500, "message": "creating the actor failed."})
 
 '''This method determines whether actor info should be updated'''
 def find_actor(request, stagename):
@@ -188,7 +194,7 @@ def parseBaiduURL(soup):
 		ind_drama["role"] = role
 
 		info.append(ind_drama)
-	return info
+	return ""
 
 @login_required(login_url = 'login')
 def follow_actor(request):

@@ -6,19 +6,21 @@
 	<div class="text-center">
 		<h2>Add Actor</h2>
 	</div>
+	<div class="alert alert-info fade text-center d-none" role="alert">
+		<strong>Success!</strong> The actor has been added into the database.
+	</div>
+	<div class="alert alert-warning fade text-center d-none" role="alert">
+		<strong>Uh oh!</strong> Actor couldn't be added because <span id='failure-reason'></span>
+	</div>
 	<div class='row'>
 		<div class='col-3 text-center'>
 		</div>
 		<div class='col-6'>
-			<form class="mt-5" action="/actors/create_actor/" type="POST">
+			<form class="mt-5">
 				{% csrf_token %}
 				<div class="form-group">
 					<label for="stagename">Stage Name</label>
 					<input type="text" name="stagename" class="form-control" id="create_stagename" aria-describedby="emailHelp" placeholder="Enter Stage Name">
-				</div>
-				<div class="form-group">
-					<label for="birthname">Birth Name</label>
-					<input type="text" name="birthname" class="form-control" id="create_birthname" aria-describedby="emailHelp" placeholder="Enter Birth Name">
 				</div>
 				<div class="form-group">
 					<label for="baidu">Baidu URL</label>
@@ -30,7 +32,7 @@
 				</div>
 				<div class="form-group">
 					<label for="nationality">Nationality</label>
-					<input type="text" name="nationality" class="form-control" id="create_nationality" aria-describedby="emailHelp" placeholder="Stagename">
+					<input type="text" name="nationality" class="form-control" id="create_nationality" aria-describedby="emailHelp" placeholder="Nationality">
 				</div>
 				<div class="form-group">
 					<label for="gender">Gender</label>
@@ -39,14 +41,53 @@
 						<option val='1'>Female</option>
 					</select>
 				</div>
-				<button type="submit" formmethod="post" class="btn btn-primary">Submit</button>
+				<button type="submit" class="btn btn-primary" id='create_submit'>Submit</button>
 			</form>
 		</div>
-		<div class='col-3'>
-
-		</div>
+		<div class='col-3'></div>
 	</div>
 </div>
 {% endblock %}
 {% block scripts %}
+<script>
+	$(document).ready(function() {
+
+		//show and hide alerts
+
+		$("#create_submit").on("click", function(e) {
+			//add the shows back in 
+			$(".alert-info").addClass("show");
+			$(".alert-warning").addClass("show");
+
+			e.preventDefault();
+			$.ajax({
+				type: "POST",
+				url: "/actors/create_actor/",
+				data: {
+					csrfmiddlewaretoken: '{{csrf_token}}',
+					stagename: $("#create_stagename").val(),
+					nativename: $("#create_nativename").val(),
+					nationality: $("#create_nationality").val(),
+					gender: $("#create_gender").val()
+				},
+				success: function(response) {
+					if (response.status == 200) {
+						$(".alert-info").removeClass("d-none");
+						$(".alert-warning").addClass("d-none");
+					} else if (response.status == 500) {
+						$("#failure-reason").text(response.message);
+						$(".alert-info").addClass("d-none");
+						$(".alert-warning").removeClass("d-none");
+					}
+				}, 
+				error: function(response) {
+					$("#failure-reason").text(response.message);
+					$(".alert-info").css("display", "none");
+					$(".alert-warning").css("display", "block");
+				}
+			});
+
+		});
+	});
+</script>
 {% endblock %}
