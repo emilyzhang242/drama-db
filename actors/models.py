@@ -15,6 +15,7 @@ class Actors(models.Model):
     last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
     follower_count = models.IntegerField(default=0)
     favorited_count = models.IntegerField(default=0)
+    page_visits = models.IntegerField(default=0)
 
 
 class ActorAlternateNames(models.Model):

@@ -24,6 +24,15 @@
 	font-style: italic;
 }
 
+/*----- SKIA -------*/
+
+@font-face {
+	font-family: "Skia";
+	src: url("../../../static/fonts/skia/Skia_Regular.ttf");
+}
+
 $caviar-dreams: 'Caviar Dreams';
+$skia: 'Skia';
 $open-sans: 'Open Sans', sans-serif;
 $nunito: 'Nunito Sans', sans-serif;
+
