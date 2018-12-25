@@ -26,19 +26,25 @@
 	</div>
 
 	<!-- key --> 
-	<div id='profile-people-key'>
+	<div id='profile-people-key' class='d-inline-flex text-center flex-row'>
+		<div class="p-2"><i class='fa fa-heart pale-red tooltip-css' title='# of shows favorited'></i></div>
+		<div class="p-2"><i class='fa fa-star yellow' title='average show rating'></i></div>
+		<div class="p-2"><i class='fa fa-eye medium-dark-grey' title='# of shows watched'></i></div>
+		<div class="p-2"><i class='fa fa-pie-chart cornflower-blue' title='percentage of shows watched'></i></div>
 	</div>
 </div>
 
 {% endblock %}
 {% block profile_searchbar %}
-<div class="input-group input-group-sm search col-12" id="profile-people-search">
+<div class="input-group input-group-sm search col-12 mb-4" id="profile-people-search">
 	<div class="input-group-prepend">
 		<span class="input-group-text"><i class="fa fa-search"></i></span>
 	</div>
-	<input type="text" class="form-control form-control-sm" placeholder="Search People" aria-label="Recipient's username" aria-describedby="basic-addon2">
+	<input type="text" class="form-control form-control-sm prepend" placeholder="Search People" aria-label="Recipient's username" aria-describedby="basic-addon2">
 </div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
+<script>
+</script>
 {% endblock %}

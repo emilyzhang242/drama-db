@@ -72,5 +72,19 @@
 #profile-people-key {
 	height: 35px;
 	border: 1px solid $grey;
+	background-color: $white;
 	width: 20%;
+
+	.p-2 {
+		margin-top: -2%;
+		margin-left: 1px;
+	}
+
+	.p-2:hover {
+		cursor: pointer;
+	}
+}
+
+#profile-people-search {
+	margin-left: -15%;
 }
