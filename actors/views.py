@@ -91,15 +91,20 @@ def find_actor(request, stagename):
 			following = True
 		else:
 			following = False
+		if actor in profile.favorited_actors.all():
+			favorited = True
+		else:
+			favorited = False
 	except:
 		following = False
-		print("couldnt find instance")
+		favorited = False
 
 	parameters={
 		"actor": actor,
 		"image": image_url,
 		"info": info,
-		"following_actor": following
+		"following_actor": following,
+		"favorited_actor": favorited
 	}
 
 	return TemplateResponse(
@@ -204,6 +209,26 @@ def follow_actor(request):
 		return JsonResponse({"status":200})
 	except: 
 		return JsonResponse({"status": 500, "message": "Unable to follow actor"})
+
+@login_required(login_url = 'login')
+def favorite_actor(request):
+	try: 
+		profile = UserProfile.objects.get(user_id=request.user.id)
+		favorite = request.POST.get("favorite") #wow, what a gotcha. JS true and false is diff from python!
+		url = request.POST.get("actor")
+		actor = Actors.objects.get(url=url)
+		favorited_num = actor.favorited_count
+
+		if favorite == "true": 
+			profile.favorited_actors.add(actor)
+			actor.favorited_count = favorited_num + 1
+		else: 
+			profile.favorited_actors.remove(actor)
+			actor.favorited_count = favorited_num - 1
+		actor.save()
+		return JsonResponse({"status":200})
+	except: 
+		return JsonResponse({"status": 500, "message": "Unable to favorite actor"})
 
 		
 

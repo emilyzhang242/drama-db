@@ -10,7 +10,7 @@
 			<div class='text-center'>
 				<input id='data-actor' type='hidden' data-actor={{actor.url}}>
 				<button class="btn rounded-btn mr-3 pl-5 pr-5 {% if following_actor == False %}background-light-blue blue-btn{% endif %}" id='follow-actor'><i class='fa fa-plus primary-blue pr-2'></i><span id='follow-actor-text'>{% if following_actor %}Followed{% else %}Follow{% endif %}</span></button>
-				<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn" id='favorite-actor'><i class='fa fa-heart red pr-2'></i>Favorite</button>
+				<button class="btn rounded-btn pl-5 pr-5 {% if favorited_actor == False %}background-light-blue blue-btn{% endif %}" id='favorite-actor'><i class='fa fa-heart red pr-2'></i><span id='favorite-actor-text'>{% if favorited_actor %}Favorited{% else %}Favorite{% endif %}</span></button>
 			</div>
 		</div>
 		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
@@ -105,7 +105,7 @@
 	<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
 	<script>
 		$(document).ready(function() {
-			// have user follow the actor
+			// follow actor functionality
 			$("#follow-actor").on("click", function() {
 				
 				var following = true;
@@ -139,6 +139,43 @@
 					$(this).addClass("background-light-blue");
 					$(this).addClass("blue-btn");
 					$("#follow-actor-text").text("Follow");
+				}
+			});
+
+			//favorite user functionality
+			$("#favorite-actor").on("click", function() {
+				
+				var favorited = true;
+				// this means that theyr'e not followed yet
+				if ($(this).hasClass("blue-btn")) {
+					favorited = false;
+				}
+
+				$.ajax({
+					type: "POST",
+					data: {
+						actor: $("#data-actor").data("actor"),
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						favorite: !favorited
+					},
+					url: "/actors/favorite_actor/",
+					success: function(result){
+						console.log(result);
+					},
+					error: function(result) {
+						console.log(result);
+					}
+				});
+
+				//change button appearance
+				if (!favorited) {
+					$(this).removeClass("background-light-blue");
+					$(this).removeClass("blue-btn");
+					$("#favorite-actor-text").text("Favorited");
+				} else {
+					$(this).addClass("background-light-blue");
+					$(this).addClass("blue-btn");
+					$("#favorite-actor-text").text("Favorite");
 				}
 			});
 		});
