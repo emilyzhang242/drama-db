@@ -23,8 +23,8 @@
 					<input type="text" name="stagename" class="form-control" id="create_stagename" aria-describedby="emailHelp" placeholder="Enter Stage Name">
 				</div>
 				<div class="form-group">
-					<label for="baidu">Baidu URL</label>
-					<input type="text" name="baidu" class="form-control" id="create_baidu" aria-describedby="emailHelp" placeholder="Baidu">
+					<label for="url">URL</label>
+					<input type="text" name="url" class="form-control" id="create_url" aria-describedby="emailHelp" placeholder="Baidu">
 				</div>
 				<div class="form-group">
 					<label for="nativename">Native Name</label>
@@ -66,6 +66,7 @@
 				data: {
 					csrfmiddlewaretoken: '{{csrf_token}}',
 					stagename: $("#create_stagename").val(),
+					url: $("#create_url").val(),
 					nativename: $("#create_nativename").val(),
 					nationality: $("#create_nationality").val(),
 					gender: $("#create_gender").val()
@@ -86,7 +87,6 @@
 					$(".alert-warning").css("display", "block");
 				}
 			});
-
 		});
 	});
 </script>

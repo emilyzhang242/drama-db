@@ -44,7 +44,7 @@ def create_actor(request):
 		stagename = request.POST.get("stagename")
 		nativename = request.POST.get("nativename")
 		nationality = request.POST.get("nationality")
-		external_url = request.POST.get("baidu")
+		external_url = request.POST.get("url")
 		gender = request.POST.get("gender")
 		url = "_".join(stagename.split(" ")).lower()
 		user = User.objects.get(id=request.user.id)
@@ -173,19 +173,23 @@ def findURLtype(url):
 		return ""
 
 def parseBaiduURL(soup):
+	BAIDU_URL = "https://baike.baidu.com"
 	movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
-	dramas_string = movies_dramas[1]
+
+	soup.find_all("div")
+
+	dramas_string = movies_dramas[-1]
 	dramas = dramas_string.select(".listItem .info")
 
 	info = []
 	for drama in dramas: 
 
-		title = drama.find_all("b", {"class":"title"})[0].text
+		link = drama.find_all("b", {"class":"title"})[0]
 		
 		ind_drama = {}
-		ind_drama["title"] = ""
 
-		ind_drama["title"] = title
+		ind_drama["title"] = link.text
+		ind_drama["url"] = BAIDU_URL + link['href']
 
 		year = drama.select("b")[1].text[:4]
 		ind_drama["year"] = year
@@ -194,6 +198,7 @@ def parseBaiduURL(soup):
 		ind_drama["role"] = role
 
 		info.append(ind_drama)
+	print(info)
 	return ""
 
 @login_required(login_url = 'login')
