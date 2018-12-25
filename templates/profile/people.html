@@ -2,14 +2,12 @@
 {% load static %}
 {% block profile_content %}
 <!-- dropdown filter --> 
-<div class='row nav-fill w-100'>
+<div class='row'>
 	<div class="form-group mb-0 mr-5 ml-0">
-		<select class="form-control form-control-sm" id="people-dropdown-filter">
-			<option>Engagement</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
+		<select id='profile-people-select' class="form-control form-control-sm" id="people-dropdown-filter">
+			<option>&nbsp;&nbsp;Engagement</option>
+			<option>&nbsp;&nbsp;A-Z</option>
+			<option>&nbsp;&nbsp;Z-A</option>
 		</select>
 	</div>
 	<!-- center filter --> 
@@ -33,10 +31,14 @@
 		<div class="p-2"><i class='fa fa-pie-chart cornflower-blue' title='percentage of shows watched'></i></div>
 	</div>
 </div>
+<!-- people content --> 
+<div class='row mt-3'>
+{{actor_info}}
+</div>
 
 {% endblock %}
 {% block profile_searchbar %}
-<div class="input-group input-group-sm search col-12 mb-4" id="profile-people-search">
+<div class="input-group input-group-sm search col-11 mb-4" id="profile-people-search">
 	<div class="input-group-prepend">
 		<span class="input-group-text"><i class="fa fa-search"></i></span>
 	</div>
