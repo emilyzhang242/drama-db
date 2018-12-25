@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
 from actors.models import Actors
+from profile.models import UserProfile
 from shows.models import Shows, ActorRoles
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -63,7 +65,6 @@ def create_actor(request):
 
 '''This method determines whether actor info should be updated'''
 def find_actor(request, stagename):
-	print('finding actor')
 	actor = Actors.objects.get(url=stagename)
 	info = []
 
@@ -73,7 +74,7 @@ def find_actor(request, stagename):
 
 	if actor.last_updated is None or not time_is_same: 
 		updateActorInfo(actor)
-		
+
 	roles = ActorRoles.objects.filter(actor_id=actor.id)
 	for role in roles: 
 		ind_dict = {}
@@ -170,6 +171,19 @@ def parseBaiduURL(soup):
 
 		info.append(ind_drama)
 	return info
+
+def follow_actor(request):
+	print("follow actor")
+	try: 
+		profile = UserProfile.objects.get(user_id=request.user.id)
+		print("got profile")
+		#actor = request.POST.get("actor")
+		#print(actor)
+		return JsonResponse({"status":200})
+	except: 
+		return None
+
+		
 
 
 

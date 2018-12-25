@@ -48,6 +48,12 @@ a:hover {
 	color: $light-grey;
 }
 
+/*-------- font weights --------*/
+
+.semi-bold {
+	font-weight: 600;
+}
+
 /*-------- font families --------*/
 
 .font-open-sans {
@@ -64,6 +70,10 @@ a:hover {
 
 .circular {
 	border-radius: 50%;
+}
+
+.list {
+	list-style-type: none;
 }
 
 /*------- background colors -------- */
