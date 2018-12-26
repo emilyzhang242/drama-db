@@ -10,7 +10,7 @@ class Shows(models.Model):
 	follower_count = models.IntegerField(null=False, default=0)
 	favorited_count = models.IntegerField(null=False, default=0)
 	url = models.CharField(max_length=200, null=True)
-	image_preview = models.CharField(max_length=200, null=True)
+	image_preview = models.CharField(max_length=1000, null=True)
 	page_visits = models.IntegerField(default=0)
 
 class ActorRoles(models.Model): 

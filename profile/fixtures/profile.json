@@ -1,0 +1,16 @@
+[
+  {
+    "model": "profile.UserProfile",
+    "pk": 1,
+    "fields": {
+      "user_id": 3
+    }
+  },
+  {
+    "model": "profile.UserProfile",
+    "pk": 2,
+    "fields": {
+      "user_id": 1
+    }
+  }
+]
