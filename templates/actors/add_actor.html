@@ -27,6 +27,10 @@
 					<input type="text" name="url" class="form-control" id="create_url" aria-describedby="emailHelp" placeholder="Baidu">
 				</div>
 				<div class="form-group">
+					<label for="url">Image URL</label>
+					<input type="text" name="url" class="form-control" id="create_image" aria-describedby="emailHelp" placeholder="Image">
+				</div>
+				<div class="form-group">
 					<label for="url">Baidu Section</label>
 					<input type="text" name="url" class="form-control" id="create_url_section" aria-describedby="emailHelp" placeholder="Baidu">
 				</div>
@@ -72,6 +76,7 @@
 					stagename: $("#create_stagename").val(),
 					url: $("#create_url").val(),
 					baidu_section: $("#create_url_section").val(),
+					image_url: $("#create_image").val(),
 					nativename: $("#create_nativename").val(),
 					nationality: $("#create_nationality").val(),
 					gender: $("#create_gender").val()

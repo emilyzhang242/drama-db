@@ -5,11 +5,15 @@ $actor-preview-height: 120px;
 $actor-preview-width: 90px;
 
 #actor-image {
-	height: 600px;
 	width: 102.5%;
-	background-size: 100%;
 	overflow: hidden;
 	margin-left: -1.25%;
+	-webkit-background-size: cover;
+  	-moz-background-size: fill;
+  	-o-background-size: fill;
+  	background-size: fill;
+  	background-repeat: no-repeat;
+  	height: 600px;
 }
 
 #actor-box {
@@ -74,4 +78,9 @@ a.actor-show-title {
 
 a.actor-show-title:hover {
 	text-decoration: underline;
+}
+
+.actor-click-button {
+	padding-left: 10%;
+	padding-right: 10%;
 }

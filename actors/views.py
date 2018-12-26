@@ -48,8 +48,9 @@ def create_actor(request):
 		stagename = request.POST.get("stagename")
 		nativename = request.POST.get("nativename")
 		nationality = request.POST.get("nationality")
+		image_url = request.POST.get("image_url")
 		external_url = request.POST.get("url")
-		baidu_drama_section = request.POST.get("baidu_section")
+		baidu_drama_section = int(request.POST.get("baidu_section"))
 		gender = request.POST.get("gender")
 		url = "_".join(stagename.split(" ")).lower()
 		user = User.objects.get(id=request.user.id)
@@ -67,7 +68,8 @@ def create_actor(request):
 			#creating instance in DB
 			a = Actors(stage_name=stagename, external_url=external_url, 
 				baidu_drama_section=baidu_drama_section, native_name=nativename, 
-				nationality=nationality, url=url, gender=gender, added_by=user)
+				nationality=nationality, url=url, gender=gender, added_by=user,
+				image_url=image_url)
 			a.save()
 			return JsonResponse({"status": 200})
 		else: 
