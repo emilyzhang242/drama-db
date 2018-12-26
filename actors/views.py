@@ -128,7 +128,7 @@ def find_actor(request, stagename):
 
 def updateActorInfo(actor):
 
-	info = parseExternalURL(actor.external_url)
+	info = parseExternalURL(actor.external_url, actor)
 	if info: 
 		for show in info: 
 			title = show['title']
@@ -158,7 +158,7 @@ def updateActorInfo(actor):
 	# except:
 	# 	print("updateActorInfo: actor didn't save")
 
-def parseExternalURL(url):
+def parseExternalURL(url, actor):
 	# html = urllib2.urlopen(url).read()
 	# soup = BeautifulSoup(html, "lxml")
 
@@ -169,7 +169,7 @@ def parseExternalURL(url):
 	soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
 	
 	if findURLtype(url) == "baidu": 
-		return parseBaiduURL(soup)
+		return parseBaiduURL(soup, actor.baidu_drama_section)
 	elif findURLtype(url) == "mdl":
 		return parseMDLURL(soup)
 	else:
@@ -235,7 +235,7 @@ def parseBaiduURL(soup, baidu_index):
 
 		info.append(ind_drama)
 
-	return []
+	return info
 
 @login_required(login_url = 'login')
 def follow_actor(request):
