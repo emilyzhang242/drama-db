@@ -26,14 +26,9 @@ def shows_home(request):
 		parameters
 		)
 
-@login_required(login_url = 'login')
-def create_show(request): 
-	#TO-DO: create show 
-	return redirect('show-home')
-
 '''This method determines whether actor info should be updated'''
-def find_show(request, title):
-	show = Shows.objects.get(url=title)
+def find_show(request, show_id):
+	show = Shows.objects.get(id=show_id)
 
 	#image_url = "/images/"+actor.url+".jpg"
 	parameters={

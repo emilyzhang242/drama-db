@@ -9,11 +9,10 @@ class Shows(models.Model):
 	year = models.IntegerField(null=True)
 	followers = models.IntegerField(null=False, default=0)
 	url = models.CharField(max_length=200, null=True)
-	image_url = models.CharField(max_length=200, null=True)
 	page_visits = models.IntegerField(default=0)
 
 class ActorRoles(models.Model): 
-	show = models.ForeignKey(Shows)
-	actor = models.ForeignKey(Actors)
+	show = models.ForeignKey(Shows, on_delete=models.CASCADE)
+	actor = models.ForeignKey(Actors, on_delete=models.CASCADE)
 	is_lead = models.BooleanField(null=False, default=False)
 	role_name = models.CharField(max_length=200, null=True)

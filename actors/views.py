@@ -78,6 +78,7 @@ def create_actor(request):
 '''This method determines whether actor info should be updated'''
 def find_actor(request, stagename):
 	actor = Actors.objects.get(url=stagename)
+	info = []
 
 	roles = ActorRoles.objects.filter(actor_id=actor.id)
 	for role in roles: 

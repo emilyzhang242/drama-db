@@ -38,7 +38,11 @@
 				</div>
 			</form>
 			<div class='actor-main-div mt-5'>
-				
+			{% for show in shows %}
+			<div class='actor-div'>
+				<a href="{% url 'find-show' show_id=show.id %}">{{show.title}}</a>
+			</div>
+			{% endfor %}
 			</div>
 		</div>
 		<div class='col-3'>	

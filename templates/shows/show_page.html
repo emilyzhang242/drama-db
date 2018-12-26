@@ -1,17 +1,9 @@
 {% extends "../base.html" %}
 {% load static %}
-{% block title %}{% endblock %}
+{% block title %}{{show.title}}{% endblock %}
 {% block content %}
 <div class='container-fluid'>
 	<div id="actor-image" style="background-image:url({% static '/images/neo_hou.jpg' %})">
-		<div id='actor-box'>
-			<h2 class='black text-center pt-3'>{{actor.stage_name}}</h2>
-			<p class='text-center pt-1'><span class='font-weight-bold'>Other Names: </span>{{actor.native_name}}</p>
-			<div class='text-center'>
-				<button class="btn rounded-btn mr-3 pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-plus primary-blue pr-2'></i>Follow</button>
-				<button class="btn rounded-btn pl-5 pr-5 background-light-blue blue-btn"><i class='fa fa-heart red pr-2'></i>Favorite</button>
-			</div>
-		</div>
 		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
 	</div>
 
@@ -27,7 +19,7 @@
 						<li class="list-group-item content-nav ml-3 mt-2"><a href="#actor-overview">Overview</a></li>
 						<li class="list-group-item content-nav ml-3"><a href="#actor-about">About</a></li>
 						<li class="list-group-item content-nav ml-3"><a href="#actor-shows">Shows</a></li>
-						<li class="list-group-item content-nav ml-3"><a href="#">Resources</a></li>
+						<li class="list-group-item content-nav ml-3"><a href="#actor-resources">Resources</a></li>
 					</ul>
 				</div>
 			</div>
@@ -73,13 +65,113 @@
 
 				<!-- shows --> 
 				<h5 class='mt-1 ml-3 pt-5 scrollable-point' id='actor-shows'>Shows</h5>
-				<div class='row'>
+				<div class='row ml-1'>
+					{% for show in info %}
+					<div class='col-6'>
+						<div class='row'>
+							<div class='col-2'>
+								<div class='show-list-preview mt-2'></div>
+							</div>
+							<div class='col-10 mt-1'>
+								<ul class='list'>
+									<li><a href="#" class='actor-show-title'>{{show.show.title}}</a></li>
+									<li><p class='mt-3'><span class='semi-bold'>Aired</span>: {{show.show.year}}</p></li>
+									<li><p class=''><span class='semi-bold'>Portrayed</span>: {{show.role_name}}</p></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					{% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
+						<div class='row show-divider ml-3 mt-4 mb-4'></div>
+					{% endif %}
+					{% endfor %}
 				</div>
+
+				<!-- resources --> 
+				<h5 class='ml-3 mt-3 scrollable-point' id='actor-resources'>Resources</h5>
 			</div>
 		</div>
 	</div>
 
-{% endblock %}
-{% block scripts %}
-<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
-{% endblock %}
+	{% endblock %}
+	{% block scripts %}
+	<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
+	<script>
+		$(document).ready(function() {
+			// follow actor functionality
+			$("#follow-actor").on("click", function() {
+				
+				var following = true;
+				// this means that theyr'e not followed yet
+				if ($(this).hasClass("blue-btn")) {
+					following = false;
+				}
+
+				$.ajax({
+					type: "POST",
+					data: {
+						actor: $("#data-actor").data("actor"),
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						follow: !following
+					},
+					url: "/actors/follow_actor/",
+					success: function(result){
+						console.log(result);
+					},
+					error: function(result) {
+						console.log(result);
+					}
+				});
+
+				//change button appearance
+				if (!following) {
+					$(this).removeClass("background-light-blue");
+					$(this).removeClass("blue-btn");
+					$("#follow-actor-text").text("Followed");
+				} else {
+					$(this).addClass("background-light-blue");
+					$(this).addClass("blue-btn");
+					$("#follow-actor-text").text("Follow");
+				}
+			});
+
+			//favorite user functionality
+			$("#favorite-actor").on("click", function() {
+				
+				var favorited = true;
+				// this means that theyr'e not followed yet
+				if ($(this).hasClass("blue-btn")) {
+					favorited = false;
+				}
+
+				$.ajax({
+					type: "POST",
+					data: {
+						actor: $("#data-actor").data("actor"),
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						favorite: !favorited
+					},
+					url: "/actors/favorite_actor/",
+					success: function(result){
+						console.log(result);
+					},
+					error: function(result) {
+						console.log(result);
+					}
+				});
+
+				//change button appearance
+				if (!favorited) {
+					$(this).removeClass("background-light-blue");
+					$(this).removeClass("blue-btn");
+					$("#favorite-actor-text").text("Favorited");
+				} else {
+					$(this).addClass("background-light-blue");
+					$(this).addClass("blue-btn");
+					$("#favorite-actor-text").text("Favorite");
+				}
+			});
+		});
+	</script>
+	{% endblock %}

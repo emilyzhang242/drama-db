@@ -19,7 +19,7 @@ class ActorsCronJobs(CronJobBase):
         try:
             print("Beginning actor cron job...")
             for actor in Actors.objects.all():
-                print("Begin adding actor "+actor.native_name+" into database.")
+                print("Begin adding actor "+actor.native_name+" into database...")
                 info = parseExternalURL(actor.external_url, actor)
                 if info: 
                     for show in info: 
@@ -88,6 +88,10 @@ def parseBaiduURL(soup, baidu_index):
     for drama in dramas: 
 
         title = drama.find_all("b", {"class":"title"})[0].text
+        #want to adjust title if there are link brackets at the end
+        if "[" in title: 
+        	title = title[:title.find("[")]
+
         url = drama.find_all("a", href=True, limit=1)[0]
         ind_drama = {}
 
