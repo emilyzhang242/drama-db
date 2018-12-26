@@ -26,6 +26,11 @@
 	<li>python manage.py makemigrations</li>
 	<li>python manage.py migrate</li>
 </ul>
+<h3>Cron Jobs</h3>
+<ul>
+	<li>https://stackoverflow.com/questions/15395479/why-ive-got-no-crontab-entry-on-os-x-when-using-vim</li>
+	<li>https://django-cron.readthedocs.io/en/latest/installation.html</li>
+</ul>
 
 <h2>RESOURCES</h2>
 <p>Setting up the <a href="https://virtualenv.pypa.io/en/latest/userguide/">virtual environment</a>

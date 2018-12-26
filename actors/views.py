@@ -13,8 +13,7 @@ from django.http import JsonResponse
 import datetime
 import requests
 import urllib2
-from bs4 import BeautifulSoup
-from bs4 import SoupStrainer #speed up beautiful soup b/c wtf
+from bs4 import BeautifulSoup, SoupStrainer #speed up beautiful soup b/c wtf
 
 #All of the "page" parameters will create the underline for the navbar
 
@@ -276,6 +275,8 @@ def favorite_actor(request):
 		return JsonResponse({"status":200})
 	except: 
 		return JsonResponse({"status": 500, "message": "Unable to favorite actor"})
+
+
 
 		
 
