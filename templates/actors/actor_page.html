@@ -13,7 +13,7 @@
 				<button class="btn rounded-btn pl-5 pr-5 {% if favorited_actor == False %}background-light-blue blue-btn{% endif %}" id='favorite-actor'><i class='fa fa-heart red pr-2'></i><span id='favorite-actor-text'>{% if favorited_actor %}Favorited{% else %}Favorite{% endif %}</span></button>
 			</div>
 		</div>
-		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
+		<button class="float-right rounded-btn mr-3 pl-2 pr-3 content-stats"><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
 	</div>
 
 	<div id='actor-content'>

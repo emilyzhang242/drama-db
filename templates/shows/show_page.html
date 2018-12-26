@@ -4,7 +4,10 @@
 {% block content %}
 <div class='container-fluid'>
 	<div id="actor-image" style="background-image:url({% static '/images/neo_hou.jpg' %})">
-		<button class="float-right rounded-btn mr-3 pl-2 pr-3" id='actor-followers'><i class='fa fa-check-circle pr-3 primary-blue'></i>{{actor.follower_count}} followers</button>
+		<div class='d-flex float-right flex-column'>
+			<button class="rounded-btn mt-3 mr-3 pl-2 pr-3 content-stats"><i class='fa fa-check-circle pr-3 primary-blue f-16'></i>{{show.follower_count}} followers</button>
+			<button class="rounded-btn mt-2 mr-3 pl-2 pr-3 content-stats"><i class='fa fa-heart pr-3 pale-red f-16'></i>{{show.favorited_count}} favorited</button>
+		</div>
 	</div>
 
 	<div id='actor-content'>
