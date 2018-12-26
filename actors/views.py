@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
@@ -9,7 +12,9 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import datetime
 import requests
+import urllib2
 from bs4 import BeautifulSoup
+from bs4 import SoupStrainer #speed up beautiful soup b/c wtf
 
 #All of the "page" parameters will create the underline for the navbar
 
@@ -45,6 +50,7 @@ def create_actor(request):
 		nativename = request.POST.get("nativename")
 		nationality = request.POST.get("nationality")
 		external_url = request.POST.get("url")
+		baidu_drama_section = request.POST.get("baidu_section")
 		gender = request.POST.get("gender")
 		url = "_".join(stagename.split(" ")).lower()
 		user = User.objects.get(id=request.user.id)
@@ -60,7 +66,8 @@ def create_actor(request):
 				gender = 1
 
 			#creating instance in DB
-			a = Actors(stage_name=stagename, external_url=external_url, native_name=nativename, 
+			a = Actors(stage_name=stagename, external_url=external_url, 
+				baidu_drama_section=baidu_drama_section, native_name=nativename, 
 				nationality=nationality, url=url, gender=gender, added_by=user)
 			a.save()
 			return JsonResponse({"status": 200})
@@ -74,12 +81,12 @@ def find_actor(request, stagename):
 	actor = Actors.objects.get(url=stagename)
 	info = []
 
-	now = datetime.date.today()
-	if actor.last_updated is not None: 
-		time_is_same = (now == actor.last_updated)
+	#now = datetime.date.today()
+	#if actor.last_updated is not None: 
+	#	time_is_same = (now == actor.last_updated)
 
-	if actor.last_updated is None or not time_is_same: 
-		updateActorInfo(actor)
+	#if actor.last_updated is None or not time_is_same: 
+	updateActorInfo(actor)
 
 	roles = ActorRoles.objects.filter(actor_id=actor.id)
 	for role in roles: 
@@ -126,6 +133,7 @@ def updateActorInfo(actor):
 		for show in info: 
 			title = show['title']
 			year = show['year']
+			url = show['url']
 
 			#performs a check to make sure that the show title isn't already in the db
 			try:
@@ -133,7 +141,7 @@ def updateActorInfo(actor):
 				print(title + " already exists in DB")
 			except:
 				try:
-					s = Shows(title=title, year=year)
+					s = Shows(title=title, year=year, url=url)
 					s.save()
 					#then actor roles 
 					role = show["role"]
@@ -141,22 +149,25 @@ def updateActorInfo(actor):
 					a.save()
 				except:
 					print("saving in updateActorInfo didn't work")
-		#update the last time the actor was updated so it won't do it every time
-		try:
-			actor.last_updated = datetime.date.today()
-			actor.save()
-		except:
-			print("updateActorInfo: actor didn't save")
 	else:
 		print("URL PROBLEM, CAN'T PARSE")
+	#update the last time the actor was updated so it won't do it every time
+	# try:
+	# 	actor.last_updated = datetime.date.today()
+	# 	actor.save()
+	# except:
+	# 	print("updateActorInfo: actor didn't save")
 
 def parseExternalURL(url):
+	# html = urllib2.urlopen(url).read()
+	# soup = BeautifulSoup(html, "lxml")
+
 	s = requests.Session()
 	s.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
 	page = s.get(url)
 	page.encoding = 'utf-8'
-	soup = BeautifulSoup(page.content, "html.parser")
-
+	soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
+	
 	if findURLtype(url) == "baidu": 
 		return parseBaiduURL(soup)
 	elif findURLtype(url) == "mdl":
@@ -172,24 +183,49 @@ def findURLtype(url):
 	else:
 		return ""
 
-def parseBaiduURL(soup):
+def parseBaiduURL(soup, baidu_index):
 	BAIDU_URL = "https://baike.baidu.com"
+	info = []
 	movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
 
-	soup.find_all("div")
+	#this code is supposedly to automatically determine for baidu which section, but it's not working so
+	#...so we'll leave it for the future I guess.
 
-	dramas_string = movies_dramas[-1]
+	#tags = soup.find_all("div", class_="level-3")
+	#this determines the order of what we're trying to scrape for movies or dramas
+	# dramas_phrase = "参演电视剧"
+	# movies_phrase = "参演电影"
+
+	# dramas_phrase = u'&#21442;&#28436;&#30005;&#35270;&#21095'; #参演电视剧
+	# movies_phrase = "\xE5\x8F\x82\xE6\xBC\x94\xE7\x94\xB5\xE5\xBD\xB1" #参演电影
+	# print(dramas_phrase)
+
+	# for index, tag in enumerate(tags): 
+	# 	print(tag.encode('utf-8'))
+	# 	if dramas_phrase in tag:
+	# 		drama_index = index
+	# 	elif movies_phrase in tag:
+	# 		movie_index = index
+
+	# if not drama_index: 
+	# 	return info
+	# if not movie_index: 
+	# 	dramas = movies_dramas[0]
+	# else:
+	# 	#this runs on the assumption that they're always grouped together!!!
+	# 	real_index = max(drama_index-movie_index, 0)
+
+	dramas_string = movies_dramas[baidu_index]
 	dramas = dramas_string.select(".listItem .info")
 
-	info = []
 	for drama in dramas: 
 
-		link = drama.find_all("b", {"class":"title"})[0]
-		
+		title = drama.find_all("b", {"class":"title"})[0].text
+		url = drama.find_all("a", href=True, limit=1)[0]
 		ind_drama = {}
 
-		ind_drama["title"] = link.text
-		ind_drama["url"] = BAIDU_URL + link['href']
+		ind_drama["title"] = title
+		ind_drama["url"] = BAIDU_URL + url['href']
 
 		year = drama.select("b")[1].text[:4]
 		ind_drama["year"] = year
@@ -198,8 +234,8 @@ def parseBaiduURL(soup):
 		ind_drama["role"] = role
 
 		info.append(ind_drama)
-	print(info)
-	return ""
+
+	return []
 
 @login_required(login_url = 'login')
 def follow_actor(request):
