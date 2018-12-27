@@ -1,0 +1,100 @@
+{% extends "./profile-base.html" %}
+{% load static %}
+{% block profile_content %}
+<!-- dropdown filter --> 
+<div class='row'>
+	<div class='col-2'>
+	<div class="form-group mb-0 mr-3 ml-0">
+		<select id='profile-people-select' class="form-control form-control-sm" id="people-dropdown-filter">
+			<option>&nbsp;&nbsp;Rating</option>
+			<option>&nbsp;&nbsp;A-Z</option>
+			<option>&nbsp;&nbsp;Z-A</option>
+		</select>
+	</div>
+	</div>
+	<!-- center filter --> 
+	<div class="btn-group btn-group-toggle profile-top-filter" data-toggle="buttons" id='profile-top-shows'>
+		<label class="btn btn-block btn-secondary active profile-filter-btn mt-2" id="filter-all">
+			<input type="radio" name="options" autocomplete="off" checked> All
+		</label>
+		<label class="btn btn-block btn-secondary profile-filter-btn" id="filter-favorited">
+			<input type="radio" name="options" autocomplete="off"> Favorite
+		</label>
+		<label class="btn btn-block btn-secondary profile-filter-btn" id="filter-followed">
+			<input type="radio" name="options" autocomplete="off"> Following
+		</label>
+		<label class="btn btn-block btn-secondary profile-filter-btn" id="filter-watching">
+			<input type="radio" name="options" autocomplete="off"> Watching
+		</label>
+		<label class="btn btn-block btn-secondary profile-filter-btn" id="filter-queued">
+			<input type="radio" name="options" autocomplete="off"> Queued
+		</label>
+		<label class="btn btn-block btn-secondary profile-filter-btn" id="filter-completed">
+			<input type="radio" name="options" autocomplete="off"> Completed
+		</label>
+	</div>
+</div>
+
+<!-- people content --> 
+<div class='row mt-3 background-white'>
+	{% for actor in actor_info %}
+	<div class='row profile-row w-100 d-flex ml-0 {% if actor.followed %}actor-followed{% endif %} {% if actor.favorited %}actor-favorited{% endif %}'>
+		<div class='col-1 pl-2 pr-0 text-left'>
+			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
+		</div>
+		<div class='col-1 pl-0 profile-picture-col'>
+			<div class='profile-actor-picture align-middle image' style='background-image: url({{actor.actor.image_url}})'></div>
+		</div>
+		<div class='col-4 pl-0 mr-3 text-left justify-content-center align-self-center'>
+			<p class='mb-0'>{{actor.actor.stage_name}} ({{actor.actor.native_name}})</p>
+		</div>
+		<div class='col-5 h-100'>
+			<div class='d-inline-flex flex-row w-100 justify-content-between h-100'>
+				<div class="p-2"><i class='fa fa-heart pale-red '></i><p>0</p></div>
+				<div class="p-2"><i class='fa fa-star pale-yellow'></i><p>0</p></div>
+				<div class="p-2"><i class='fa fa-eye medium-dark-grey'></i><p>0</p></div>
+				<div class="p-2"><i class='fa fa-pie-chart cornflower-blue'></i><p>0</p></div>
+			</div>
+		</div>
+		<div class='col-1 pr-2'>
+			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
+				<div class='p2'><i class='fa fa-heart {% if actor.favorited %}red{% else %}light-border{% endif %}'></i></div>
+				<div class='p2'><i class='fa fa-check {% if actor.followed %}light-green{% else %}light-border{% endif %}'></i></div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock %}
+{% block profile_searchbar %}
+<div class="input-group input-group-sm search col-11 mb-4" id="profile-people-search">
+	<div class="input-group-prepend">
+		<span class="input-group-text"><i class="fa fa-search"></i></span>
+	</div>
+	<input type="text" class="form-control form-control-sm prepend" placeholder="Search People" aria-label="Recipient's username" aria-describedby="basic-addon2">
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+	// filter radio buttons functionality 
+	$(".profile-filter-btn").on("click", function() {
+		var id = $(this).attr("id");
+		var index = id.indexOf("-");
+		var type = id.substring(index+1);
+		
+		$(".profile-row").each(function() {
+			if (!$(this).hasClass("actor-"+type) && type != "all") {
+				this.style.setProperty( 'display', 'none', 'important' );
+			}else {
+				$(this).css("display", "block");
+				console.log("showing");
+			}
+		});
+
+	});
+});
+</script>
+{% endblock %}

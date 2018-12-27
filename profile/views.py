@@ -3,6 +3,7 @@ from django.template.response import TemplateResponse
 from django.contrib.auth.models import User
 from profile.models import UserProfile
 from actors.models import Actors
+from shows.models import Shows
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url = 'login')
@@ -53,5 +54,37 @@ def people(request, filter, sort='engagement'):
 	return TemplateResponse(
 		request,
 		'profile/people.html', 
+		parameters
+	)
+
+@login_required(login_url = 'login')
+def shows(request, filter, sort='engagement'):
+
+	profile = UserProfile.objects.get(user_id = request.user.id)
+	info = []
+
+	for show in Shows.objects.all():
+		if show in profile.followed_shows.all() or show in profile.favorited_shows.all():
+			show_dict = {"show": show}
+			if profile.followed_shows.filter(id=show.id).exists() and profile.favorited_shows.filter(id=show.id).exists():
+				show_dict["followed"] = True
+				show_dict["favorited"] = True
+			elif profile.followed_shows.filter(id=show.id).exists(): 
+				show_dict["followed"] = True
+				show_dict["favorited"] = False
+			elif profile.favorited_shows.filter(id=show.id).exists(): 
+				show_dict["followed"] = False
+				show_dict["favorited"] = True
+			info.append(show_dict)
+
+	parameters = {
+		'page': "profile",
+		'filter': filter, 
+		'profile_page': "Shows",
+		'show_info': info
+	}
+	return TemplateResponse(
+		request,
+		'profile/shows.html', 
 		parameters
 	)

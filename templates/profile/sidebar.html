@@ -6,11 +6,11 @@
     <i class="fa fa-chevron-down float-right mt-1" style="-webkit-text-stroke: 1.5px #FCFCFC;"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#" class="sidebar-options">Watching</a>
-    <a href="#" class="sidebar-options">Favorites</a>
-    <a href="#" class="sidebar-options">Following</a>
-    <a href="#" class="sidebar-options">Completed</a>
-    <a href="#" class="sidebar-options">Queued</a>
+    <a href="{% url 'profile-shows' watching %}" class="sidebar-options">Watching</a>
+    <a href="{% url 'profile-shows' favorites %}" class="sidebar-options">Favorites</a>
+    <a href="{% url 'profile-shows' following %}" class="sidebar-options">Following</a>
+    <a href="{% url 'profile-shows' completed %}" class="sidebar-options">Completed</a>
+    <a href="{% url 'profile-shows' queued %}" class="sidebar-options">Queued</a>
   </div>
 
   <button class="dropdown-btn sidebar-main" id='people'>People 
