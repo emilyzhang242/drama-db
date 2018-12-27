@@ -23,7 +23,14 @@
 			<div class='actor-main-div mt-5'>
 				{% for actor in actors %}
 				<div class='actor-div'>
-					<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
+					<div class='intro-box row'>
+						<div class='col-3'>
+							<div class='image intro-preview' style='background-image:url({{actor.image_preview}})'></div>
+						</div>
+						<div class='col-9'>
+							<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
+						</div>
+					</div>
 				</div>
 				{% endfor %}
 			</div>

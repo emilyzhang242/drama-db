@@ -19,20 +19,29 @@ class ActorsCronJobs(CronJobBase):
         for actor in Actors.objects.all():
             print("Begin adding actor "+actor.native_name+" into database...")
             info = parseExternalURL(actor.external_url, actor)
-            print("finished parsing information...")
+            print("Finished parsing information...")
             if info: 
                 for show in info: 
                     title = show['title']
                     year = show['year']
+
+                    date = show['date']
+                    if date:
+                        date_list = date.split("-")
+                        for d in range(len(date_list)):
+                            if int(date_list[d]) < 1 or int(date_list[d]) > 31: 
+                                date_list[d] = "01"
+
+                        date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+
                     url = show['url']
                     image = show['image']
 
                     #performs a check to make sure that the show title isn't already in the db
-                    try:
-                        Shows.objects.get(title=title)
-                    except:
+                    show_exists = Shows.objects.filter(title=title).exists()
+                    if show_exists and date or not show_exists: 
                         try:
-                            s = Shows(title=title, year=year, url=url, image_preview=image)
+                            s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
                             #then actor roles 
                             role = show["role"]
@@ -40,10 +49,10 @@ class ActorsCronJobs(CronJobBase):
                             a.save()
                         except:
                             print("saving in updateActorInfo didn't work")
-            else:
-                print("No information to parse!")
-            print("Updating actor last updated time...")
+                    else:
+                        print("No information to parse!")
             try:
+                print("actor last updated")
                 actor.last_updated = datetime.date.today()
                 actor.save()
             except:
@@ -73,13 +82,13 @@ def findURLtype(url):
         return ""
 
 def parseBaiduURL(soup, baidu_index):
+    print("Parsing...")
     BAIDU_URL = "https://baike.baidu.com"
     info = []
     movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
     dramas_string = movies_dramas[baidu_index]
     dramas = dramas_string.select(".listItem")
     for drama in dramas: 
-
         title = drama.find_all("b", {"class":"title"})[0].text
         #want to adjust title if there are link brackets at the end
         if "[" in title: 
@@ -96,8 +105,12 @@ def parseBaiduURL(soup, baidu_index):
         ind_drama["url"] = BAIDU_URL + url['href']
         ind_drama["image"] = image
 
-        year = drama.select("b")[1].text[:4]
-        ind_drama["year"] = year
+        date = drama.select("b")[1].text
+        ind_drama["year"] = date.split("-")[0]
+        if "-" in date:
+            ind_drama["date"] = date
+        else: 
+            ind_drama["date"] = None
 
         role = drama.select("dd")[0].text
         ind_drama["role"] = role

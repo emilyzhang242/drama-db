@@ -83,7 +83,7 @@
 							</div>
 							<div class='col-10 mt-1'>
 								<ul class='list'>
-									<li><a href="#" class='actor-show-title'>{{show.show.title}}</a></li>
+									<li><a href="{% url 'shows:find-show' show_id=show.show.id}" class='actor-show-title'>{{show.show.title}}</a></li>
 									<li><p class='mt-3'><span class='semi-bold'>Aired</span>: {{show.show.year}}</p></li>
 									<li><p class=''><span class='semi-bold'>Portrayed</span>: {{show.role_name}}</p></li>
 								</ul>

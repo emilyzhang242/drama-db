@@ -52,8 +52,15 @@
 
 /*----------- home page ------------- */
 
-.actor-div, .show-div {
+.intro-box {
 	background-color: $white;
+	height: 200px;
+}
+
+.intro-preview {
+	margin-top: 10%;
+	height: 80%;
+	width: 100%;
 }
 
 .actor-sidebar, .show-sidebar {
