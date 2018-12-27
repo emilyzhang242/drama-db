@@ -75,11 +75,14 @@ def shows(request, filter, sort='engagement'):
 			elif profile.favorited_shows.filter(id=show.id).exists(): 
 				show_dict["followed"] = False
 				show_dict["favorited"] = True
-			actorroles = show.actor_roles.all()[:3]
+			actorroles = show.actor_roles.all()
+			followed_actors = profile.followed_actors.all()
+			favorited_actors = profile.favorited_actors.all()
 			actors = []
 			for i in actorroles: 
 				actor = Actors.objects.get(id=i.actor_id)
-				actors.append(actor)
+				if actor in followed_actors or actor in favorited_actors:
+					actors.append(actor)
 			show_dict["actors"] = actors
 			info.append(show_dict)
 

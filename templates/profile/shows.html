@@ -56,7 +56,7 @@
 		<div class='col-3 h-100'>
 			<div class='d-inline-flex flex-row w-100 justify-content-end h-100 ml-4'>
 				{% for actor in show.actors %}
-				<div class='profile-actor-picture image' style='background-image: url({{actor.image_url}})'></div>
+				<div class='profile-actor-picture image ml-2' title='{{actor.stage_name}}' style='background-image: url({{actor.image_url}})'></div>
 				{% endfor %}
 				<p class='mt-4 ml-2'>...</p>
 			</div>
