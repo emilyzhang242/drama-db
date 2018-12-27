@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	//scrollbar 
 	$(window).scroll(function() {
-		var offset = $('a[href$="#actor-overview"]').offset().top;
+		var offset = $('#content-top').offset().top;
 		var scroll = $(window).scrollTop();
 		$(".scrollable-point").each(function(f){
 			var id = $(this).attr("id");

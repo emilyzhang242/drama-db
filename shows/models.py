@@ -16,6 +16,9 @@ class Shows(models.Model):
 	summary = models.CharField(max_length=500, null=True)
 	actor_roles = models.ManyToManyField('ActorRoles', related_name='shows_actor_roles')
 
+	follower_count = models.IntegerField(default=0)
+	favorited_count = models.IntegerField(default=0)
+
 class ActorRoles(models.Model): 
 	show = models.ForeignKey(Shows, on_delete=models.CASCADE)
 	actor = models.ForeignKey(Actors, on_delete=models.CASCADE)

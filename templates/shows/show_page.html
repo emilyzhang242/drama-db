@@ -12,6 +12,7 @@
 
 	<div id='actor-content'>
 		<div class="row">
+			<input id='data-show' type='hidden' data-show={{show.id}}>
 			<!-- scrollbar --> 
 			<div class='col-2 content-scrollbar mt-4 mb-4 pr-1'>
 
@@ -19,9 +20,8 @@
 				<div class='sticky-top'>
 					<div id='scrollbar-dot' class='circular'></div>
 					<ul class='list-group'>
-						<li class="list-group-item content-nav ml-2 mt-2"><a href="#show-about">About</a></li>
-						<li class="list-group-item content-nav ml-2"><a href="#show-about">Cast</a></li>
-						<li class="list-group-item content-nav ml-2 pr-0"><a href="#show-episode-highlights">Episode Highlights</a></li>
+						<li class="list-group-item content-nav ml-2 mt-1"><a href="#show-about" id='content-top'>About</a></li>
+						<li class="list-group-item content-nav ml-2"><a href="#show-cast">Cast</a></li>
 						<li class="list-group-item content-nav ml-2"><a href="#show-similar-shows">Similar Shows</a></li>
 						<li class="list-group-item content-nav ml-2"><a href="#show-reviews">Reviews</a></li>
 						<li class="list-group-item content-nav ml-2"><a href="#show-contribute">Contribute</a></li>
@@ -32,54 +32,55 @@
 			<!-- actual content --> 
 			<div class='col-10 content-main'>
 				<!-- overview -->
-				<div class='row scrollable-point' id='actor-overview'>
-					<div class='col-9 popular-shows'>
-						<h1 class='mt-5 ml-3 f-36'>{{show.title}}</h1>
-					</div>
-					<div class='col-3 related-celebs'>
-					</div>
-				</div>
-				<!-- about section -->
-				<h5 class='mt-5 ml-3 pt-5 scrollable-point' id='actor-about'>About</h5>
-				<div class="row mt-3 ml-1">
-					<div class='col-2'>
-						<div class='picture-preview'></div>
-					</div>
-					<div class='col-6'>
-						<p class='font-open-sans'>This is a short summary of the actor. YESSSSS</p>
-					</div>
-					<div class='col-4'>
-						<div class='actor-stats'></div>
-					</div>
-				</div>
-
-				<!-- shows --> 
-				<h5 class='mt-1 ml-3 pt-5 scrollable-point' id='actor-shows'>Shows</h5>
-				<div class='row ml-1'>
-					{% for show in info %}
-					<div class='col-6'>
-						<div class='row'>
-							<div class='col-2'>
-								<div class='show-list-preview mt-2'></div>
-							</div>
-							<div class='col-10 mt-1'>
-								<ul class='list'>
-									<li><a href="#" class='actor-show-title'>{{show.show.title}}</a></li>
-									<li><p class='mt-3'><span class='semi-bold'>Aired</span>: {{show.show.year}}</p></li>
-									<li><p class=''><span class='semi-bold'>Portrayed</span>: {{show.role_name}}</p></li>
-								</ul>
+				<div class='row'>
+					<div class='col-9'>
+						<h1 class='mt-4 pt-1 ml-3 f-36'>{{show.title}}</h1>
+						<div class="dropdown">
+							<button class="btn rounded-btn dropdown-toggle mt-1 pl-3 pr-3 small-btn ml-3" type="button" id='update-status' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Update Status<i class='fa fa-caret-down pl-2'></i>
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="#">Add to Watch List</a>
+								<a class="dropdown-item" href="#">Watching</a>
+								<a class="dropdown-item" href="#">Completed</a>
+								<a class="dropdown-item" href="#">Abandoned</a>
 							</div>
 						</div>
 					</div>
-
-					{% if forloop.counter|divisibleby:2 and forloop.counter != 0 %}
-						<div class='row show-divider ml-3 mt-4 mb-4'></div>
-					{% endif %}
-					{% endfor %}
+					<div class='col-3'>
+						<div class='d-flex flex-column'>
+							<button class="btn rounded-btn mr-4 mt-4 show-click-button ml-4 pale-border small-btn {% if following_show == False %}background-light-blue blue-btn{% endif %}" id='follow-show'><i class='fa fa-plus primary-blue pr-2'></i><span id='follow-show-text'>{% if following_show %}Followed{% else %}Follow{% endif %}</span></button>
+							<button class="btn rounded-btn mt-3 mr-4 show-click-button ml-4 pale-border small-btn {% if favorited_show == False %}background-light-blue blue-btn{% endif %}" id='favorite-show'><i class='fa fa-heart red pr-2'></i><span id='favorite-actor-text'>{% if favorited_show %}Favorited{% else %}Favorite{% endif %}</span></button>
+						</div>
+					</div>
+				</div>
+				<!-- about section -->
+				<h5 class='mt-4 ml-3 scrollable-point' id='show-about'>About</h5>
+				<div class="row mt-3 ml-1 text-center">
+					<div class='col-2' id='show-rating-info'>
+						<div class='picture-preview image show-rating-info' style='background-image:url({{show.image_preview}})'></div>
+						<div class='d-flex flex-row justify-content-around show-rating-info mt-1'>
+							{% for i in "xxxxx" %}
+							<i class='fa fa-star icon-review yellow'></i>
+							{% endfor %}
+						</div>
+					</div>
+					<div class='col-9'>
+						<p class='font-open-sans'>This is a short summary of the actor. YESSSSS</p>
+					</div>
+				</div>
+				<div class='row ml-1 mt-1'>
+					<div class='col-2 text-center pr-0'>
+						<p class='mb-0 show-rating-info'>Ratings</p>
+						<button class='btn rounded-btn small-btn w-100 pl-3 mt-2'>Your Rating: 3.5 <i class='fa fa-star yellow'></i></button>
+						<button class='btn rounded-btn small-btn w-100 pl-3 mt-2'><i class='fa fa-list primary-blue pr-3'></i>Add to List</button>
+					</div>
+					<div class='col-10 mt-2'>
+						<div class='show-stats ml-4'></div>
+					</div>
 				</div>
 
 				<!-- resources --> 
-				<h5 class='ml-3 mt-3 scrollable-point' id='actor-resources'>Resources</h5>
+				<h5 class='ml-3 mt-3 scrollable-point' id='show-resources'>Resources</h5>
 			</div>
 		</div>
 	</div>
@@ -89,8 +90,16 @@
 	<script type='text/javascript' src="{% static 'js/content.min.js' %}"></script>
 	<script>
 		$(document).ready(function() {
+
+			// this means that theyr'e not followed yet
+			$(".show-click-button").each(function() {
+				if ($(this).hasClass("blue-btn")) {
+					$(this).removeClass("pale-border");
+				}
+			});
+
 			// follow actor functionality
-			$("#follow-actor").on("click", function() {
+			$("#follow-show").on("click", function() {
 				
 				var following = true;
 				// this means that theyr'e not followed yet
@@ -101,11 +110,11 @@
 				$.ajax({
 					type: "POST",
 					data: {
-						actor: $("#data-actor").data("actor"),
+						show: $("#data-show").data("show"),
 						csrfmiddlewaretoken: '{{csrf_token}}',
 						follow: !following
 					},
-					url: "/actors/follow_actor/",
+					url: "/shows/follow_show/",
 					success: function(result){
 						console.log(result);
 					},
@@ -118,16 +127,18 @@
 				if (!following) {
 					$(this).removeClass("background-light-blue");
 					$(this).removeClass("blue-btn");
-					$("#follow-actor-text").text("Followed");
+					$(this).addClass("pale-border");
+					$("#follow-show-text").text("Followed");
 				} else {
 					$(this).addClass("background-light-blue");
 					$(this).addClass("blue-btn");
-					$("#follow-actor-text").text("Follow");
+					$(this).removeClass("pale-border");
+					$("#follow-show-text").text("Follow");
 				}
 			});
 
 			//favorite user functionality
-			$("#favorite-actor").on("click", function() {
+			$("#favorite-show").on("click", function() {
 				
 				var favorited = true;
 				// this means that theyr'e not followed yet
@@ -138,11 +149,11 @@
 				$.ajax({
 					type: "POST",
 					data: {
-						actor: $("#data-actor").data("actor"),
+						show: $("#data-show").data("show"),
 						csrfmiddlewaretoken: '{{csrf_token}}',
 						favorite: !favorited
 					},
-					url: "/actors/favorite_actor/",
+					url: "/shows/favorite_show/",
 					success: function(result){
 						console.log(result);
 					},
@@ -155,11 +166,13 @@
 				if (!favorited) {
 					$(this).removeClass("background-light-blue");
 					$(this).removeClass("blue-btn");
-					$("#favorite-actor-text").text("Favorited");
+					$(this).addClass("pale-border");
+					$("#favorite-show-text").text("Favorited");
 				} else {
 					$(this).addClass("background-light-blue");
 					$(this).addClass("blue-btn");
-					$("#favorite-actor-text").text("Favorite");
+					$(this).removeClass("pale-border");
+					$("#favorite-show-text").text("Favorite");
 				}
 			});
 		});

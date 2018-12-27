@@ -24,6 +24,16 @@
 	width: 150px;
 }
 
+.icon-review {
+	-webkit-text-stroke: 0.5px $light-border;
+}
+
+.small-btn {
+	font-size: 12px;
+	padding-top: .25rem !important;
+	padding-bottom: .25rem !important;
+}
+
 /*--------- scrollbar ---------- */
 
 /* make scrollbar disappear */
@@ -48,7 +58,7 @@
 	border: 1px solid $dark-border;
 	margin-left: 97%;
 	z-index: 999;
-	margin-top: 13%;
+	margin-top: 10%;
 }
 
 /*----------- home page ------------- */

@@ -1,5 +1,4 @@
 $actor-picture-height: 160px;
-$actor-picture-width: 130px;
 
 $actor-preview-height: 120px;
 $actor-preview-width: 90px;
@@ -25,7 +24,7 @@ $actor-preview-width: 90px;
 	opacity: 0.8;
 }
 
-#actor-content {
+#actor-content, #show-content {
 	margin-top: -150px !important;
 	background-color: $white;
 	width: 85%;
@@ -38,7 +37,7 @@ $actor-preview-width: 90px;
 
 .show-preview, .picture-preview {
 	height: $actor-picture-height;
-	width: $actor-picture-width;
+	width: 105%;
 	border: 1px solid $dark-border;
 }
 

@@ -83,6 +83,8 @@ a:hover {
 	font-family: $skia;
 }
 
+/*------- random -------- */
+
 .circular {
 	border-radius: 50%;
 }
@@ -127,6 +129,20 @@ a:hover {
 	background-color: $white;
 }
 
+.pale-border {
+	border: 1px solid $pale-blue;
+}
+
+/*------- width -------- */
+
+.w-80 {
+	width: 80% !important;
+}
+
+.w-100 {
+	width: 100% !important;
+}
+
 /*------- adjustible columns -------- */ 
 
 .col-2-5u {
@@ -140,6 +156,16 @@ a:hover {
 	flex: 0 0 56%;
     max-width: 56%;
 }
+
+.col-9-5u {
+	width: 78% !important;
+	flex: 0 0 78%;
+    max-width: 78%;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 /*------- image -------- */ 
 
 .image {
@@ -153,12 +179,26 @@ a:hover {
 
 /*------- font-size -------- */ 
 
+.f-12 {
+	font-size: 12px; 
+}
+
 .f-16 {
 	font-size: 16px;
 }
 
 .f-36 {
 	font-size: 36px;
+}
+
+/*------- padding -------- */ 
+
+.pr-3-5 {
+	padding-right: 30px !important;
+}
+
+.pl-3-5 {
+	padding-left: 30px !important;
 }
 
 /*------- search bar -------- */ 
@@ -237,6 +277,10 @@ a:hover {
 
 .medium-dark-grey {
 	color: $medium-dark-grey;
+}
+
+.pale-yellow {
+	color: $pale-yellow;
 }
 
 .yellow {
