@@ -18,6 +18,16 @@ def shows_home(request):
 	shows = Shows.objects.all()
 	info = []
 
+	for show in shows: 
+		d = {"show":show}
+		actorroles = show.actor_roles.filter(show_id=show.id)[:3]
+		actors = []
+		for role in actorroles:
+			actors.append(Actors.objects.get(id=role.actor_id))
+		d["shows"] = shows
+		d["actors"] = actors
+		info.append(d)
+
 	parameters = {
 		"page": "shows",
 		"shows": shows,

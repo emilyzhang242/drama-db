@@ -83,7 +83,7 @@ def shows(request, filter, sort='engagement'):
 				actor = Actors.objects.get(id=i.actor_id)
 				if actor in followed_actors or actor in favorited_actors:
 					actors.append(actor)
-			show_dict["actors"] = actors
+			show_dict["actors"] = actors[:4]
 			info.append(show_dict)
 
 	parameters = {
