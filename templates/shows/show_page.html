@@ -3,7 +3,7 @@
 {% block title %}{{show.title}}{% endblock %}
 {% block content %}
 <div class='container-fluid'>
-	<div id="actor-image" style="background-image:url('https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike272%2C5%2C5%2C272%2C90/sign=db080144e0f81a4c323fe49bb6430b3c/9213b07eca806538dbec17239cdda144ad3482f8.jpg')">
+	<div id="actor-image" style="background-image:url({{show.image_preview}})">
 		<div class='d-flex float-right flex-column'>
 			<button class="rounded-btn mt-3 mr-3 pl-2 pr-3 content-stats"><i class='fa fa-check-circle pr-3 primary-blue f-16'></i>{{show.follower_count}} followers</button>
 			<button class="rounded-btn mt-2 mr-3 pl-2 pr-3 content-stats"><i class='fa fa-heart pr-3 pale-red f-16'></i>{{show.favorited_count}} favorited</button>
@@ -13,16 +13,18 @@
 	<div id='actor-content'>
 		<div class="row">
 			<!-- scrollbar --> 
-			<div class='col-2 content-scrollbar mt-4 mb-4'>
+			<div class='col-2 content-scrollbar mt-4 mb-4 pr-1'>
 
 				<!--scrollbar dot --> 
 				<div class='sticky-top'>
 					<div id='scrollbar-dot' class='circular'></div>
 					<ul class='list-group'>
-						<li class="list-group-item content-nav ml-3 mt-2"><a href="#actor-overview">Overview</a></li>
-						<li class="list-group-item content-nav ml-3"><a href="#actor-about">About</a></li>
-						<li class="list-group-item content-nav ml-3"><a href="#actor-shows">Shows</a></li>
-						<li class="list-group-item content-nav ml-3"><a href="#actor-resources">Resources</a></li>
+						<li class="list-group-item content-nav ml-2 mt-2"><a href="#show-about">About</a></li>
+						<li class="list-group-item content-nav ml-2"><a href="#show-about">Cast</a></li>
+						<li class="list-group-item content-nav ml-2 pr-0"><a href="#show-episode-highlights">Episode Highlights</a></li>
+						<li class="list-group-item content-nav ml-2"><a href="#show-similar-shows">Similar Shows</a></li>
+						<li class="list-group-item content-nav ml-2"><a href="#show-reviews">Reviews</a></li>
+						<li class="list-group-item content-nav ml-2"><a href="#show-contribute">Contribute</a></li>
 					</ul>
 				</div>
 			</div>
@@ -31,25 +33,10 @@
 			<div class='col-10 content-main'>
 				<!-- overview -->
 				<div class='row scrollable-point' id='actor-overview'>
-					<div class='col-6 popular-shows'>
-						<h5 class='mt-5 ml-3'>Popular Shows</h5>
-						<div class="row ml-1 mt-3">
-							{% for i in "xxx" %}
-							<div class='col-4'>
-								<div class='show-preview'></div>
-							</div>
-							{% endfor %}
-						</div>
+					<div class='col-9 popular-shows'>
+						<h1 class='mt-5 ml-3 f-36'>{{show.title}}</h1>
 					</div>
-					<div class='col-6 related-celebs'>
-						<h5 class='mt-5 ml-3'>Related Celebrities</h5>
-						<div class="row ml-1 mt-3">
-							{% for i in "xxxx" %}
-							<div class='col-5'>
-								<div class='related-pics circular mb-4'></div>
-							</div>
-							{% endfor %}
-						</div>
+					<div class='col-3 related-celebs'>
 					</div>
 				</div>
 				<!-- about section -->
