@@ -29,7 +29,7 @@ class ActorsCronJobs(CronJobBase):
                     if date:
                         date_list = date.split("-")
                         for d in range(len(date_list)):
-                            if int(date_list[d]) < 1 or int(date_list[d]) > 31: 
+                            if int(date_list[d]) < 1: 
                                 date_list[d] = "01"
 
                         date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
@@ -39,7 +39,7 @@ class ActorsCronJobs(CronJobBase):
 
                     #performs a check to make sure that the show title isn't already in the db
                     show_exists = Shows.objects.filter(title=title).exists()
-                    if show_exists and date or not show_exists: 
+                    if not show_exists: 
                         try:
                             s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
@@ -49,6 +49,9 @@ class ActorsCronJobs(CronJobBase):
                             a.save()
                         except:
                             print("saving in updateActorInfo didn't work")
+                    elif show_exists and date:
+                        s = Shows.objects.get(title=title)
+                        s.date = date
                     else:
                         print("No information to parse!")
             try:
