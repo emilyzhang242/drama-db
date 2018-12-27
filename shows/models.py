@@ -14,6 +14,7 @@ class Shows(models.Model):
 	image_preview = models.CharField(max_length=1000, null=True)
 	page_visits = models.IntegerField(default=0)
 	summary = models.CharField(max_length=500, null=True)
+	actor_roles = models.ManyToManyField('ActorRoles', related_name='shows_actor_roles')
 
 class ActorRoles(models.Model): 
 	show = models.ForeignKey(Shows, on_delete=models.CASCADE)

@@ -14,10 +14,12 @@ def shows_home(request):
 
 	#grab actor info from models
 	shows = Shows.objects.all()
+	info = []
 
 	parameters = {
 		"page": "shows",
-		"shows": shows
+		"shows": shows,
+		"info": info
 	}
 
 	return TemplateResponse(

@@ -40,8 +40,15 @@
 			<div class='actor-main-div mt-5'>
 			{% for show in shows %}
 			<div class='actor-div'>
-				<a href="{% url 'find-show' show_id=show.id %}">{{show.title}}</a>
-			</div>
+					<div class='intro-box row'>
+						<div class='col-3'>
+							<div class='image intro-preview' style='background-image:url({{show.image_preview}})'></div>
+						</div>
+						<div class='col-9 mt-4'>
+							<a href="{% url 'find-show' show_id=show.id %}"><h5 class='light'>{{show.title}} ({{show.year}})</h5></a>
+						</div>
+					</div>
+				</div>
 			{% endfor %}
 			</div>
 		</div>

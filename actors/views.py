@@ -21,10 +21,16 @@ def actors_home(request):
 
 	#grab actor info from models
 	actors = Actors.objects.all()
+	info = []
+	for actor in actors: 
+		d = {"actor":actor}
+		shows = Shows.objects.filter(actor_roles__actor_id=actor.id).order_by('-date')[:2]
+		d["shows"] = shows
+		info.append(d)
 
 	parameters = {
 		"page": "people",
-		"actors": actors
+		"info": info
 	}
 
 	return TemplateResponse(
@@ -89,8 +95,6 @@ def find_actor(request, stagename):
 		ind_dict["show"] = Shows.objects.get(id=role.show_id)
 		info.append(ind_dict)
 
-	image_url = "/images/"+actor.url+".jpg"
-
 	#is the user following them? 
 	try: 
 		profile = UserProfile.objects.get(user_id=request.user.id)
@@ -108,7 +112,6 @@ def find_actor(request, stagename):
 
 	parameters={
 		"actor": actor,
-		"image": image_url,
 		"info": info,
 		"following_actor": following,
 		"favorited_actor": favorited

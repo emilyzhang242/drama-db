@@ -21,14 +21,15 @@
 				</div>
 			</form>
 			<div class='actor-main-div mt-5'>
-				{% for actor in actors %}
+				{% for dict in info %}
 				<div class='actor-div'>
 					<div class='intro-box row'>
 						<div class='col-3'>
-							<div class='image intro-preview' style='background-image:url({{actor.image_preview}})'></div>
+							<div class='image intro-preview' style='background-image:url({{dict.actor.image_preview}})'></div>
 						</div>
-						<div class='col-9'>
-							<a href="{% url 'find-actor' stagename=actor.url %}">{{actor.stage_name}} ({{actor.native_name}})</a>
+						<div class='col-9 mt-4'>
+							<a href="{% url 'find-actor' stagename=dict.actor.url %}"><h5 class='light'>{{dict.actor.stage_name}} ({{dict.actor.native_name}})</h5></a>
+							<p><span class='semi-bold'>Acted in: </span>{% for show in dict.shows %}{% if not forloop.last %}<a href="{% url 'find-show' show_id=show.id %}">{{show.title}} </a>({{show.year}}), {% else %}<a href="{% url 'find-show' show_id=show.id %}">{{show.title}}</a> ({{show.year}}){% endif %}{% endfor %}</p>
 						</div>
 					</div>
 				</div>

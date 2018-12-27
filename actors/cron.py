@@ -43,10 +43,13 @@ class ActorsCronJobs(CronJobBase):
                         try:
                             s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
-                            #then actor roles 
+                            
                             role = show["role"]
                             a = ActorRoles(show=s, actor=actor, role_name=role)
                             a.save()
+                            
+                            s.actor_roles.add(a)
+                            s.save()
                         except:
                             print("saving in updateActorInfo didn't work")
                     elif show_exists and date:

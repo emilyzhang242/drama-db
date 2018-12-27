@@ -12,14 +12,14 @@
 	</div>
 	<!-- center filter --> 
 	<div class="btn-group btn-group-toggle profile-top-filter ml-4 mr-4" data-toggle="buttons" id='profile-top-people'>
-		<label class="btn btn-secondary active profile-filter-btn">
-			<input type="radio" name="options" id="filter-all" autocomplete="off" checked> All
+		<label class="btn btn-secondary active profile-filter-btn" id="filter-all">
+			<input type="radio" name="options" autocomplete="off" checked> All
 		</label>
-		<label class="btn btn-secondary profile-filter-btn">
-			<input type="radio" name="options" id="filter-favorited" autocomplete="off"> Favorite
+		<label class="btn btn-secondary profile-filter-btn" id="filter-favorited">
+			<input type="radio" name="options" autocomplete="off"> Favorite
 		</label>
-		<label class="btn btn-secondary profile-filter-btn">
-			<input type="radio" name="options" id="filter-followed" autocomplete="off"> Following
+		<label class="btn btn-secondary profile-filter-btn" id="filter-followed">
+			<input type="radio" name="options" autocomplete="off"> Following
 		</label>
 	</div>
 
@@ -35,7 +35,6 @@
 <!-- people content --> 
 <div class='row mt-3 background-white'>
 	{% for actor in actor_info %}
-
 	<div class='row profile-row w-100 d-flex ml-0 {% if actor.followed %}actor-followed{% endif %} {% if actor.favorited %}actor-favorited{% endif %}'>
 		<div class='col-1 pl-2 pr-0 text-left'>
 			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
@@ -56,8 +55,8 @@
 		</div>
 		<div class='col-1 pr-2'>
 			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
-				<div class='p2'><i class='fa fa-heart {% if actor.favorited %} red {% endif %}'></i></div>
-				<div class='p2'><i class='fa fa-check {% if actor.followed %} light-green {% endif %}'></i></div>
+				<div class='p2'><i class='fa fa-heart {% if actor.favorited %}red{% else %}light-border{% endif %}'></i></div>
+				<div class='p2'><i class='fa fa-check {% if actor.followed %}light-green{% else %}light-border{% endif %}'></i></div>
 			</div>
 		</div>
 	</div>
@@ -78,7 +77,19 @@
 <script>
 $(document).ready(function() {
 	// filter radio buttons functionality 
-	$("#filter-all").on("click", function() {
+	$(".profile-filter-btn").on("click", function() {
+		var id = $(this).attr("id");
+		var index = id.indexOf("-");
+		var type = id.substring(index+1);
+		
+		$(".profile-row").each(function() {
+			if (!$(this).hasClass("actor-"+type) && type != "all") {
+				this.style.setProperty( 'display', 'none', 'important' );
+			}else {
+				$(this).css("display", "block");
+				console.log("showing");
+			}
+		});
 
 	});
 });

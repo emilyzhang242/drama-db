@@ -31,18 +31,18 @@ def people(request, filter, sort='engagement'):
 	info = []
 
 	for actor in Actors.objects.all():
-		actor_dict = {"actor": actor}
-		if profile.followed_actors.filter(id=actor.id).exists() and profile.favorited_actors.filter(id=actor.id).exists():
-			actor_dict["followed"] = True
-			actor_dict["favorited"] = True
-		elif profile.followed_actors.filter(id=actor.id).exists(): 
-			actor_dict["followed"] = True
-			actor_dict["favorited"] = False
-		elif profile.favorited_actors.filter(id=actor.id).exists(): 
-			actor_dict["followed"] = False
-			actor_dict["favorited"] = True
-		info.append(actor_dict)
-
+		if actor in profile.followed_actors.all() or actor in profile.favorited_actors.all():
+			actor_dict = {"actor": actor}
+			if profile.followed_actors.filter(id=actor.id).exists() and profile.favorited_actors.filter(id=actor.id).exists():
+				actor_dict["followed"] = True
+				actor_dict["favorited"] = True
+			elif profile.followed_actors.filter(id=actor.id).exists(): 
+				actor_dict["followed"] = True
+				actor_dict["favorited"] = False
+			elif profile.favorited_actors.filter(id=actor.id).exists(): 
+				actor_dict["followed"] = False
+				actor_dict["favorited"] = True
+			info.append(actor_dict)
 
 	parameters = {
 		'page': "profile",
