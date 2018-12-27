@@ -30,5 +30,21 @@
       "external_url": "https://baike.baidu.com/item/%E8%B5%B5%E4%B8%BD%E9%A2%96",
       "image_preview": "https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=b214b363d754564ef168ec6bd2b7f7e7/7e3e6709c93d70cfc087257df2dcd100baa12b45.jpg"
     }
+  },
+  {
+    "model": "actors.actors",
+    "pk": 3,
+    "fields": {
+      "stage_name": "Li Yi Feng",
+      "native_name": "李易峰",
+      "nationality": "Chinese", 
+      "gender": 0,
+      "url": "li_yi_feng",
+      "baidu_drama_section": 1,
+      "added_by": 1,
+      "image_url": "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike272%2C5%2C5%2C272%2C90/sign=7b4f60fc6e09c93d13ff06a5fe5493b9/dcc451da81cb39db04a54da4d9160924aa1830de.jpg",
+      "external_url": "https://baike.baidu.com/item/%E6%9D%8E%E6%98%93%E5%B3%B0",
+      "image_preview": "https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=dc3acee3c0ea15ce55e3e85bd7695196/8c1001e93901213f670feeba5de736d12f2e959c.jpg"
+    }
   }
 ]

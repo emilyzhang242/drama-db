@@ -24,6 +24,7 @@ class ActorsCronJobs(CronJobBase):
                 for show in info: 
                     title = show['title']
                     year = show['year']
+                    role = show["role"]
 
                     date = show['date']
                     if date:
@@ -33,7 +34,6 @@ class ActorsCronJobs(CronJobBase):
                                 date_list[d] = "01"
 
                         date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
-
                     url = show['url']
                     image = show['image']
 
@@ -44,7 +44,6 @@ class ActorsCronJobs(CronJobBase):
                             s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
                             
-                            role = show["role"]
                             a = ActorRoles(show=s, actor=actor, role_name=role)
                             a.save()
                             
@@ -52,13 +51,23 @@ class ActorsCronJobs(CronJobBase):
                             s.save()
                         except:
                             print("saving in updateActorInfo didn't work")
-                    elif show_exists and date:
-                        s = Shows.objects.get(title=title)
-                        s.date = date
                     else:
-                        print("No information to parse!")
+                        s = Shows.objects.get(title=title)
+                        #update date 
+                        show_date = s.date
+                        if date and (not show_date):
+                            s.date = date
+                            s.save()
+
+                        #update new actor actor role for show that's already in DB
+                        if not s.actor_roles.filter(actor_id=actor.id).exists():
+                            print("Just adding actor role.")
+                            a = ActorRoles(show=s, actor=actor, role_name=role)
+                            a.save()
+
+                            s.actor_roles.add(a)
+                            s.save()
             try:
-                print("actor last updated")
                 actor.last_updated = datetime.date.today()
                 actor.save()
             except:
@@ -95,20 +104,35 @@ def parseBaiduURL(soup, baidu_index):
     dramas_string = movies_dramas[baidu_index]
     dramas = dramas_string.select(".listItem")
     for drama in dramas: 
-        title = drama.find_all("b", {"class":"title"})[0].text
+        title_info = drama.find_all("b", {"class":"title"})[0]
+        title = title_info.text
+        print(title)
         #want to adjust title if there are link brackets at the end
         if "[" in title: 
             title = title[:title.find("[")]
 
-        url = drama.find_all("a", href=True, limit=1)[0]
-        image = str(url.find_all("img", limit=1))
-        #hard code getting image...
-        first = image.index('"')
-        image = image[first+1:-4] #hard coded, meh
+        anchors = title_info.find_all("a", class_="sup-anchor")
+        if anchors:
+            for anchor in anchors: 
+                anchor.extract()
+        url = title_info.find_all("a", limit=1)
+        picture = drama.find_all("div", class_="coverPic")
+        if picture:
+            image = str(picture[0].find_all("img", limit=1))
+            #hard code getting image...
+            first = image.index('"')
+            image = image[first+1:-4] #hard coded, meh
+        else: 
+            image = None
+
         ind_drama = {}
 
         ind_drama["title"] = title
-        ind_drama["url"] = BAIDU_URL + url['href']
+        if url:
+            ind_drama["url"] = BAIDU_URL + url[0]['href']
+        else:
+            ind_drama["url"] = None
+
         ind_drama["image"] = image
 
         date = drama.select("b")[1].text
@@ -118,7 +142,19 @@ def parseBaiduURL(soup, baidu_index):
         else: 
             ind_drama["date"] = None
 
-        role = drama.select("dd")[0].text
+        role = drama.select("dd")[0]
+        poss_role = None
+        if "a" in role:
+            poss_role = role.filter("a")
+        #chance they act as more than one character...
+        if not poss_role:
+            role = role.text
+        else: 
+            role = ""
+            for r in poss_role: 
+                role += r.text+"/"
+            role = role[:len(role)-1]
+
         ind_drama["role"] = role
 
         info.append(ind_drama)
