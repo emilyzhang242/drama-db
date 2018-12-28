@@ -84,8 +84,8 @@ def create_actor(request):
 		return JsonResponse({"status": 500, "message": "creating the actor failed."})
 
 '''This method determines whether actor info should be updated'''
-def find_actor(request, stagename):
-	actor = Actors.objects.get(url=stagename)
+def find_actor(request, actor_id):
+	actor = Actors.objects.get(id=actor_id)
 	info = []
 
 	roles = ActorRoles.objects.filter(actor_id=actor.id)

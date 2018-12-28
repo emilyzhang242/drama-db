@@ -46,7 +46,7 @@
 						</div>
 						<div class='col-9 mt-4'>
 							<a href="{% url 'find-show' show_id=dict.show.id %}"><h5 class='light'>{{dict.show.title}} ({{dict.show.year}})</h5></a>
-							<p><span class='semi-bold'>Starring: </span>{% for actor in dict.actors %}{% if not forloop.last %}<a href="{% url 'find-actor' stagename=actor.stagename %}">{{actor.stage_name}} ({{actor.native_name}})</a>, {% else %}<a href="{% url 'find-show' show_id=show.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>{% endif %}{% endfor %}</p>
+							<p><span class='semi-bold'>Starring: </span>{% for actor in dict.actors %}{% if not forloop.last %}<a href="{% url 'find-actor' actor_id=actor.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>, {% else %}<a href="{% url 'find-show' show_id=show.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>{% endif %}{% endfor %}</p>
 						</div>
 					</div>
 				</div>

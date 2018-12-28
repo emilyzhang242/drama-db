@@ -9,6 +9,7 @@ class UserProfile(models.Model):
 	followed_shows = models.ManyToManyField('shows.shows', related_name="followedshows")
 	favorited_shows = models.ManyToManyField('shows.shows', related_name="favoritedshows")
 	show_views = models.ManyToManyField('ShowViews', related_name="showviews")
+	lists = models.ManyToManyField('MyLists')
 
 class ShowViews(models.Model):
 
@@ -23,5 +24,10 @@ class ShowViews(models.Model):
 	start_date = models.DateField(null=True, auto_now_add=True)
 	end_date = models.DateField(null=True)
 	status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+
+class MyLists(models.Model):
+	user = models.ForeignKey(UserProfile)
+	name = models.CharField(max_length=200, null=True)
+	shows = models.ManyToManyField(Shows)
 
 

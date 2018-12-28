@@ -26,7 +26,7 @@ def sign_up(request):
 	)
 
 @login_required(login_url = 'login')
-def people(request, filter, sort='engagement'):
+def people(request, sort=''):
 
 	profile = UserProfile.objects.get(user_id = request.user.id)
 	info = []
@@ -58,7 +58,7 @@ def people(request, filter, sort='engagement'):
 	)
 
 @login_required(login_url = 'login')
-def shows(request, filter, sort='engagement'):
+def shows(request, sort=''):
 
 	profile = UserProfile.objects.get(user_id = request.user.id)
 	info = []
@@ -97,3 +97,19 @@ def shows(request, filter, sort='engagement'):
 		'profile/shows.html', 
 		parameters
 	)
+
+@login_required(login_url = 'login')
+def add_list(request):
+	return TemplateResponse(
+		request,
+		'profile/add-list.html',
+		{'profile_page': "Add to List"})
+
+@login_required(login_url = 'login')
+def lists(request):
+	return TemplateResponse(
+		request,
+		'profile/add-list.html',
+		{'profile_page': "Add to List"})
+
+
