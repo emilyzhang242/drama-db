@@ -6,6 +6,7 @@ from profile.models import UserProfile, MyLists
 from actors.models import Actors
 from shows.models import Shows
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 import cgi
 
@@ -108,13 +109,14 @@ def add_list(request):
 		title = cgi.escape(request.POST.get("title"))
 		profile = UserProfile.objects.get(user_id=request.user.id)
 
-		l = MyLists(user=profile, name=title)
-		l.save()
+		if not MyLists.objects.filter(user=profile).filter(name=title).exists():
+			l = MyLists(user=profile, name=title)
+			l.save()
 
-		profile.lists.add(l)
-		profile.save()
+			profile.lists.add(l)
+			profile.save()
 
-		return render(request, 'profile/lists.html')
+		return JsonResponse({"status": 200, "message": title})
 	except:
 		return JsonResponse({"status": 500})
 

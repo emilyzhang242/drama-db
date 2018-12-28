@@ -24,7 +24,6 @@ $(document).ready(function(){
 	//add lists functionality! 
 	$("#add-list-link").on("click", function(e) {
 		if (!$(this).hasClass("writing")) {
-			console.log("CLICK!");
 			var html = '<div class="input-group input-group-sm ml-4 mr-0" id="list-input-div">';
 			html += '<input id="add-list-input" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">';
 			html += '</div>';
