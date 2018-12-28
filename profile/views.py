@@ -15,7 +15,9 @@ def newsfeed(request):
 
 	parameters = {
 		'page': "profile",
-		'profile_page': "Newsfeed"
+		'profile_page': "Newsfeed",
+		'lists': get_lists(request)
+
 	}
 	return TemplateResponse(
 		request,
@@ -53,7 +55,8 @@ def people(request, sort=''):
 		'page': "profile",
 		'filter': filter, 
 		'profile_page': "People",
-		'actor_info': info
+		'actor_info': info,
+		'lists': get_lists(request)
 	}
 	return TemplateResponse(
 		request,
@@ -94,7 +97,8 @@ def shows(request, sort=''):
 		'page': "profile",
 		'filter': filter, 
 		'profile_page': "Shows",
-		'show_info': info
+		'show_info': info,
+		'lists': get_lists(request)
 	}
 	return TemplateResponse(
 		request,
@@ -122,9 +126,21 @@ def add_list(request):
 
 @login_required(login_url = 'login')
 def lists(request):
+
+	parameters = {
+		'profile_page': "Lists",
+		'lists': get_lists(request)
+	}
+
 	return TemplateResponse(
 		request,
 		'profile/add-list.html',
-		{'profile_page': "Add to List"})
+		parameters)
+
+'''helper function to get lists'''
+def get_lists(request):
+	profile = UserProfile.objects.get(user_id=request.user.id)
+	lists = profile.lists.all()
+	return lists
 
 
