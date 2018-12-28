@@ -100,6 +100,26 @@
 		});
 
 	});
+
+	$(document).on("keyup", "#add-list-input", function(e) {
+		console.log('hello');
+		if (e.which === 13) { //if it's the enter key
+			$.ajax({
+				type: "POST",
+				url: "/profile/lists/add/",
+				data: {
+					csrfmiddlewaretoken: '{{csrf_token}}',
+					title: $("#add-list-input").val()
+				},
+				success: function(response) {
+					console.log("HELLO");
+				},
+				error: function(response) {
+					console.log(response);
+				}
+			});
+		}
+	});
 });
 </script>
 {% endblock %}

@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from profile.models import UserProfile
+from profile.models import UserProfile, MyLists
 from actors.models import Actors
 from shows.models import Shows
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+import cgi
 
 @login_required(login_url = 'login')
 def newsfeed(request):
@@ -99,11 +102,21 @@ def shows(request, sort=''):
 	)
 
 @login_required(login_url = 'login')
+@require_POST
 def add_list(request):
-	return TemplateResponse(
-		request,
-		'profile/add-list.html',
-		{'profile_page': "Add to List"})
+	try:
+		title = cgi.escape(request.POST.get("title"))
+		profile = UserProfile.objects.get(user_id=request.user.id)
+
+		l = MyLists(user=profile, name=title)
+		l.save()
+
+		profile.lists.add(l)
+		profile.save()
+
+		return render(request, 'profile/lists.html')
+	except:
+		return JsonResponse({"status": 500})
 
 @login_required(login_url = 'login')
 def lists(request):

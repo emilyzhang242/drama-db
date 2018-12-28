@@ -25,15 +25,15 @@
     <i class="fa fa-chevron-down float-right mt-1" style="-webkit-text-stroke: 1.5px #FCFCFC;"></i>
   </button>
   <div class="dropdown-container">
-    <a href="# class="sidebar-options"">Followers</a>
-    <a href="# class="sidebar-options"">Following Users</a>
+    <a href="#" class="sidebar-options">Followers</a>
+    <a href="#" class="sidebar-options">Following Users</a>
   </div>
 
   <button class="dropdown-btn sidebar-main" id='mylists'>My Lists 
     <i class="fa fa-chevron-down float-right mt-1" style="-webkit-text-stroke: 1.5px #FCFCFC;"></i>
   </button>
   <div class="dropdown-container">
-    <a href="{% url 'profile-add-list' %}" class="sidebar-options"><i class='fa fa-plus pr-3 primary-blue' style="-webkit-text-stroke: 1px #FCFCFC;"></i>Add List</a>
+    <p class="sidebar-options mb-0" id='add-list-link'><i class='fa fa-plus pr-3 primary-blue' style="-webkit-text-stroke: 1px #FCFCFC;"></i><span id='add-list-span'>Add List</span></p>
   </div>
 
   <a href="#about" class="sidebar-main" id='statistics'>Statistics</a>

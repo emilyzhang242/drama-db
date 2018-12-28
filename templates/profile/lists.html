@@ -10,7 +10,6 @@
 			<option>&nbsp;&nbsp;Z-A</option>
 		</select>
 	</div>
-</div>
 
 <!-- people content --> 
 <div class='row mt-3 background-white'>
@@ -55,23 +54,5 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
 <script>
-$(document).ready(function() {
-	// filter radio buttons functionality 
-	$(".profile-filter-btn").on("click", function() {
-		var id = $(this).attr("id");
-		var index = id.indexOf("-");
-		var type = id.substring(index+1);
-		
-		$(".profile-row").each(function() {
-			if (!$(this).hasClass("actor-"+type) && type != "all") {
-				this.style.setProperty( 'display', 'none', 'important' );
-			}else {
-				$(this).css("display", "block");
-				console.log("showing");
-			}
-		});
-
-	});
-});
 </script>
 {% endblock %}
