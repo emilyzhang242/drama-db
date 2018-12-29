@@ -32,7 +32,7 @@ def sign_up(request):
 	)
 
 @login_required(login_url = 'login')
-def people(request, sort=''):
+def people(request, filter, sort=''):
 
 	profile = UserProfile.objects.get(user_id = request.user.id)
 	info = []
@@ -65,7 +65,7 @@ def people(request, sort=''):
 	)
 
 @login_required(login_url = 'login')
-def shows(request, sort=''):
+def shows(request, filter='', sort=''):
 
 	profile = UserProfile.objects.get(user_id = request.user.id)
 	info = []
@@ -125,16 +125,16 @@ def add_list(request):
 		return JsonResponse({"status": 500})
 
 @login_required(login_url = 'login')
-def lists(request):
+def lists(request, filter='', sort=''):
 
 	parameters = {
-		'profile_page': "Lists",
+		'profile_page': "My Lists",
 		'lists': get_lists(request)
 	}
 
 	return TemplateResponse(
 		request,
-		'profile/add-list.html',
+		'profile/lists.html',
 		parameters)
 
 '''helper function to get lists'''

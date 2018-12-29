@@ -5,38 +5,33 @@
 <div class='row'>
 	<div class="form-group mb-0 mr-5 ml-0">
 		<select id='profile-people-select' class="form-control form-control-sm" id="people-dropdown-filter">
-			<option>&nbsp;&nbsp;Engagement</option>
+			<option>&nbsp;&nbsp;Date Added</option>
 			<option>&nbsp;&nbsp;A-Z</option>
-			<option>&nbsp;&nbsp;Z-A</option>
 		</select>
 	</div>
 
+	<!-- center filter --> 
+	<div class="btn-group btn-group-toggle profile-top-filter ml-4 mr-4" data-toggle="buttons" id='profile-top-people'>
+		<label class="btn btn-secondary active profile-filter-btn" id="filter-all">
+			<input type="radio" name="options" autocomplete="off" checked> All
+		</label>
+		<label class="btn btn-secondary profile-filter-btn" id="filter-mine">
+			<input type="radio" name="options" autocomplete="off"> My Lists
+		</label>
+		<label class="btn btn-secondary profile-filter-btn" id="filter-saved">
+			<input type="radio" name="options" autocomplete="off"> Saved Lists
+		</label>
+	</div>
+</div>
 <!-- people content --> 
 <div class='row mt-3 background-white'>
-	{% for actor in actor_info %}
-	<div class='row profile-row w-100 d-flex ml-0 {% if actor.followed %}actor-followed{% endif %} {% if actor.favorited %}actor-favorited{% endif %}'>
+	{% for list in lists %}
+	<div class='row profile-row list-row w-100 d-flex ml-0'>
 		<div class='col-1 pl-2 pr-0 text-left'>
-			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
+			<p class='grey ml-0 mt-2'>#{{forloop.counter}}</p>
 		</div>
-		<div class='col-1 pl-0 profile-picture-col'>
-			<div class='profile-actor-picture align-middle image' style='background-image: url({{actor.actor.image_url}})'></div>
-		</div>
-		<div class='col-4 pl-0 mr-3 text-left justify-content-center align-self-center'>
-			<a class='mb-0' href="{% url 'find-actor' actor_id=actor.actor.id %}">{{actor.actor.stage_name}} ({{actor.actor.native_name}})</a>
-		</div>
-		<div class='col-5 h-100'>
-			<div class='d-inline-flex flex-row w-100 justify-content-between h-100'>
-				<div class="p-2"><i class='fa fa-heart pale-red '></i><p>0</p></div>
-				<div class="p-2"><i class='fa fa-star pale-yellow'></i><p>0</p></div>
-				<div class="p-2"><i class='fa fa-eye medium-dark-grey'></i><p>0</p></div>
-				<div class="p-2"><i class='fa fa-pie-chart cornflower-blue'></i><p>0</p></div>
-			</div>
-		</div>
-		<div class='col-1 pr-2'>
-			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
-				<div class='p2'><i class='fa fa-heart {% if actor.favorited %}red{% else %}light-border{% endif %}'></i></div>
-				<div class='p2'><i class='fa fa-check {% if actor.followed %}light-green{% else %}light-border{% endif %}'></i></div>
-			</div>
+		<div class='col-11 pl-3 profile-picture-col text-left mt-2'>
+			<a href='#'>{{list.name}}</a>
 		</div>
 	</div>
 	{% endfor %}

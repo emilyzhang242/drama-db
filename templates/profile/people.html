@@ -12,7 +12,7 @@
 	</div>
 	<!-- center filter --> 
 	<div class="btn-group btn-group-toggle profile-top-filter ml-4 mr-4" data-toggle="buttons" id='profile-top-people'>
-		<label class="btn btn-secondary active profile-filter-btn" id="filter-all">
+		<label class="btn btn-secondary profile-filter-btn" id="filter-all">
 			<input type="radio" name="options" autocomplete="off" checked> All
 		</label>
 		<label class="btn btn-secondary profile-filter-btn" id="filter-favorited">
@@ -76,21 +76,31 @@
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
 <script>
 $(document).ready(function() {
+
+	function setProfileRow(type) {
+		$(".profile-row").each(function() {
+			if (!$(this).hasClass("actor-"+type) && type != "all") {
+				this.style.setProperty( 'display', 'none', 'important' );
+			}else {
+				$(this).css("display", "block");
+			}
+		});
+	}
+
+	//set active 
+	var filter = '{{filter}}';
+	$("#filter-"+filter).addClass("active");
+
+	//set initial profile 
+	setProfileRow(filter);
+
 	// filter radio buttons functionality 
 	$(".profile-filter-btn").on("click", function() {
 		var id = $(this).attr("id");
 		var index = id.indexOf("-");
 		var type = id.substring(index+1);
 		
-		$(".profile-row").each(function() {
-			if (!$(this).hasClass("actor-"+type) && type != "all") {
-				this.style.setProperty( 'display', 'none', 'important' );
-			}else {
-				$(this).css("display", "block");
-				console.log("showing");
-			}
-		});
-
+		setProfileRow(type);
 	});
 
 	$(document).on("keyup", "#add-list-input", function(e) {
