@@ -72,7 +72,15 @@
 					<div class='col-2 text-center pr-0'>
 						<p class='mb-0 show-rating-info'>Ratings</p>
 						<button class='btn rounded-btn small-btn w-100 pl-3 mt-2'>Your Rating: 3.5 <i class='fa fa-star yellow'></i></button>
-						<button class='btn rounded-btn small-btn w-100 pl-3 mt-2'><i class='fa fa-list primary-blue pr-3'></i>Add to List</button>
+						<div class="dropdown w-100">
+							<button class="btn rounded-btn dropdown-toggle mt-2 pl-3 pr-3 small-btn w-100" type="button" id='update-status' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='fa fa-list primary-blue pr-3' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>Add to List
+							</button>
+							<div class="dropdown-menu" aria-labelledby="update-status">
+								{% for list in lists %}
+								<a class="dropdown-item add-list" href="#" data-show='{{show.id}}' data-list='{{list.id}}' data-name='{{list.name}}'>{{list.name}}</a>
+								{% endfor %}
+							</div>
+						</div>
 					</div>
 					<div class='col-10 mt-2'>
 						<div class='show-stats ml-4'></div>
@@ -96,6 +104,31 @@
 				if ($(this).hasClass("blue-btn")) {
 					$(this).removeClass("pale-border");
 				}
+			});
+
+			//list functionality 
+			$(".add-list").on("click", function(e) {
+
+				e.preventDefault();
+				var obj = $(this);
+				var show_id = $(this).data('show');
+				var list_id = $(this).data('list');
+				var list_name = $(this).data("name");
+
+				$.ajax({
+					type: "POST",
+					data: {
+						csrfmiddlewaretoken: '{{csrf_token}}'
+					},
+					url: "/shows/"+show_id+"/"+list_id,
+					success: function(result) {
+						console.log("Success!");
+					},
+					error: function(result) {
+						console.log(result);
+					}
+				});
+				$(this).html("<i class='fa fa-check primary-blue pr-2'></i>"+list_name);
 			});
 
 			// follow actor functionality

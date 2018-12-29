@@ -6,6 +6,14 @@ body {
 	color: $soft-black;
 }
 
+/*------ dropdown -------- */
+
+.dropdown-menu .dropdown-item {
+	font-family: $nunito;
+	font-size: 14px;
+	font-weight: 300 !important;
+}
+
 /*------ fonts -------- */
 
 p {

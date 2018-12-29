@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
-from profile.models import UserProfile
+from profile.models import UserProfile, MyLists
 from actors.models import Actors
 from shows.models import Shows, ActorRoles
 from django.contrib.auth.models import User
@@ -40,9 +40,9 @@ def shows_home(request):
 		parameters
 		)
 
-'''This method determines whether actor info should be updated'''
 def find_show(request, show_id):
 	show = Shows.objects.get(id=show_id)
+	profile = UserProfile.objects.get(user_id=request.user.id)
 
 	try: 
 		profile = UserProfile.objects.get(user_id=request.user.id)
@@ -57,11 +57,14 @@ def find_show(request, show_id):
 	except:
 		following = False
 		favorited = False
+
+	lists = profile.lists.all()
 	
 	parameters={
 		"show": show,
 		"following_show": following,
-		"favorited_show": favorited
+		"favorited_show": favorited,
+		"lists": lists
 	}
 
 	return TemplateResponse(
@@ -108,6 +111,17 @@ def favorite_show(request):
 		return JsonResponse({"status":200})
 	except: 
 		return JsonResponse({"status": 500, "message": "Unable to follow show"})
+
+@login_required(login_url = 'login')
+def add_to_list(request, show_id, list_id):
+	show = Shows.objects.get(id=show_id)
+	mylist = MyLists.objects.get(id=list_id)
+
+	if show not in mylist.shows.all():
+		mylist.shows.add(show)
+		mylist.save()
+
+	return JsonResponse({"status":200})
 
 	
 
