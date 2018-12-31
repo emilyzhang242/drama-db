@@ -99,7 +99,6 @@ def findURLtype(url):
         return ""
 
 def parseBaiduURL(soup):
-    print("Parsing...")
     BAIDU_URL = "https://baike.baidu.com"
     info = []
 

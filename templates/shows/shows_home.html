@@ -65,7 +65,7 @@
 				<div class='pagination-box'><a href="?page={{ info.previous_page_number }}" class='p-2 primary-blue'> {{ info.previous_page_number }}</a></div>
 				{% endif %}
 
-				<div class='pagination-box'><a href="?page=info.number" class='p-2 primary-blue'>{{info.number}}</a></div>
+				<div class='pagination-box'><a class='p-2'>{{info.number}}</a></div>
 
 				{% if info.has_next %}
 				<div class='pagination-box'><a href="?page={{ info.next_page_number }}" class='p-2 primary-blue'> {{ info.next_page_number }}</a></div>
