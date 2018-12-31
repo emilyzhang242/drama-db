@@ -50,13 +50,18 @@ class ShowsCronJobs(CronJobBase):
         print("Show cron job complete!")
 
 def sanitize_genres(list_genres):
-    #separate 
+    #possible delimiters
+    if not list_genres:
+        return []
+
     if u'、' in list_genres:
         genres = list_genres.split(u'、')
     elif "/" in list_genres:
         genres = list_genres.split("/")
     elif u'，' in list_genres:
         genres = list_genres.split(u'，')
+    elif " " in list_genres:
+        genres = list_genres.split(" ")
     else:
         genres = [list_genres]
 
@@ -114,7 +119,7 @@ def parseBaiduURL(soup):
         info = info[0]
     else: 
         return []
-        
+
     #hack for html to see which one is the right one to take
     search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
 
