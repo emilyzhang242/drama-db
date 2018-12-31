@@ -46,7 +46,7 @@
 			<div class='profile-show-picture align-middle image' style='background-image: url({{show.show.image_preview}})'></div>
 		</div>
 		<div class='col-3 pl-0 mr-3 text-left justify-content-center align-self-center'>
-			<p class='mb-0'>{{show.show.title}} ({{show.show.year}})</p>
+			<a href="{% url 'find-show' show_id=show.show.id %}" class='mb-0'>{{show.show.title}} ({{show.show.year}})</a>
 		</div>
 		<!-- rating or other info -->
 		<div class='col-3'>
