@@ -3,18 +3,28 @@
 {% block profile_content %}
 <!-- dropdown filter --> 
 <div class='row'>
-	<div class='col-2-5 pl-0'>
+	<div class='col-2-5u pl-0'>
 		<div class="form-group mb-0 mr-4 ml-0">
 			<select id='profile-people-select' class="form-control form-control-sm">
 				<option>&nbsp;&nbsp;Alphabetical</option>
 			</select>
 		</div>
 	</div>
+	<div class='col-8-5u'></div>
+	<div class='col-1'>
+		<!-- settings dropdown menu --> 
+		<div id= 'newsfeed-settings' class='text-right dropdown show justify-content-end'>
+			<i class='fa fa-cog dropdown-toggle' role='button' id="list-cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+			<div class="dropdown-menu" aria-labelledby="list-cog">
+				<a class="dropdown-item" href="#">Delete List</a>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- people content --> 
 <div class='row mt-3 background-white'>
-	{% for show in show_info %}
+	{% for show in shows %}
 	<div class='row profile-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
 		<div class='col-1 pl-2 pr-0 text-left'>
 			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
@@ -23,7 +33,7 @@
 			<div class='profile-show-picture align-middle image' style='background-image: url({{show.show.image_preview}})'></div>
 		</div>
 		<div class='col-3 pl-0 mr-3 text-left justify-content-center align-self-center'>
-			<p class='mb-0'>{{show.show.title}} ({{show.show.year}})</p>
+			<a href='{% url "find-show" show_id=show.show.id %}' class='mb-0'>{{show.show.title}} ({{show.show.year}})</a>
 		</div>
 		<!-- rating or other info -->
 		<div class='col-3'>
@@ -40,8 +50,7 @@
 		</div>
 		<div class='col-1 pr-2'>
 			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
-				<div class='p2'><i class='fa fa-heart {% if show.favorited %}red{% else %}light-border{% endif %}'></i></div>
-				<div class='p2'><i class='fa fa-check {% if show.followed %}light-green{% else %}light-border{% endif %}'></i></div>
+				<div class='p2'><i class='fa fa-close primary-blue delete-show' data-show='{{show.show.id}}' data-list='{{list.id}}'></i></div>
 			</div>
 		</div>
 	</div>
@@ -60,53 +69,52 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
 <script>
+
 	$(document).ready(function() {
 
-	function setProfileRow(type) {
-		$(".profile-row").each(function() {
-			if (!$(this).hasClass("show-"+type) && type != "all") {
-				this.style.setProperty( 'display', 'none', 'important' );
-			}else {
-				$(this).css("display", "block");
-			}
-		});
-	}
-
-	//set active 
-	var filter = '{{filter}}';
-	$("#filter-"+filter).addClass("active");
-
-	//set initial profile 
-	setProfileRow(filter);
-
-	// filter radio buttons functionality 
-	$(".profile-filter-btn").on("click", function() {
-		var id = $(this).attr("id");
-		var index = id.indexOf("-");
-		var type = id.substring(index+1);
-		
-		setProfileRow(type);
+		$(document).on("keyup", "#add-list-input", function(e) {
+			if (e.which === 13) { //if it's the enter key
+				$.ajax({
+					type: "POST",
+					url: "/profile/lists/add/",
+					data: {
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						title: $("#add-list-input").val()
+					},
+					success: function(response) {
+						console.log("HELLO");
+					},
+					error: function(response) {
+						console.log(response);
+					}
+				});
+		}
 	});
 
-	$(document).on("keyup", "#add-list-input", function(e) {
-		console.log('hello');
-		if (e.which === 13) { //if it's the enter key
+		//delete show from list functionality
+		$(".delete-show").on("click", function() {
+			var obj = $(this);
 			$.ajax({
 				type: "POST",
-				url: "/profile/lists/add/",
+				url: "/profile/lists/delete/",
 				data: {
 					csrfmiddlewaretoken: '{{csrf_token}}',
-					title: $("#add-list-input").val()
+					show_id: obj.data("show"),
+					list_id: obj.data("list")
 				},
 				success: function(response) {
-					console.log("HELLO");
+					obj.closest(".profile-row").addClass("to-delete");
+					$(".profile-row").each(function() {
+						if ($(this).hasClass("to-delete")) {
+							this.style.setProperty( 'display', 'none', 'important' );
+						}
+					});
 				},
 				error: function(response) {
 					console.log(response);
 				}
 			});
-		}
+		});
 	});
-});
 </script>
 {% endblock %}

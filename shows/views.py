@@ -121,7 +121,7 @@ def add_to_list(request, show_id, list_id):
 		mylist.shows.add(show)
 		mylist.save()
 
-	return JsonResponse({"status":200})
+	return JsonResponse({"status":200, "message": show.title+" has been added to list "+mylist.name})
 
 	
 

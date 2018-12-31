@@ -14,6 +14,12 @@ body {
 	font-weight: 300 !important;
 }
 
+/*------ font awesome -------- */
+
+.fa:hover {
+	cursor:pointer;
+}
+
 /*------ fonts -------- */
 
 p {
@@ -163,6 +169,15 @@ a:hover {
 	width: 56%;
 	flex: 0 0 56%;
     max-width: 56%;
+}
+
+.col-8-5u {
+	width: 69% !important;
+	flex: 0 0 69%;
+    max-width: 69%;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .col-9-5u {

@@ -118,11 +118,12 @@
 				$.ajax({
 					type: "POST",
 					data: {
-						csrfmiddlewaretoken: '{{csrf_token}}'
+						csrfmiddlewaretoken: '{{csrf_token}}',
 					},
 					url: "/shows/"+show_id+"/"+list_id,
 					success: function(result) {
-						console.log("Success!");
+						alert(result.message);
+						console.log(result.message);
 					},
 					error: function(result) {
 						console.log(result);

@@ -147,17 +147,52 @@ def get_lists(request):
 @login_required(login_url = 'login')
 def find_list(request, list_id):
 
+	profile = UserProfile.objects.get(user_id=request.user.id)
 	mylist = MyLists.objects.get(id=list_id)
+	info = []
+
+	for show in mylist.shows.all():
+		show_dict = {"show": show}
+		actorroles = show.actor_roles.all()
+		followed_actors = profile.followed_actors.all()
+		favorited_actors = profile.favorited_actors.all()
+		actors = []
+		for i in actorroles: 
+			actor = Actors.objects.get(id=i.actor_id)
+			if actor in followed_actors or actor in favorited_actors:
+				actors.append(actor)
+		show_dict["actors"] = actors[:4]
+		info.append(show_dict)
 
 	parameters = {
 		'page': 'mylists',
 		'profile_page': "List: "+mylist.name,
-		'list': mylist
+		'list': mylist,
+		'lists': get_lists(request),
+		'shows': info
 	}
 
 	return TemplateResponse(
 		request,
 		'profile/find-list.html',
 		parameters)
+
+@login_required(login_url = 'login')
+@require_POST
+def delete_list(request):
+	try:
+		show_id = int(request.POST.get("show_id"))
+		list_id = int(request.POST.get("list_id"))
+
+		show = Shows.objects.get(id=show_id)
+		mylist = MyLists.objects.get(id=list_id)
+
+		mylist.shows.remove(show)
+		mylist.save()
+
+		return JsonResponse({"status": 200, "message": show.title + " has been removed from list "+ mylist.name})
+	except:
+		return JsonResponse({"status": 500})
+
 
 
