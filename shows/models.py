@@ -5,7 +5,7 @@ from django.db import models
 from actors.models import Actors
 
 class Shows(models.Model): 
-	title = models.CharField(max_length=300, null = True)
+	title = models.CharField(max_length=300, null = True, unique=True)
 	year = models.IntegerField(null=True)
 	date = models.DateField(null=True)
 	follower_count = models.IntegerField(null=False, default=0)
@@ -16,12 +16,21 @@ class Shows(models.Model):
 	summary = models.CharField(max_length=500, null=True)
 	num_episodes = models.IntegerField(null=True)
 	english_title = models.CharField(max_length=300, null=True)
-	genres = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)
-	actor_roles = models.ManyToManyField('ActorRoles', related_name='shows_actor_roles')
-
+	actor_roles = models.ManyToManyField('ActorRoles')
+	
+	genres = models.ManyToManyField('Genres', related_name='shows_genre')
 	follower_count = models.IntegerField(default=0)
 	favorited_count = models.IntegerField(default=0)
+
+class Genres(models.Model):
+	genre = models.CharField(max_length=300, unique=True)
+
+	def sanitize(self, string):
+		if "[" in string: 
+			string = string[:string.find("[")]
+		return string
+
 
 class ActorRoles(models.Model): 
 	show = models.ForeignKey(Shows, on_delete=models.CASCADE)
