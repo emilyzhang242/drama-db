@@ -2,7 +2,7 @@
 
 from django_cron import CronJobBase, Schedule
 from actors.models import Actors
-from shows.models import Shows, ActorRoles
+from shows.models import Shows, ActorRoles, Genres
 from main.models import CronJob
 import datetime
 import requests
@@ -27,7 +27,10 @@ class ShowsCronJobs(CronJobBase):
                 try:
                     info = result[0]
                     show.num_episodes = info["num_episodes"]
-                    show.genres = info["genres"]
+                    list_genres = sanitize_genres(info["genres"])
+                    genres_added = add_genres(list_genres)
+                    for genre in genres_added:
+                        show.genres.add(genre)
                     show.alternate_names = info["alternate_names"]
                     show.english_title = info["english_title"]
                     show.save()
@@ -44,8 +47,39 @@ class ShowsCronJobs(CronJobBase):
                                 role.save()
                 except:
                     print("Couldn't parse.")
-            print("Finished parsing information...")
         print("Show cron job complete!")
+
+def sanitize_genres(list_genres):
+    #separate 
+    if u'、' in list_genres:
+        genres = list_genres.split(u'、')
+    elif "/" in list_genres:
+        genres = list_genres.split("/")
+    elif u'，' in list_genres:
+        genres = list_genres.split(u'，')
+    else:
+        genres = [list_genres]
+
+    for index in range(len(genres)):
+        if "[" in genres[index]: 
+            genres[index] = genres[index][:genres[index].find("[")]
+        genres[index] = genres[index].strip()
+    return genres
+
+def add_genres(list_genres):
+    genres_added = []
+    for genre in list_genres:
+        try:
+            poss_genre = Genres.objects.filter(genre=genre)
+            if poss_genre.exists():
+                genres_added.append(poss_genre[0])
+            else:
+                g = Genres(genre=genre)
+                g.save()
+                genres_added.append(g)
+        except:
+            pass
+    return genres_added
 
 def parseExternalURL(url):
     s = requests.Session()
@@ -75,7 +109,12 @@ def parseBaiduURL(soup):
     BAIDU_URL = "https://baike.baidu.com"
     dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, "genres": None}
 
-    info = soup.find_all("div", class_="basic-info")[0]
+    info = soup.find_all("div", class_="basic-info")
+    if info: 
+        info = info[0]
+    else: 
+        return []
+        
     #hack for html to see which one is the right one to take
     search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
 

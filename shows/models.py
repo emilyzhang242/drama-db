@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from actors.models import Actors
+import re
 
 class Shows(models.Model): 
 	title = models.CharField(max_length=300, null = True, unique=True)
@@ -25,12 +26,6 @@ class Shows(models.Model):
 
 class Genres(models.Model):
 	genre = models.CharField(max_length=300, unique=True)
-
-	def sanitize(self, string):
-		if "[" in string: 
-			string = string[:string.find("[")]
-		return string
-
 
 class ActorRoles(models.Model): 
 	show = models.ForeignKey(Shows, on_delete=models.CASCADE)

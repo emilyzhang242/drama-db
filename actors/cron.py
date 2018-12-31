@@ -106,20 +106,19 @@ def parseBaiduURL(soup):
     groups = soup.find_all("div", class_="level-3")
     movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
 
+    #find correct section for dramas 
     search_for = "参演电视剧"
 
     for index, html in enumerate(groups):
         text = str(html)
         if search_for in text:
             drama_index = index
-            print(drama_index)
 
     dramas_string = movies_dramas[drama_index]
     dramas = dramas_string.select(".listItem")
     for drama in dramas: 
         title_info = drama.find_all("b", {"class":"title"})[0]
         title = title_info.text
-        print(title)
         #want to adjust title if there are link brackets at the end
         if "[" in title: 
             title = title[:title.find("[")]
