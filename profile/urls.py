@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^shows/(?P<filter>[a-zA-Z]*)$', profile_views.shows, name='profile-shows'),
     url(r'^lists/add/$', profile_views.add_list, name='profile-add-list'),
     url(r'^lists/all/$', profile_views.lists, name='profile-lists'),
-    url(r'^lists/(?P<filter>[a-zA-Z0-9]*)$', profile_views.lists, name='profile-lists'),
+    url(r'^lists/(?P<list_id>[a-zA-Z0-9]*)$', profile_views.find_list, name='profile-find-list'),
     url(r'^lists/(?P<filter>[a-zA-Z0-9]*)(?P<sort>[a-zA-Z]*)$', profile_views.lists, name='profile-lists'),
     url(r'^sign-up$', profile_views.sign_up, name='sign-up')
 ]

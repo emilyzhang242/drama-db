@@ -31,7 +31,7 @@
 			<p class='grey ml-0 mt-2'>#{{forloop.counter}}</p>
 		</div>
 		<div class='col-11 pl-3 profile-picture-col text-left mt-2'>
-			<a href='#'>{{list.name}}</a>
+			<a href="{% url 'profile-find-list' list_id=list.id %}">{{list.name}}</a>
 		</div>
 	</div>
 	{% endfor %}

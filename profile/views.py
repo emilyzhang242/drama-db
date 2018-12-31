@@ -52,7 +52,7 @@ def people(request, filter, sort=''):
 			info.append(actor_dict)
 
 	parameters = {
-		'page': "profile",
+		'page': "people",
 		'filter': filter, 
 		'profile_page': "People",
 		'actor_info': info,
@@ -94,7 +94,7 @@ def shows(request, filter='', sort=''):
 			info.append(show_dict)
 
 	parameters = {
-		'page': "profile",
+		'page': "shows",
 		'filter': filter, 
 		'profile_page': "Shows",
 		'show_info': info,
@@ -128,6 +128,7 @@ def add_list(request):
 def lists(request, filter='', sort=''):
 
 	parameters = {
+		'page': "mylists",
 		'profile_page': "My Lists",
 		'lists': get_lists(request)
 	}
@@ -142,5 +143,21 @@ def get_lists(request):
 	profile = UserProfile.objects.get(user_id=request.user.id)
 	lists = profile.lists.all()
 	return lists
+
+@login_required(login_url = 'login')
+def find_list(request, list_id):
+
+	mylist = MyLists.objects.get(id=list_id)
+
+	parameters = {
+		'page': 'mylists',
+		'profile_page': "List: "+mylist.name,
+		'list': mylist
+	}
+
+	return TemplateResponse(
+		request,
+		'profile/find-list.html',
+		parameters)
 
 
