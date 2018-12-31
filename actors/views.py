@@ -10,6 +10,7 @@ from profile.models import UserProfile
 from shows.models import Shows, ActorRoles
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 import datetime
 import requests
 import urllib2
@@ -28,9 +29,16 @@ def actors_home(request):
 		d["shows"] = shows
 		info.append(d)
 
+	paginator = Paginator(info, 10) # Show 25 contacts per page
+	page = request.GET.get('page')
+	if page:
+		paged_info = paginator.page(page)
+	else:
+		paged_info = paginator.page(1)
+
 	parameters = {
 		"page": "people",
-		"info": info
+		"info": paged_info
 	}
 
 	return TemplateResponse(

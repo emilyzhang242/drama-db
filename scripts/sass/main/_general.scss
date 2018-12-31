@@ -262,7 +262,14 @@ a:hover {
   border: 1px solid $grey;
 }
 
-/*------- display -------- */
+/*------- pagination -------- */
+
+.pagination-box {
+	border: 1px solid $light-border;
+	margin-left: -1px;
+	background-color: $white;
+	padding: 2px 3px 2px 3px;
+}
 
 /*------- colors -------- */
 

@@ -1,5 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
+{% load main_tags %}
 {% block title %}Shows{% endblock %}
 {% block content %}
 <div class='container-fluid'>
@@ -46,30 +47,33 @@
 						</div>
 						<div class='col-9 mt-4'>
 							<a href="{% url 'find-show' show_id=dict.show.id %}"><h5 class='light'>{{dict.show.title}} ({{dict.show.year}})</h5></a>
-							<p><span class='semi-bold'>Starring: </span>{% for actor in dict.actors %}{% if not forloop.last %}<a href="{% url 'find-actor' actor_id=actor.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>, {% else %}<a href="{% url 'find-show' show_id=show.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>{% endif %}{% endfor %}</p>
+							<p class='mb-1'><span class='semi-bold'>Starring: </span>{% for actor in dict.actors %}{% if not forloop.last %}<a href="{% url 'find-actor' actor_id=actor.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>, {% else %}<a href="{% url 'find-show' show_id=show.id %}">{{actor.stage_name}} ({{actor.native_name}})</a>{% endif %}{% endfor %}</p>
+							{% if dict.show.summary %}
+							<p><span class='semi-bold'>Summary: </span>{{dict.show.summary|limit:100}}</p>
+							{% endif %}
 						</div>
 					</div>
 				</div>
 				{% endfor %}
 			</div>
+			
 			<!-- pagination --> 
-			<div class="pagination">
-				<span class="step-links">
-					{% if info.has_previous %}
-					<a href="?page=1">&laquo; first</a>
-					<a href="?page={{ info.previous_page_number }}">previous</a>
-					{% endif %}
+			<div class="pagination d-flex flex-row w-100 justify-content-center">
+				{% if info.has_previous %}
+				<div class='pagination-box'><a href="?page=1" class='p-2 primary-blue'>&laquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.previous_page_number }}" class='p-2 primary-blue'> &lsaquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.previous_page_number }}" class='p-2 primary-blue'> {{ info.previous_page_number }}</a></div>
+				{% endif %}
 
-					<span class="current">
-						Page {{ info.number }} of {{ info.paginator.num_pages }}.
-					</span>
+				<div class='pagination-box'><a href="?page=info.number" class='p-2 primary-blue'>{{info.number}}</a></div>
 
-					{% if info.has_next %}
-					<a href="?page={{ info.next_page_number }}">next</a>
-					<a href="?page={{ info.paginator.num_pages }}">last &raquo;</a>
-					{% endif %}
-				</span>
+				{% if info.has_next %}
+				<div class='pagination-box'><a href="?page={{ info.next_page_number }}" class='p-2 primary-blue'> {{ info.next_page_number }}</a></div>
+				<div class='pagination-box'><a href="?page={{ info.next_page_number }}" class='p-2 primary-blue'>&rsaquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.paginator.num_pages }}" class='p-2 primary-blue'>&raquo;</a></div>
+				{% endif %}
 			</div>
+			<!-- end pagination -->
 		</div>
 		<div class='col-3'>	
 			<div>

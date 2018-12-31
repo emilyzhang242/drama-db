@@ -122,7 +122,8 @@ def parseBaiduURL(soup_main, soup_summary):
         info = info[0]
     else: 
         return []
-
+        
+    #get summary
     soup_sum = soup_summary.find_all("div", class_="lemma-summary")
     if not soup_sum:
         soup_sum = soup_summary.find_all("div", class_="lemmaWgt-lemmaSummary")
