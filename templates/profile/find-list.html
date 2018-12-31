@@ -16,7 +16,7 @@
 		<div id= 'newsfeed-settings' class='text-right dropdown show justify-content-end'>
 			<i class='fa fa-cog dropdown-toggle' role='button' id="list-cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 			<div class="dropdown-menu" aria-labelledby="list-cog">
-				<a class="dropdown-item" href="#">Delete List</a>
+				<a class="dropdown-item" href="{% url 'profile-delete-list' list_id=list.id %}">Delete List</a>
 			</div>
 		</div>
 	</div>
@@ -96,7 +96,7 @@
 			var obj = $(this);
 			$.ajax({
 				type: "POST",
-				url: "/profile/lists/delete/",
+				url: "/profile/lists/delete_show/",
 				data: {
 					csrfmiddlewaretoken: '{{csrf_token}}',
 					show_id: obj.data("show"),

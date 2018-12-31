@@ -179,7 +179,7 @@ def find_list(request, list_id):
 
 @login_required(login_url = 'login')
 @require_POST
-def delete_list(request):
+def delete_from_list(request):
 	try:
 		show_id = int(request.POST.get("show_id"))
 		list_id = int(request.POST.get("list_id"))
@@ -193,6 +193,16 @@ def delete_list(request):
 		return JsonResponse({"status": 200, "message": show.title + " has been removed from list "+ mylist.name})
 	except:
 		return JsonResponse({"status": 500})
+
+@login_required(login_url = 'login')
+def delete_list(request, list_id):
+	try: 
+		mylist = MyLists.objects.get(id=list_id)
+		mylist.delete()
+
+		return redirect('profile-lists')
+	except:
+		return redirect('profile-find-list', list_id=mylist.id)
 
 
 

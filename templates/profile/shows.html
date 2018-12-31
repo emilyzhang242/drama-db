@@ -112,7 +112,6 @@
 	});
 
 	$(document).on("keyup", "#add-list-input", function(e) {
-		console.log('hello');
 		if (e.which === 13) { //if it's the enter key
 			$.ajax({
 				type: "POST",
@@ -122,7 +121,7 @@
 					title: $("#add-list-input").val()
 				},
 				success: function(response) {
-					console.log("HELLO");
+					$("#add-list-span").html(response.message);
 				},
 				error: function(response) {
 					console.log(response);
