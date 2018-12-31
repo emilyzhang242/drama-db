@@ -100,6 +100,7 @@ def parseBaiduURL(soup, baidu_index):
     print("Parsing...")
     BAIDU_URL = "https://baike.baidu.com"
     info = []
+
     movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
     dramas_string = movies_dramas[baidu_index]
     dramas = dramas_string.select(".listItem")
