@@ -31,10 +31,6 @@
 					<input type="text" name="url" class="form-control" id="create_image" aria-describedby="emailHelp" placeholder="Image">
 				</div>
 				<div class="form-group">
-					<label for="url">Baidu Section</label>
-					<input type="text" name="url" class="form-control" id="create_url_section" aria-describedby="emailHelp" placeholder="Baidu">
-				</div>
-				<div class="form-group">
 					<label for="nativename">Native Name</label>
 					<input type="text" name="nativename" class="form-control" id="create_nativename" aria-describedby="emailHelp" placeholder="Enter Native Name">
 				</div>
@@ -75,7 +71,6 @@
 					csrfmiddlewaretoken: '{{csrf_token}}',
 					stagename: $("#create_stagename").val(),
 					url: $("#create_url").val(),
-					baidu_section: $("#create_url_section").val(),
 					image_url: $("#create_image").val(),
 					nativename: $("#create_nativename").val(),
 					nationality: $("#create_nationality").val(),

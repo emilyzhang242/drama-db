@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django_cron import CronJobBase, Schedule
 from actors.models import Actors
 from shows.models import Shows, ActorRoles
@@ -18,7 +20,7 @@ class ActorsCronJobs(CronJobBase):
         print("Beginning actor cron job...")
         for actor in Actors.objects.all():
             print("Begin adding actor "+actor.native_name+" into database...")
-            info = parseExternalURL(actor.external_url, actor)
+            info = parseExternalURL(actor.external_url)
             print("Finished parsing information...")
             if info: 
                 for show in info: 
@@ -75,14 +77,14 @@ class ActorsCronJobs(CronJobBase):
             print("Completed adding actor "+ actor.native_name + " into database. Added all shows.")
         print("Actor cron job complete!")
 
-def parseExternalURL(url, actor):
+def parseExternalURL(url):
     s = requests.Session()
     s.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
     page = s.get(url)
     page.encoding = 'utf-8'
     soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
     if findURLtype(url) == "baidu": 
-        return parseBaiduURL(soup, actor.baidu_drama_section)
+        return parseBaiduURL(soup)
     elif findURLtype(url) == "mdl":
         return parseMDLURL(soup)
     else:
@@ -96,13 +98,23 @@ def findURLtype(url):
     else:
         return ""
 
-def parseBaiduURL(soup, baidu_index):
+def parseBaiduURL(soup):
     print("Parsing...")
     BAIDU_URL = "https://baike.baidu.com"
     info = []
 
+    groups = soup.find_all("div", class_="level-3")
     movies_dramas = soup.find_all("div", class_="starMovieAndTvplay")
-    dramas_string = movies_dramas[baidu_index]
+
+    search_for = "参演电视剧"
+
+    for index, html in enumerate(groups):
+        text = str(html)
+        if search_for in text:
+            drama_index = index
+            print(drama_index)
+
+    dramas_string = movies_dramas[drama_index]
     dramas = dramas_string.select(".listItem")
     for drama in dramas: 
         title_info = drama.find_all("b", {"class":"title"})[0]
