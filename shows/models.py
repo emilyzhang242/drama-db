@@ -14,7 +14,7 @@ class Shows(models.Model):
 	url = models.CharField(max_length=200, null=True)
 	image_preview = models.CharField(max_length=1000, null=True)
 	page_visits = models.IntegerField(default=0)
-	summary = models.CharField(max_length=500, null=True)
+	summary = models.CharField(max_length=2000, null=True)
 	num_episodes = models.IntegerField(null=True)
 	english_title = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)

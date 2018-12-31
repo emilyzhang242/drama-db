@@ -33,6 +33,7 @@ class ShowsCronJobs(CronJobBase):
                         show.genres.add(genre)
                     show.alternate_names = info["alternate_names"]
                     show.english_title = info["english_title"]
+                    show.summary = info["summary"]
                     show.save()
 
                     #want to add main lead info into actor roles 
@@ -94,9 +95,10 @@ def parseExternalURL(url):
     except:
         return []
     page.encoding = 'utf-8'
-    soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
+    soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
+    soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"poster"}))
     if findURLtype(url) == "baidu": 
-        return [parseBaiduURL(soup), "baidu"]
+        return [parseBaiduURL(soup_main, soup_summary), "baidu"]
     elif findURLtype(url) == "mdl":
         return parseMDLURL(soup)
     else:
@@ -110,15 +112,22 @@ def findURLtype(url):
     else:
         return ""
 
-def parseBaiduURL(soup):
+def parseBaiduURL(soup_main, soup_summary):
     BAIDU_URL = "https://baike.baidu.com"
-    dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, "genres": None}
+    dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, 
+    "genres": None, "summary": None}
 
-    info = soup.find_all("div", class_="basic-info")
+    info = soup_main.find_all("div", class_="basic-info")
     if info: 
         info = info[0]
     else: 
         return []
+
+    soup_sum = soup_summary.find_all("div", class_="lemma-summary")
+    if not soup_sum:
+        soup_sum = soup_summary.find_all("div", class_="lemmaWgt-lemmaSummary")
+    if soup_sum:
+        dic["summary"] = get_baidu_summary(soup_sum[0])
 
     #hack for html to see which one is the right one to take
     search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
@@ -161,5 +170,12 @@ def parseBaiduURL(soup):
                 elif character == ">类": 
                     dic["genres"] = info_info[index].text.replace("\n", "")
     return dic
+
+def get_baidu_summary(soup):
+    text = "".join([p.text for p in soup.find_all("div", class_="para")])
+    text = text.replace("\n", " ")
+    text = re.sub("[\[].*?[\]]", '', text)
+    print(text)
+    return text
 
         
