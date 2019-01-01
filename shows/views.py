@@ -104,21 +104,20 @@ def follow_show(request):
 def favorite_show(request):
 	try: 
 		profile = UserProfile.objects.get(user_id=request.user.id)
-		follow = request.POST.get("follow") #wow, what a gotcha. JS true and false is diff from python!
+		favorite = request.POST.get("favorite") #wow, what a gotcha. JS true and false is diff from python!
 		show_id = request.POST.get("show")
-		show = Shows.objects.get(url=url)
+		show = Shows.objects.get(id=show_id)
 		favorited_num = show.favorited_count
-
-		if follow == "true": 
-			profile.followed_shows.add(show)
+		if favorite == "true": 
+			profile.favorited_shows.add(show)
 			show.favorited_count = favorited_num + 1
 		else: 
-			profile.followed_shows.remove(show)
+			profile.favorited_shows.remove(show)
 			show.favorited_count = favorited_num - 1
 		show.save()
 		return JsonResponse({"status":200})
 	except: 
-		return JsonResponse({"status": 500, "message": "Unable to follow show"})
+		return JsonResponse({"status": 500, "message": "Unable to favorite show."})
 
 @login_required(login_url = 'login')
 def add_to_list(request, show_id, list_id):

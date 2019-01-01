@@ -1,53 +1,67 @@
-{% extends "./profile-base.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block profile_content %}
+{% block content %}
 <!-- dropdown filter --> 
-<div class='row'>
-	<div class='col-2 pl-0'>
-		<div class="form-group mb-0 mr-4 ml-0">
-			<select id='profile-people-select' class="form-control form-control-sm" id="people-dropdown-filter">
-				<option>&nbsp;&nbsp;UGH</option>
-				<option>&nbsp;&nbsp;A-Z</option>
-				<option>&nbsp;&nbsp;Z-A</option>
-			</select>
-		</div>
+<div class='container-fluid'>
+	<div class="text-center nav-fill w-100">
+		<h1 class='font-skia mt-5'>Search Results: {{search_contents}}</h1>
 	</div>
-</div>
+	<div class='row mt-4'>
+		<div class='col-3 col-2-5u text-center'>
+		</div>
+		<div class='col-6 col-7u col-unique text-center'>
 
-<!-- people content --> 
-<div class='row mt-3 background-white'>
-	{% for show in show_info %}
-	<div class='row profile-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
-		<div class='col-1 pl-2 pr-0 text-left'>
-			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
-		</div>
-		<div class='col-1 pl-0 profile-picture-col'>
-			<div class='profile-show-picture align-middle image' style='background-image: url({{show.show.image_preview}})'></div>
-		</div>
-		<div class='col-3 pl-0 mr-3 text-left justify-content-center align-self-center'>
-			<a href="{% url 'find-show' show_id=show.show.id %}" class='mb-0'>{{show.show.title}} ({{show.show.year}})</a>
-		</div>
-		<!-- rating or other info -->
-		<div class='col-3'>
-			<p></p>
-		</div>
-		<!-- list of actors --> 
-		<div class='col-3 h-100'>
-			<div class='d-inline-flex flex-row w-100 justify-content-end h-100 ml-4'>
-				{% for actor in show.actors %}
-				<div class='profile-actor-picture image ml-2' title='{{actor.stage_name}}' style='background-image: url({{actor.image_url}})'></div>
+			{% if not shows and not actors %}
+			<p class='text-center'>No Results</p>
+			{% endif %}
+
+			<!-- show content --> 
+			{% if shows %}
+			<h5 class='text-left light'>Shows</h5>
+			<div class='row mt-3 background-white'>
+				{% for show in shows %}
+				<div class='row profile-row search-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
+					<div class='col-1 pl-2 pr-0 text-left'>
+						<p class='grey ml-0 mt-2'>#{{forloop.counter}}</p>
+					</div>
+					<div class='col-1 pl-0 profile-picture-col'>
+						<div class='profile-show-picture align-middle image mt-1' style='background-image: url({{show.image_preview}})'></div>
+					</div>
+					<div class='col-8 pl-0 mr-3 text-left justify-content-center align-self-center'>
+						<a href="{% url 'find-show' show_id=show.id %}" class='mb-0'>{{show.title}} ({{show.year}})</a>
+					</div>
+				</div>
 				{% endfor %}
-				<p class='mt-4 ml-2'>...</p>
 			</div>
+			{% endif %}
+			<!-- end show content --> 
+
+			<!-- actor content --> 
+			{% if actors %}
+			<h5 class='text-left light mt-4'>Actors</h5>
+			<div class='row mt-3 background-white'>
+				{% for actor in actors %}
+				<div class='row profile-row search-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
+					<div class='col-1 pl-2 pr-0 text-left'>
+						<p class='grey ml-0 mt-2'>#{{forloop.counter}}</p>
+					</div>
+					<div class='col-1 pl-0 profile-picture-col'>
+						<div class='profile-actor-picture align-middle image mt-1' style='background-image: url({{actor.image_preview}})'></div>
+					</div>
+					<div class='col-7 pl-0 mr-3 text-left justify-content-center align-self-center'>
+						<a href="{% url 'find-show' show_id=show.id %}" class='mb-0'>{{actor.stage_name}} ({{actor.native_name}})</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+			<!-- end actor content --> 
 		</div>
-		<div class='col-1 pr-2'>
-			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
-				<div class='p2'><i class='fa fa-heart {% if show.favorited %}red{% else %}light-border{% endif %}'></i></div>
-				<div class='p2'><i class='fa fa-check {% if show.followed %}light-green{% else %}light-border{% endif %}'></i></div>
+		<div class='col-3 col-2-5u'>
+			<div class='sidebar-advert'>
 			</div>
 		</div>
 	</div>
-	{% endfor %}
 </div>
 
 {% endblock %}

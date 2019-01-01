@@ -58,12 +58,15 @@
 
       <!-- search -->
       <div class='collapse navbar-collapse col-2-5u'>
-        <div class="input-group input-group-sm search" id="navbar-search">
-          <input id='navbar-search-input' type="text" class="form-control form-control-sm append" placeholder="Find Actors or Shows">
-          <div class="input-group-append" id="navbar-search-btn">
-            <span class="input-group-text"><i class="fa fa-search"></i></span>
+        <form action='/search/' type='POST' id="navbar-search">
+          {% csrf_token %}
+          <div class="input-group input-group-sm search">
+            <input id='navbar-search-input' name='search' type="text" class="form-control form-control-sm append" placeholder="Find Actors or Shows">
+            <div class="input-group-append" id="navbar-search-btn">
+              <span class="input-group-text"><i class="fa fa-search"></i></span>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
       <!-- end search -->
 

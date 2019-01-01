@@ -15,22 +15,20 @@ def main(request):
 	)
 
 '''search actors and shows'''
-@require_POST
 def search(request):
 
-	contents = request.POST.get("search")
+	contents = request.GET.get("search")
 
-	actors = Actors.objects.filter(Q(stage_name__icontains=contents) | Q(native_name__icontains=contents)
-		| Q(summary__icontains=contents))
+	actors = Actors.objects.filter(Q(stage_name__icontains=contents) | Q(native_name__icontains=contents))
 	shows = Shows.objects.filter(Q(title__icontains=contents) | Q(english_title__icontains=contents)
-		| Q(alternate_names__icontains=contents) | Q(summary__icontains=contents))
+		| Q(alternate_names__icontains=contents))
 
 	parameters = {
-	"page": "",
+	"search_contents": contents,
 	"actors": actors,
 	"shows": shows
 	}
-
+	print("are we returning???")
 	return TemplateResponse(
 		request,
 		'main/search.html',

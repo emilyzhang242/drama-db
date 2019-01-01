@@ -12,28 +12,11 @@ $(document).ready(function() {
    	$("#navbar-search").on("keyup", function(e) {
    		//if it's the enter key
    		if (e.which === 13) { 
-   			search_navbar();
+   			$("#navbar-search").submit();
    		}
    	});
 
    	$("#navbar-search-btn").on("click", function(e) {
-   		//if it's the enter key
-   		if (e.which === 13) { 
-   			search_navbar();
-   		}
+   		$("#navbar-search").submit();
    	});
 });
-
-function search_navbar() {
-	$.ajax({
-		type: "POST",
-		url: "/search/",
-		data: {
-			csrfmiddlewaretoken: csrf_token,
-			search: $("#navbar-search-input").val()
-		},
-		error: function(response) {
-			console.log(response);
-		}
-	});
-}
