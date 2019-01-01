@@ -13,6 +13,7 @@ class Actors(models.Model):
     image_preview = models.CharField(max_length=1000, null=True)
     added_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     pageviews = models.IntegerField(null=False, default=0)
+    summary = models.CharField(max_length=2000, null=True)
     last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
     follower_count = models.IntegerField(default=0)
     favorited_count = models.IntegerField(default=0)

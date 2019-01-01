@@ -27,13 +27,10 @@ $(document).ready(function() {
 function search_navbar() {
 	$.ajax({
 		type: "POST",
-		url: "/profile/lists/add/",
+		url: "/search/",
 		data: {
-			csrfmiddlewaretoken: '{{csrf_token}}',
-			title: $("#add-list-input").val()
-		},
-		success: function(response) {
-			$("#add-list-span").html(response.message);
+			csrfmiddlewaretoken: csrf_token,
+			search: $("#navbar-search-input").val()
 		},
 		error: function(response) {
 			console.log(response);

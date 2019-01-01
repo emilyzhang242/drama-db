@@ -19,6 +19,7 @@ class Shows(models.Model):
 	english_title = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)
 	actor_roles = models.ManyToManyField('ActorRoles')
+	last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
 	
 	genres = models.ManyToManyField('Genres', related_name='shows_genre')
 	follower_count = models.IntegerField(default=0)

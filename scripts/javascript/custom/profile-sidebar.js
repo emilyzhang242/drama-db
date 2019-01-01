@@ -31,4 +31,23 @@ $(document).ready(function(){
 			$(this).addClass("writing");
 		}
 	});
+
+	$(document).on("keyup", "#add-list-input", function(e) {
+		if (e.which === 13) { //if it's the enter key
+			$.ajax({
+				type: "POST",
+				url: "/profile/lists/add/",
+				data: {
+					csrfmiddlewaretoken: csrf_token,
+					title: $("#add-list-input").val()
+				},
+				success: function(response) {
+					$("#add-list-span").html(response.message);
+				},
+				error: function(response) {
+					console.log(response);
+				}
+			});
+		}
+	});
 });

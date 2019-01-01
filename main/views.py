@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.models import User
+from actors.models import Actors 
+from shows.models import Shows
 from profile.models import UserProfile
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 def main(request):
 	return TemplateResponse(
@@ -10,6 +13,29 @@ def main(request):
 		'main/index.html', 
 		{"page": ""}
 	)
+
+'''search actors and shows'''
+@require_POST
+def search(request):
+
+	contents = request.POST.get("search")
+
+	actors = Actors.objects.filter(Q(stage_name__icontains=contents) | Q(native_name__icontains=contents)
+		| Q(summary__icontains=contents))
+	shows = Shows.objects.filter(Q(title__icontains=contents) | Q(english_title__icontains=contents)
+		| Q(alternate_names__icontains=contents) | Q(summary__icontains=contents))
+
+	parameters = {
+	"page": "",
+	"actors": actors,
+	"shows": shows
+	}
+
+	return TemplateResponse(
+		request,
+		'main/search.html',
+		parameters
+		)
 
 @require_POST
 def create_account(request):

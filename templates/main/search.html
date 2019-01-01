@@ -1,0 +1,64 @@
+{% extends "./profile-base.html" %}
+{% load static %}
+{% block profile_content %}
+<!-- dropdown filter --> 
+<div class='row'>
+	<div class='col-2 pl-0'>
+		<div class="form-group mb-0 mr-4 ml-0">
+			<select id='profile-people-select' class="form-control form-control-sm" id="people-dropdown-filter">
+				<option>&nbsp;&nbsp;UGH</option>
+				<option>&nbsp;&nbsp;A-Z</option>
+				<option>&nbsp;&nbsp;Z-A</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+<!-- people content --> 
+<div class='row mt-3 background-white'>
+	{% for show in show_info %}
+	<div class='row profile-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
+		<div class='col-1 pl-2 pr-0 text-left'>
+			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
+		</div>
+		<div class='col-1 pl-0 profile-picture-col'>
+			<div class='profile-show-picture align-middle image' style='background-image: url({{show.show.image_preview}})'></div>
+		</div>
+		<div class='col-3 pl-0 mr-3 text-left justify-content-center align-self-center'>
+			<a href="{% url 'find-show' show_id=show.show.id %}" class='mb-0'>{{show.show.title}} ({{show.show.year}})</a>
+		</div>
+		<!-- rating or other info -->
+		<div class='col-3'>
+			<p></p>
+		</div>
+		<!-- list of actors --> 
+		<div class='col-3 h-100'>
+			<div class='d-inline-flex flex-row w-100 justify-content-end h-100 ml-4'>
+				{% for actor in show.actors %}
+				<div class='profile-actor-picture image ml-2' title='{{actor.stage_name}}' style='background-image: url({{actor.image_url}})'></div>
+				{% endfor %}
+				<p class='mt-4 ml-2'>...</p>
+			</div>
+		</div>
+		<div class='col-1 pr-2'>
+			<div class='d-flex flex-column h-100 justify-content-between text-right pt-1 pb-0'>
+				<div class='p2'><i class='fa fa-heart {% if show.favorited %}red{% else %}light-border{% endif %}'></i></div>
+				<div class='p2'><i class='fa fa-check {% if show.followed %}light-green{% else %}light-border{% endif %}'></i></div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
+<script>
+	$(document).ready(function() {
+
+
+
+
+	});
+</script>
+{% endblock %}
