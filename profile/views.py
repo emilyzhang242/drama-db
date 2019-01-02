@@ -8,10 +8,17 @@ from shows.models import Shows
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
+from datetime import datetime
 import cgi
 
 @login_required(login_url = 'login')
 def newsfeed(request):
+	profile = UserProfile.objects.get(user_id=request.user.id)
+
+
+	#update when user last visited newsfeed!
+	#profile.last_visited_newsfeed = datetime.now()
+	#profile.save()
 
 	parameters = {
 		'page': "profile",
@@ -170,6 +177,7 @@ def find_list(request, list_id):
 
 	parameters = {
 		'page': 'mylists',
+		'is_list_page': True,
 		'profile_page': "List: "+mylist.name,
 		'list': mylist,
 		'lists': get_lists(request),

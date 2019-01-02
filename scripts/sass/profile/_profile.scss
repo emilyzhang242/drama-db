@@ -132,6 +132,14 @@
 
 /*---------- lists ------------ */
 
+#list-title {
+	background-color: $white;
+	border: 1px solid $pale-blue;
+	padding: 5px 5px 5px 10px;
+	border-radius: 5px;
+	font-size: 20px;
+}
+
 .profile-row.list-row {
 	height: 35px;
 }

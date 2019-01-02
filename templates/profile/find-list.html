@@ -3,22 +3,32 @@
 {% block profile_content %}
 <!-- dropdown filter --> 
 <div class='row'>
-	<div class='col-2-5u pl-0'>
+	<div class='col-8 pl-0 text-left'>
+		<h4 id='list-title'>{{list.name}}</h4>
+	</div>
+	<div class='col-3'>
 		<div class="form-group mb-0 mr-4 ml-0">
 			<select id='profile-people-select' class="form-control form-control-sm">
 				<option>&nbsp;&nbsp;Alphabetical</option>
 			</select>
 		</div>
 	</div>
-	<div class='col-8-5u'></div>
 	<div class='col-1'>
 		<!-- settings dropdown menu --> 
-		<div id= 'newsfeed-settings' class='text-right dropdown show justify-content-end'>
+		<div id= 'newsfeed-settings' class='dropdown show ml-0'>
 			<i class='fa fa-cog dropdown-toggle' role='button' id="list-cog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 			<div class="dropdown-menu" aria-labelledby="list-cog">
 				<a class="dropdown-item" href="{% url 'profile-delete-list' list_id=list.id %}">Delete List</a>
 			</div>
 		</div>
+	</div>
+</div>
+<div class='row'>
+	<div class='col-8 text-left ml-0 pl-0'>
+		<p>Created on {{list.date_created}} by {{request.user.username}}</p>
+	</div>
+	<div class='col-4 text-right'>
+		<p>Last updated: {{list.last_updated}}</p>
 	</div>
 </div>
 

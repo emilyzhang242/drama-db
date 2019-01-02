@@ -12,7 +12,9 @@
 		<h5 class='ml-4 light' id='profile-username'>{{request.user.username|upper}}</h5>
 	</div>
 	<div class="text-center nav-fill w-100">
+		{% if not is_list_page %}
 		<h1 class='font-skia'>{{profile_page}}</h1>
+		{% endif %}
 		<input type='hidden' data-page="newsfeed" id='sidebar-input'>
 	</div>
 	<div class='row mt-4'>

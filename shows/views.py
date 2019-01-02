@@ -72,7 +72,12 @@ def find_show(request, show_id):
 		show_view = view[0]
 		status = show_view.get_status_display()
 
-	lists = profile.lists.all()
+	list_info = []
+	for l in profile.lists.all():
+		temp_l = {"list": l, "show_in_list": False}
+		if show in l.shows.all():
+			temp_l["show_in_list"] = True
+		list_info.append(temp_l)
 	
 	parameters={
 		"show": show,
@@ -80,7 +85,7 @@ def find_show(request, show_id):
 		"favorited_show": favorited,
 		"status": status,
 		"show_view": show_view,
-		"lists": lists
+		"lists": list_info
 	}
 
 	return TemplateResponse(

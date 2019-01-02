@@ -77,7 +77,7 @@
 							</button>
 							<div class="dropdown-menu" aria-labelledby="update-status">
 								{% for list in lists %}
-								<a class="dropdown-item add-list" href="#" data-show='{{show.id}}' data-list='{{list.id}}' data-name='{{list.name}}'>{{list.name}}</a>
+								<a class="dropdown-item add-list" href="#" data-show='{{show.id}}' data-list='{{list.list.id}}' data-name='{{list.list.name}}'>{% if list.show_in_list %}<i class='fa fa-check primary-blue pr-2'></i>{% endif %}{{list.list.name}}</a>
 								{% endfor %}
 							</div>
 						</div>
