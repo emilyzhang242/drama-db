@@ -71,6 +71,8 @@ def find_show(request, show_id):
 	if view.exists():
 		show_view = view[0]
 		status = show_view.get_status_display()
+	else:
+		show_view = None
 
 	list_info = []
 	for l in profile.lists.all():
@@ -79,13 +81,17 @@ def find_show(request, show_id):
 			temp_l["show_in_list"] = True
 		list_info.append(temp_l)
 	
+	ratings = get_ratings_info(show)
+
 	parameters={
 		"show": show,
 		"following_show": following,
 		"favorited_show": favorited,
 		"status": status,
 		"show_view": show_view,
-		"lists": list_info
+		"lists": list_info,
+		"num_ratings": ratings[0],
+		"rating_value": ratings[1]
 	}
 
 	return TemplateResponse(
@@ -93,6 +99,15 @@ def find_show(request, show_id):
 		'shows/show_page.html',
 		parameters
 	)
+
+'''return the number of ratings and the average value'''
+def get_ratings_info(show):
+
+	views = ShowViews.objects.filter(show=show).exclude(rating=None)
+	summation = 0.0
+	for view in views:
+		summation += view.rating
+	return len(views), summation/len(views)
 
 @login_required(login_url = 'login')
 def follow_show(request):
@@ -137,11 +152,14 @@ def add_to_list(request, show_id, list_id):
 	show = Shows.objects.get(id=show_id)
 	mylist = MyLists.objects.get(id=list_id)
 
-	if show not in mylist.shows.all():
-		mylist.shows.add(show)
-		mylist.save()
-
-	return JsonResponse({"status":200, "message": show.title+" has been added to list "+mylist.name})
+	try:
+		if show not in mylist.shows.all():
+			mylist.shows.add(show)
+			mylist.last_updated = datetime.datetime.today()
+			mylist.save()
+		return JsonResponse({"status":200, "message": show.title+" has been added to list "+mylist.name})
+	except:
+		return JsonResponse({"status":500})
 
 @login_required(login_url = 'login')
 def update_status(request):
@@ -172,6 +190,7 @@ def rate(request):
 		show = Shows.objects.get(id=show_id)
 		profile = UserProfile.objects.get(user_id=request.user.id)
 		view = ShowViews.objects.filter(show=show, user=profile)
+
 		if view.exists():
 			view = view[0]
 			view.rating = rating

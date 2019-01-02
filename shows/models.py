@@ -19,6 +19,7 @@ class Shows(models.Model):
 	english_title = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)
 	actor_roles = models.ManyToManyField('ActorRoles')
+	num_ratings = models.IntegerField(default=0)
 	
 	added = models.DateTimeField(auto_now_add=True) #added into db
 	last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
