@@ -66,12 +66,19 @@ def find_show(request, show_id):
 		following = False
 		favorited = False
 
+	view = ShowViews.objects.filter(show=show, user=profile)
+	status = None
+	if view.exists():
+		show_view = view[0]
+		status = show_view.get_status_display()
+		
 	lists = profile.lists.all()
 	
 	parameters={
 		"show": show,
 		"following_show": following,
 		"favorited_show": favorited,
+		"status": status,
 		"lists": lists
 	}
 

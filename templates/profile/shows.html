@@ -38,7 +38,7 @@
 <!-- people content --> 
 <div class='row mt-3 background-white'>
 	{% for show in show_info %}
-	<div class='row profile-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %}'>
+	<div class='row profile-row w-100 d-flex ml-0 {% if show.followed %}show-followed{% endif %} {% if show.favorited %}show-favorited{% endif %} {% if show.status %}{{show.status}}{% endif %}'>
 		<div class='col-1 pl-2 pr-0 text-left'>
 			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
 		</div>

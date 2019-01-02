@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from profile.models import UserProfile, MyLists
+from profile.models import UserProfile, MyLists, ShowViews
 from actors.models import Actors
 from shows.models import Shows
 from django.contrib.auth.decorators import login_required
@@ -71,7 +71,8 @@ def shows(request, filter='', sort=''):
 	info = []
 
 	for show in Shows.objects.all():
-		if show in profile.followed_shows.all() or show in profile.favorited_shows.all():
+		showview = ShowViews.objects.filter(show=show, user=profile)
+		if show in profile.followed_shows.all() or show in profile.favorited_shows.all() or showview.exists():
 			show_dict = {"show": show}
 			if profile.followed_shows.filter(id=show.id).exists() and profile.favorited_shows.filter(id=show.id).exists():
 				show_dict["followed"] = True
@@ -82,6 +83,9 @@ def shows(request, filter='', sort=''):
 			elif profile.favorited_shows.filter(id=show.id).exists(): 
 				show_dict["followed"] = False
 				show_dict["favorited"] = True
+			if showview.exists():
+				# adjust to match the requirements to fit the type
+				show_dict["status"] = "show-"+showview[0].get_status_display().lower()
 			actorroles = show.actor_roles.all()
 			followed_actors = profile.followed_actors.all()
 			favorited_actors = profile.favorited_actors.all()
