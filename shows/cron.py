@@ -3,7 +3,6 @@
 from django_cron import CronJobBase, Schedule
 from actors.models import Actors
 from shows.models import Shows, ActorRoles, Genres
-from main.models import CronJob
 import datetime
 import requests
 from django.utils import timezone
@@ -96,7 +95,7 @@ def parseExternalURL(url):
         return []
     page.encoding = 'utf-8'
     soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
-    soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"poster"}))
+    soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("body"))
     if findURLtype(url) == "baidu": 
         return [parseBaiduURL(soup_main, soup_summary), "baidu"]
     elif findURLtype(url) == "mdl":
@@ -129,7 +128,7 @@ def parseBaiduURL(soup_main, soup_summary):
         soup_sum = soup_summary.find_all("div", class_="lemmaWgt-lemmaSummary")
     if soup_sum:
         dic["summary"] = get_baidu_summary(soup_sum[0])
-
+        
     #hack for html to see which one is the right one to take
     search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
 

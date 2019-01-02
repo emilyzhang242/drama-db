@@ -107,7 +107,10 @@ def get_ratings_info(show):
 	summation = 0.0
 	for view in views:
 		summation += view.rating
-	return len(views), summation/len(views)
+	if views:
+		return len(views), summation/len(views)
+	else: 
+		return 0, 0
 
 @login_required(login_url = 'login')
 def follow_show(request):

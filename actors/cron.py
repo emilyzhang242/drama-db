@@ -21,7 +21,6 @@ class ActorsCronJobs(CronJobBase):
         for actor in Actors.objects.all():
             print("Begin adding actor "+actor.native_name+" into database...")
             info = parseExternalURL(actor.external_url)
-            print("Finished parsing information...")
             if info: 
                 for show in info: 
                     title = show['title']
@@ -60,6 +59,9 @@ class ActorsCronJobs(CronJobBase):
                         if date and (not show_date):
                             s.date = date
                             s.save()
+                        #this code is untested!!! it's in case links are added later for actors
+                        s.url = url
+                        s.save()
 
                         #update new actor actor role for show that's already in DB
                         if not s.actor_roles.filter(actor_id=actor.id).exists():
