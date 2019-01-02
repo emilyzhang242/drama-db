@@ -47,7 +47,7 @@ class ShowsCronJobs(CronJobBase):
                                 role.save()
                 except:
                     print("Couldn't parse.")
-        print("Show cron job complete!")
+        print("Show cron job complete! \n")
 
 def sanitize_genres(list_genres):
     #possible delimiters
@@ -128,7 +128,7 @@ def parseBaiduURL(soup_main, soup_summary):
         soup_sum = soup_summary.find_all("div", class_="lemmaWgt-lemmaSummary")
     if soup_sum:
         dic["summary"] = get_baidu_summary(soup_sum[0])
-    print(dic["summary"])
+
     #hack for html to see which one is the right one to take
     search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
 

@@ -3,7 +3,7 @@
 from django_cron import CronJobBase, Schedule
 from actors.models import Actors
 from shows.models import Shows, ActorRoles
-from main.models import CronJob
+from profile.models import Events
 import datetime
 import requests
 from django.utils import timezone
@@ -29,12 +29,8 @@ class ActorsCronJobs(CronJobBase):
 
                     date = show['date']
                     if date:
-                        date_list = date.split("-")
-                        for d in range(len(date_list)):
-                            if int(date_list[d]) < 1: 
-                                date_list[d] = "01"
-
-                        date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+                        date = format_date(date)
+            
                     url = show['url']
                     image = show['image']
 
@@ -50,13 +46,25 @@ class ActorsCronJobs(CronJobBase):
                             
                             s.actor_roles.add(a)
                             s.save()
+
+                            #update event for upcoming show
+                            today = datetime.datetime.today().date()
+                            if (date and date >= today) or (not date):
+                                e = Events(subject=Events.SHOW, show=s, event=Events.SU)
+                                e.save()
                         except:
                             print("saving in updateActorInfo didn't work")
                     else:
                         s = Shows.objects.get(title=title)
                         #update date 
                         show_date = s.date
+                        #this means there was an update on when it's coming out!
                         if date and (not show_date):
+
+                            #event update for when a show is coming out!
+                            e = Events(subject=Events.SHOW, show=s, event=Events.SS)
+                            e.save()
+
                             s.date = date
                             s.save()
                         #this code is untested!!! it's in case links are added later for actors
@@ -65,7 +73,6 @@ class ActorsCronJobs(CronJobBase):
 
                         #update new actor actor role for show that's already in DB
                         if not s.actor_roles.filter(actor_id=actor.id).exists():
-                            print("Just adding actor role.")
                             a = ActorRoles(show=s, actor=actor, role_name=role)
                             a.save()
 
@@ -77,7 +84,16 @@ class ActorsCronJobs(CronJobBase):
             except:
                 print("updateActorInfo: actor didn't save")
             print("Completed adding actor "+ actor.native_name + " into database. Added all shows.")
-        print("Actor cron job complete!")
+        print("Actor cron job complete! \n")
+
+def format_date(date):
+    date_list = date.split("-")
+    for d in range(len(date_list)):
+        if int(date_list[d]) < 1: 
+            date_list[d] = "01"
+
+    date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+    return date
 
 def parseExternalURL(url):
     s = requests.Session()

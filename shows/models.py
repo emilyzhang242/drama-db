@@ -7,8 +7,10 @@ import re
 
 class Shows(models.Model): 
 	title = models.CharField(max_length=300, null = True, unique=True)
+
 	year = models.IntegerField(null=True)
 	date = models.DateField(null=True)
+	
 	follower_count = models.IntegerField(null=False, default=0)
 	favorited_count = models.IntegerField(null=False, default=0)
 	url = models.CharField(max_length=200, null=True)

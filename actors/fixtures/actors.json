@@ -43,5 +43,20 @@
       "external_url": "https://baike.baidu.com/item/%E6%9D%8E%E6%98%93%E5%B3%B0",
       "image_preview": "https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=dc3acee3c0ea15ce55e3e85bd7695196/8c1001e93901213f670feeba5de736d12f2e959c.jpg"
     }
+  },
+  {
+    "model": "actors.actors",
+    "pk": 4,
+    "fields": {
+      "stage_name": "Hu Yi Tian",
+      "native_name": "胡一天",
+      "nationality": "Chinese", 
+      "gender": 0,
+      "url": "hu_yi_tian",
+      "added_by": 1,
+      "image_url": "https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=fcd8bae1ab86c9171c0e5a6ba8541baa/d1160924ab18972bbd155ed3eacd7b899e510aff.jpg",
+      "external_url": "https://baike.baidu.com/item/%E8%83%A1%E4%B8%80%E5%A4%A9/20588088",
+      "image_preview": "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike272%2C5%2C5%2C272%2C90/sign=1fc19365ac86c9171c0e5a6ba8541baa/0ff41bd5ad6eddc4dbd1c36632dbb6fd5266337c.jpg"
+    }
   }
 ]

@@ -1,5 +1,6 @@
 from django.db import models
 from shows.models import Shows
+from actors.models import Actors
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model): 
@@ -38,23 +39,36 @@ class MyLists(models.Model):
 	date_created = models.DateField(auto_now_add=True)
 	last_updated = models.DateField(auto_now_add=True)
 
-class NewsFeed(models.Model): 
+class Events(models.Model): 
+
+	SHOW = "SHOW"
+	ACTOR = "ACTOR"
+
+	SS, SU, SNE, ANS = "SS", "SU", "SNE", "ANS"
 
 	SUBJECTS = (
-		("SHOW", "Shows"),
-		("ACTOR", "Actors")
+		(SHOW, "Shows"),
+		(ACTOR, "Actors")
 		)
 
 	EVENTS = (
-		("SS", "Show Started"), #show started broadcasting ie there's a date now,
-		("SU", "Show Upcoming"), #show will show sometime in the future, no date or future date
-		("ANS", "Actor New Show") 
+		(SS, "Show Started"), #show started broadcasting ie there's a date now,
+		(SU, "Show Upcoming"), #show will show sometime in the future, no date or future date
+		(SNE, "Show New Episode") #NOT DONE YET
 		)
 
-	user = models.ForeignKey(UserProfile)
 	subject = models.CharField(max_length=20, choices=SUBJECTS, null=True)
+	show = models.ForeignKey(Shows)
 	event = models.CharField(max_length=20, choices=EVENTS, null=True)
+	time_created = models.DateTimeField(auto_now_add=True)
 
-	
+class NewsFeed(models.Model):
+	event = models.ForeignKey(Events)
+	user = models.ForeignKey(UserProfile)
+	has_read = models.BooleanField(default=False)
+	has_deleted = models.BooleanField(default=False)
+	time_added = models.DateTimeField(auto_now_add=True)
+	is_saved = models.BooleanField(default=False) 
+
 
 
