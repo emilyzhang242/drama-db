@@ -28,6 +28,7 @@ class ShowViews(models.Model):
 	show = models.ForeignKey(Shows)
 	user = models.ForeignKey(UserProfile)
 	status = models.CharField(max_length=20, choices=STATUS_CHOICES, null=True)
+	rating = models.FloatField(null=True)
 
 class MyLists(models.Model):
 	user = models.ForeignKey(UserProfile)

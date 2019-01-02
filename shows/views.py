@@ -71,7 +71,7 @@ def find_show(request, show_id):
 	if view.exists():
 		show_view = view[0]
 		status = show_view.get_status_display()
-		
+
 	lists = profile.lists.all()
 	
 	parameters={
@@ -79,6 +79,7 @@ def find_show(request, show_id):
 		"following_show": following,
 		"favorited_show": favorited,
 		"status": status,
+		"show_view": show_view,
 		"lists": lists
 	}
 
@@ -156,6 +157,27 @@ def update_status(request):
 		return JsonResponse({"status":200})
 	except:
 		return JsonResponse({"status":500})
+
+@login_required(login_url = 'login')
+def rate(request):
+	rating = int(request.POST.get("rating"))
+	show_id = request.POST.get("show_id")
+
+	try: 
+		show = Shows.objects.get(id=show_id)
+		profile = UserProfile.objects.get(user_id=request.user.id)
+		view = ShowViews.objects.filter(show=show, user=profile)
+		if view.exists():
+			view = view[0]
+			view.rating = rating
+			view.save()
+		else:
+			s = ShowViews(show=show, user=profile, rating=rating)
+			s.save()
+		return JsonResponse({"status":200})
+	except:
+		return JsonResponse({"status":500})
+	
 	
 
 

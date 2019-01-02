@@ -18,3 +18,15 @@ $show-picture-height: 160px;
 #update-status {
 	width: 20%;
 }
+
+.icon-review {
+	color: $light-border;
+}
+
+.review-hover {
+	color: $pale-yellow;
+}
+
+.icon-review-selected {
+	color: $yellow !important;
+}
