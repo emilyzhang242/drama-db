@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
-from profile.models import UserProfile, MyLists
+from profile.models import UserProfile, MyLists, ShowViews
 from actors.models import Actors
 from shows.models import Shows, ActorRoles
 from django.contrib.auth.models import User
@@ -130,6 +130,25 @@ def add_to_list(request, show_id, list_id):
 
 	return JsonResponse({"status":200, "message": show.title+" has been added to list "+mylist.name})
 
+@login_required(login_url = 'login')
+def update_status(request):
+	status = request.POST.get("status")
+	show_id = request.POST.get("show_id")
+
+	try: 
+		show = Shows.objects.get(id=show_id)
+		profile = UserProfile.objects.get(user_id=request.user.id)
+		view = ShowViews.objects.filter(show=show, user=profile)
+		if view.exists():
+			view = view[0]
+			view.status = status
+			view.save()
+		else:
+			s = ShowViews(show=show, user=profile, status=status)
+			s.save()
+		return JsonResponse({"status":200})
+	except:
+		return JsonResponse({"status":500})
 	
 
 

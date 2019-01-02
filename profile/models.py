@@ -13,17 +13,21 @@ class UserProfile(models.Model):
 
 class ShowViews(models.Model):
 
+	COMPLETED = "C"
+	WATCHING = "W"
+	QUEUED = "Q"
+	ABANDONED = "A"
+
 	STATUS_CHOICES = (
-		('C', "Completed"),
-		('W', "Watching"),
-		('Q', "Queued")
+		(COMPLETED, "Completed"),
+		(WATCHING, "Watching"),
+		(QUEUED, "Queued"),
+		(ABANDONED, "Abandoned")
 		)
 
 	show = models.ForeignKey(Shows)
 	user = models.ForeignKey(UserProfile)
-	start_date = models.DateField(null=True, auto_now_add=True)
-	end_date = models.DateField(null=True)
-	status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, null=True)
 
 class MyLists(models.Model):
 	user = models.ForeignKey(UserProfile)

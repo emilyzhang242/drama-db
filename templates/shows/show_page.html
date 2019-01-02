@@ -39,10 +39,10 @@
 							<button class="btn rounded-btn dropdown-toggle mt-1 pl-3 pr-3 small-btn ml-3" type="button" id='update-status' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Update Status<i class='fa fa-caret-down pl-2'></i>
 							</button>
 							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item" href="#">Add to Watch List</a>
-								<a class="dropdown-item" href="#">Watching</a>
-								<a class="dropdown-item" href="#">Completed</a>
-								<a class="dropdown-item" href="#">Abandoned</a>
+								<a class="dropdown-item update-status-choice" data-val="C">Queued</a>
+								<a class="dropdown-item update-status-choice" data-val="W">Watching</a>
+								<a class="dropdown-item update-status-choice" data-val="Q">Completed</a>
+								<a class="dropdown-item update-status-choice" data-val="A">Abandoned</a>
 							</div>
 						</div>
 					</div>
@@ -99,6 +99,28 @@
 	<script>
 		$(document).ready(function() {
 
+			//update status choice 
+			$(".update-status-choice").on("click", function() {
+				var text = $(this).text();
+				var status = $(this).data("val");
+				$.ajax({
+					type: "POST",
+					data: {
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						status: status,
+						show_id: {{show.id}}
+					},
+					url: "/shows/update-status/",
+					success: function(result) {
+						text += "<i class='fa fa-caret-down pl-2'></i>";
+						$("#update-status").html(text);
+					},
+					error: function(result) {
+						console.log(result);
+					}
+				});
+			});
+
 			// this means that theyr'e not followed yet
 			$(".show-click-button").each(function() {
 				if ($(this).hasClass("blue-btn")) {
@@ -123,7 +145,6 @@
 					url: "/shows/"+show_id+"/"+list_id,
 					success: function(result) {
 						alert(result.message);
-						console.log(result.message);
 					},
 					error: function(result) {
 						console.log(result);
