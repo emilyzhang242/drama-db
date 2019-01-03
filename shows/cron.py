@@ -3,6 +3,7 @@
 from django_cron import CronJobBase, Schedule
 from actors.models import Actors
 from shows.models import Shows, ActorRoles, Genres
+from profile.models import Events
 import datetime
 import requests
 from django.utils import timezone
@@ -26,6 +27,9 @@ class ShowsCronJobs(CronJobBase):
                 try:
                     info = result[0]
                     show.num_episodes = info["num_episodes"]
+                    if info["num_episodes_out"] != show.episodes_out:
+                        update_episodes_out(show, info["num_episodes_out"])
+                        show.episodes_out = info["num_episodes_out"]
                     list_genres = sanitize_genres(info["genres"])
                     genres_added = add_genres(list_genres)
                     for genre in genres_added:
@@ -48,6 +52,15 @@ class ShowsCronJobs(CronJobBase):
                 except:
                     print("Couldn't parse.")
         print("Show cron job complete! \n")
+
+def update_episodes_out(show, new_eps):
+    if show.episodes_out:
+        diff = new_eps-show.episodes_out
+        e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=diff)
+        e.save()
+    else:
+        e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=new_eps)
+        e.save()
 
 def sanitize_genres(list_genres):
     #possible delimiters
@@ -114,7 +127,7 @@ def findURLtype(url):
 def parseBaiduURL(soup_main, soup_summary):
     BAIDU_URL = "https://baike.baidu.com"
     dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, 
-    "genres": None, "summary": None}
+    "genres": None, "summary": None, "num_episodes_out": None}
 
     info = soup_main.find_all("div", class_="basic-info")
     if info: 
@@ -157,7 +170,7 @@ def parseBaiduURL(soup_main, soup_summary):
                         elif u'，' in info_info[index].text:
                             dic["main_characters"] = info_info[index].text.split(u'，')
                 elif character == ">集":
-                    eps_text = info_info[index].text
+                    eps_text = info_info[index].text.strip()
                     eps = ""
                     for i in eps_text:
                         try:
@@ -169,7 +182,23 @@ def parseBaiduURL(soup_main, soup_summary):
                         dic["num_episodes"] = int(eps)
                 elif character == ">类": 
                     dic["genres"] = info_info[index].text.replace("\n", "")
+
+    dic["num_episodes_out"] = get_num_episodes_out(soup_main)
+
     return dic
+
+def get_num_episodes_out(soup):
+    soup = soup.find_all("div", class_="pagers")
+    if not soup:
+        return None
+    soup = soup[0].find_all("a")
+    if soup:
+        last_out = soup[-1].text
+        if "-" in last_out:
+            return int(last_out[last_out.index("-")+1:])
+        else:
+            return int(last_out)
+    return None
 
 def get_baidu_summary(soup):
     text = "".join([p.text for p in soup.find_all("div", class_="para")])

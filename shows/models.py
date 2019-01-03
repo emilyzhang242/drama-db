@@ -17,10 +17,16 @@ class Shows(models.Model):
 	image_preview = models.CharField(max_length=1000, null=True)
 	page_visits = models.IntegerField(default=0)
 	summary = models.CharField(max_length=2000, null=True)
+
 	num_episodes = models.IntegerField(null=True)
+	episodes_out = models.IntegerField(null=True)
+
 	english_title = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)
+
 	actor_roles = models.ManyToManyField('ActorRoles')
+	actors = models.ManyToManyField('actors.Actors', related_name='shows_actors')
+
 	num_ratings = models.IntegerField(default=0)
 	
 	added = models.DateTimeField(auto_now_add=True) #added into db

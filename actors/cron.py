@@ -40,6 +40,8 @@ class ActorsCronJobs(CronJobBase):
                         try:
                             s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
+                            s.actors.add(actor)
+                            s.save()
                             
                             a = ActorRoles(show=s, actor=actor, role_name=role)
                             a.save()
