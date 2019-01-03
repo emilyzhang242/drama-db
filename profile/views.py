@@ -19,14 +19,22 @@ def newsfeed(request):
 	#profile.last_visited_newsfeed = datetime.now()
 	#profile.save()
 
-	news = News.objects.filter(user=profile).order_by("time_added")
+	news_info = []
+	news = News.objects.filter(user=profile).order_by("-time_added")
+	for info in news:
+		d = {"news": info}
+		if info.event.event == "SNE":
+			first_new = info.event.show.episodes_out-info.event.num_new_episodes+1
+			last_new = info.event.num_new_episodes
+			d["new_episodes"] = str(first_new) + "-" + str(last_new)
+		news_info.append(d)
 
 	parameters = {
 		'page': "profile",
 		'profile_page': "newsfeed",
 		'title': "Newsfeed",
 		'lists': get_lists(request),
-		'news': news
+		'news': news_info
 
 	}
 	return TemplateResponse(

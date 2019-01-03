@@ -19,7 +19,6 @@ $(document).ready(function(){
 
 	//Figure out which part in sidebar to highlight
 	var page = $(".sidenav").data("page");
-	console.log(page);
 	$("#"+page).addClass("background-light-blue");
 
 	//add lists functionality! 
