@@ -45,7 +45,7 @@ class Events(models.Model):
 	SHOW = "SHOW"
 	ACTOR = "ACTOR"
 
-	SS, SU, SNE, ANS = "SS", "SU", "SNE", "ANS"
+	SS, SU, SNE, NS, ANS = "SS", "SU", "SNE", "NS", "ANS"
 
 	SUBJECTS = (
 		(SHOW, "Shows"),
@@ -53,6 +53,7 @@ class Events(models.Model):
 		)
 
 	EVENTS = (
+		(NS, "New Show"),
 		(SS, "Show Started"), #show started broadcasting ie there's a date now,
 		(SU, "Show Upcoming"), #show will show sometime in the future, no date or future date
 		(SNE, "Show New Episodes") 
@@ -60,6 +61,7 @@ class Events(models.Model):
 
 	subject = models.CharField(max_length=20, choices=SUBJECTS, null=True)
 	show = models.ForeignKey('shows.shows')
+	actor = models.ForeignKey('actors.actors', null=True)
 	num_new_episodes = models.IntegerField(null=True)
 	event = models.CharField(max_length=20, choices=EVENTS, null=True)
 	time_created = models.DateTimeField(auto_now_add=True)

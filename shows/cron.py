@@ -51,16 +51,22 @@ class ShowsCronJobs(CronJobBase):
                                 role.save()
                 except:
                     print("Couldn't parse.")
+
+            show.last_updated = datetime.datetime.today.date()
+            show.save()
+            
         print("Show cron job complete! \n")
 
 def update_episodes_out(show, new_eps):
-    if show.episodes_out:
-        diff = new_eps-show.episodes_out
-        e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=diff)
-        e.save()
-    else:
-        e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=new_eps)
-        e.save()
+    if show.last_updated != datetime.datetime.today.date():
+        if show.episodes_out:
+            diff = new_eps-show.episodes_out
+            if diff > 0: 
+                e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=diff)
+                e.save()
+        else:
+            e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=new_eps)
+            e.save()
 
 def sanitize_genres(list_genres):
     #possible delimiters

@@ -30,7 +30,7 @@ class Shows(models.Model):
 	num_ratings = models.IntegerField(default=0)
 	
 	added = models.DateTimeField(auto_now_add=True) #added into db
-	last_updated = models.DateField(null=True) #auto_now_add=True <- add this later 
+	last_updated = models.DateField(auto_now_add=True) #auto_now_add=True <- add this later 
 	
 	genres = models.ManyToManyField('Genres', related_name='shows_genre')
 	follower_count = models.IntegerField(default=0)

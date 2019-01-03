@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from profile.models import UserProfile, MyLists, ShowViews
+from profile.models import UserProfile, MyLists, ShowViews, News
 from actors.models import Actors
 from shows.models import Shows
 from django.contrib.auth.decorators import login_required
@@ -15,15 +15,18 @@ import cgi
 def newsfeed(request):
 	profile = UserProfile.objects.get(user_id=request.user.id)
 
-
 	#update when user last visited newsfeed!
 	#profile.last_visited_newsfeed = datetime.now()
 	#profile.save()
 
+	news = News.objects.filter(user=profile).order_by("time_added")
+
 	parameters = {
 		'page': "profile",
-		'profile_page': "Newsfeed",
-		'lists': get_lists(request)
+		'profile_page': "newsfeed",
+		'title': "Newsfeed",
+		'lists': get_lists(request),
+		'news': news
 
 	}
 	return TemplateResponse(
@@ -59,9 +62,10 @@ def people(request, filter, sort=''):
 			info.append(actor_dict)
 
 	parameters = {
-		'page': "people",
+		'page': "Profile",
 		'filter': filter, 
-		'profile_page': "People",
+		'profile_page': "people",
+		'title': "People",
 		'actor_info': info,
 		'lists': get_lists(request)
 	}
@@ -105,9 +109,10 @@ def shows(request, filter='', sort=''):
 			info.append(show_dict)
 
 	parameters = {
-		'page': "shows",
+		'page': "Profile",
 		'filter': filter, 
-		'profile_page': "Shows",
+		'profile_page': "shows",
+		'title': "Shows",
 		'show_info': info,
 		'lists': get_lists(request)
 	}
@@ -139,8 +144,9 @@ def add_list(request):
 def lists(request, filter='', sort=''):
 
 	parameters = {
-		'page': "mylists",
-		'profile_page': "My Lists",
+		'page': "Profile",
+		'title': "My Lists",
+		'profile_page': "mylists",
 		'lists': get_lists(request)
 	}
 
@@ -176,9 +182,10 @@ def find_list(request, list_id):
 		info.append(show_dict)
 
 	parameters = {
-		'page': 'mylists',
+		'page': 'Profile',
 		'is_list_page': True,
-		'profile_page': "List: "+mylist.name,
+		'profile_page': "mylists",
+		'title': "List: "+mylist.name,
 		'list': mylist,
 		'lists': get_lists(request),
 		'shows': info

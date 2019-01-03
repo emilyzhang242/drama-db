@@ -51,9 +51,14 @@ class ActorsCronJobs(CronJobBase):
 
                             #update event for upcoming show
                             today = datetime.datetime.today().date()
-                            if (date and date >= today) or (not date):
-                                e = Events(subject=Events.SHOW, show=s, event=Events.SU)
-                                e.save()
+                            if (date and date >= today):
+                                if not Events.objects.filter(show=s, event=Events.SU).exists():
+                                    e = Events(subject=Events.SHOW, show=s, event=Events.SU)
+                                    e.save()
+                            elif not date and int(year) >= today.year:
+                                if not Events.objects.filter(show=s, event=Events.NS).exists():
+                                    e = Events(subject=Events.SHOW, show=s, event=Events.NS)
+                                    e.save()
                         except:
                             print("saving in updateActorInfo didn't work")
                     else:
@@ -62,7 +67,6 @@ class ActorsCronJobs(CronJobBase):
                         show_date = s.date
                         #this means there was an update on when it's coming out!
                         if date and (not show_date):
-
                             #event update for when a show is coming out!
                             e = Events(subject=Events.SHOW, show=s, event=Events.SS)
                             e.save()
