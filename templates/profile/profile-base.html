@@ -24,6 +24,26 @@
 		<div class='col-6 col-7u col-unique text-center'>
 			{% block profile_content %}
 			{% endblock %}
+			
+			<!-- pagination --> 
+			{% if info.has_next or info.has_previous %}
+			<div class="pagination d-flex flex-row w-100 justify-content-center mt-4">
+				{% if info.has_previous %}
+				<div class='pagination-box'><a href="?page=1" class='p-2 primary-blue'>&laquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.previous_page_number }}" class='p-2 primary-blue'> &lsaquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.previous_page_number }}" class='p-2 primary-blue'> {{ info.previous_page_number }}</a></div>
+				{% endif %}
+
+				<div class='pagination-box'><a class='p-2'>{{info.number}}</a></div>
+
+				{% if info.has_next %}
+				<div class='pagination-box'><a href="?page={{ info.next_page_number }}" class='p-2 primary-blue'> {{ info.next_page_number }}</a></div>
+				<div class='pagination-box'><a href="?page={{ info.next_page_number }}" class='p-2 primary-blue'>&rsaquo;</a></div>
+				<div class='pagination-box'><a href="?page={{ info.paginator.num_pages }}" class='p-2 primary-blue'>&raquo;</a></div>
+				{% endif %}
+			</div>
+			{% endif %}
+			<!-- end pagination -->
 		</div>
 		<div class='col-3 col-2-5u'>
 			{% block profile_searchbar %}

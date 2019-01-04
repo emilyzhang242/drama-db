@@ -5,6 +5,8 @@ register = template.Library()
 
 @register.filter(name='limit')
 def limit(arg, value):
-    return arg[:value]+"..."
+    if len(arg) > value:
+        return arg[:value]+"..."
+    return arg
 
 register.filter('limit', limit)

@@ -1,5 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
+{% load main_tags %}
 {% block title %}{{show.title}}{% endblock %}
 {% block content %}
 <div class='container-fluid'>
@@ -65,7 +66,7 @@
 						</div>
 					</div>
 					<div class='col-9 text-left'>
-						<p class='font-open-sans pl-4 pr-5'>{{show.summary}}</p>
+						<p class='font-open-sans pl-4 pr-5' id='show-page-summary'>{{show.summary}}</p>
 					</div>
 				</div>
 				<div class='row ml-1 mt-1'>
@@ -83,7 +84,27 @@
 						</div>
 					</div>
 					<div class='col-10 mt-2'>
-						<div class='show-stats ml-4'></div>
+						<div class='show-stats ml-4'>
+							<div class='row'>
+								<div class='col-4 ml-3 mt-3 pr-0'>
+									<p class='semi-bold font-open-sans mb-0'>Native/English Title:</p>
+									<p class='semi-bold font-open-sans mb-0'>Other Titles:</p>
+									<p class='semi-bold font-open-sans mb-0'>Number of Episodes:</p>
+									<p class='semi-bold font-open-sans mb-0'>Country of Origin:</p>
+								</div>
+								<div class='col-7 mt-3 pl-0'>
+									<p class='font-open-sans mb-0'>{{show.english_title}}</p>
+									<p class='font-open-sans mb-0'>{{show.alternate_names|limit:50}}</p>
+									<p class='font-open-sans mb-0'>{{show.num_episodes}}</p>
+									<p class='font-open-sans mb-0'>Unknown</p>
+								</div>
+							</div>
+							<div class='d-flex flex-row ml-3 mt-3'>
+								{% for genre in genres %}
+								<p class='show-genre mr-2'>{{genre.genre}}</p>
+								{% endfor %}
+							</div>
+						</div>
 					</div>
 				</div>
 

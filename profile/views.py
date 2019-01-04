@@ -7,9 +7,20 @@ from actors.models import Actors
 from shows.models import Shows
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from datetime import datetime
 import cgi
+
+def paginate(request, info):
+
+	paginator = Paginator(info, 10) # Show 25 contacts per page
+	page = request.GET.get('page')
+	if page:
+		paged_info = paginator.page(page)
+	else:
+		paged_info = paginator.page(1)
+	return paged_info
 
 @login_required(login_url = 'login')
 def newsfeed(request):
@@ -29,12 +40,14 @@ def newsfeed(request):
 			d["new_episodes"] = str(first_new) + "-" + str(last_new)
 		news_info.append(d)
 
+	news_info = paginate(request, news_info)
+
 	parameters = {
 		'page': "profile",
 		'profile_page': "newsfeed",
 		'title': "Newsfeed",
 		'lists': get_lists(request),
-		'news': news_info
+		'info': news_info
 
 	}
 	return TemplateResponse(
@@ -74,7 +87,7 @@ def people(request, filter, sort=''):
 		'filter': filter, 
 		'profile_page': "people",
 		'title': "People",
-		'actor_info': info,
+		'info': paginate(request, info),
 		'lists': get_lists(request)
 	}
 	return TemplateResponse(
@@ -121,7 +134,7 @@ def shows(request, filter='', sort=''):
 		'filter': filter, 
 		'profile_page': "shows",
 		'title': "Shows",
-		'show_info': info,
+		'info': paginate(request, info),
 		'lists': get_lists(request)
 	}
 	return TemplateResponse(
@@ -155,7 +168,7 @@ def lists(request, filter='', sort=''):
 		'page': "Profile",
 		'title': "My Lists",
 		'profile_page': "mylists",
-		'lists': get_lists(request)
+		'info': paginate(request, get_lists(request))
 	}
 
 	return TemplateResponse(

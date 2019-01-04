@@ -25,10 +25,10 @@
 </div>
 <!-- people content --> 
 <div class='row mt-3 background-white'>
-	{% for list in lists %}
+	{% for list in info %}
 	<div class='row profile-row list-row w-100 d-flex ml-0'>
 		<div class='col-1 pl-2 pr-0 text-left'>
-			<p class='grey ml-0 mt-2'>#{{forloop.counter}}</p>
+			<p class='grey ml-0 mt-2'>#{{info.start_index|add:forloop.counter0}}</p>
 		</div>
 		<div class='col-11 pl-3 profile-picture-col text-left mt-2'>
 			<a href="{% url 'profile-find-list' list_id=list.id %}">{{list.name}}</a>

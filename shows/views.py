@@ -91,7 +91,8 @@ def find_show(request, show_id):
 		"show_view": show_view,
 		"lists": list_info,
 		"num_ratings": ratings[0],
-		"rating_value": ratings[1]
+		"rating_value": ratings[1],
+		"genres": show.genres.all()
 	}
 
 	return TemplateResponse(

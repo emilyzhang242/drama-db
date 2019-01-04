@@ -34,10 +34,10 @@
 
 <!-- people content --> 
 <div class='row mt-3 background-white'>
-	{% for actor in actor_info %}
+	{% for actor in info %}
 	<div class='row profile-row w-100 d-flex ml-0 {% if actor.followed %}actor-followed{% endif %} {% if actor.favorited %}actor-favorited{% endif %}'>
 		<div class='col-1 pl-2 pr-0 text-left'>
-			<p class='grey ml-0 mt-1'>#{{forloop.counter}}</p>
+			<p class='grey ml-0 mt-1'>#{{info.start_index|add:forloop.counter0}}</p>
 		</div>
 		<div class='col-1 pl-0 profile-picture-col'>
 			<div class='profile-actor-picture align-middle image' style='background-image: url({{actor.actor.image_url}})'></div>
@@ -75,17 +75,17 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'js/profile-sidebar.min.js' %}"></script>
 <script>
-$(document).ready(function() {
+	$(document).ready(function() {
 
-	function setProfileRow(type) {
-		$(".profile-row").each(function() {
-			if (!$(this).hasClass("actor-"+type) && type != "all") {
-				this.style.setProperty( 'display', 'none', 'important' );
-			}else {
-				$(this).css("display", "block");
-			}
-		});
-	}
+		function setProfileRow(type) {
+			$(".profile-row").each(function() {
+				if (!$(this).hasClass("actor-"+type) && type != "all") {
+					this.style.setProperty( 'display', 'none', 'important' );
+				}else {
+					$(this).css("display", "block");
+				}
+			});
+		}
 
 	//set active 
 	var filter = '{{filter}}';

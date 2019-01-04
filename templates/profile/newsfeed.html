@@ -26,22 +26,22 @@
 
 <!-- newsfeed content --> 
 <div class='row mt-3 background-white'>
-	{% for info in news %}
+	{% for i in info %}
 	<div class='row profile-row w-100 d-flex ml-0'>
 		<!-- image -->
 		<div class='col-1 pl-2'>
-			<div class='profile-show-picture align-middle image' style='background-image: url({{info.news.event.show.image_preview}})'></div>
+			<div class='profile-show-picture align-middle image' style='background-image: url({{i.news.event.show.image_preview}})'></div>
 		</div>
 		<!-- main info -->
 		<div class='col-7 pl-3 text-left justify-content-center align-self-center'>
-		{% if info.news.event.event == "SNE" %}
-			<p class='mb-0 f-14'>{{info.news.event.show.title}} has just released <span class='semi-bold'>Episodes {{info.new_episodes}}</span>.</p>
+		{% if i.news.event.event == "SNE" %}
+			<p class='mb-0 f-14'>{{i.news.event.show.title}} has just released <span class='semi-bold'>Episodes {{i.new_episodes}}</span>.</p>
 		{% endif %}
 		</div>
 		<!-- time created --> 
 		<div class='col-4 h-100 pr-2'>
 			<div class='d-inline-flex flex-row w-100 h-100 justify-content-end'>
-				<p class='mt-1 pt-1 f-12 grey'>{{info.news.event.time_created}}</p>
+				<p class='mt-1 pt-1 f-12 grey'>{{i.news.event.time_created}}</p>
 				<div class='p2 mt-1 ml-3'><i class='fa fa-close primary-blue'></i></div>
 			</div>
 		</div>
