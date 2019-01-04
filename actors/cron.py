@@ -38,13 +38,23 @@ class ActorsCronJobs(CronJobBase):
                     show_exists = Shows.objects.filter(title=title).exists()
                     if not show_exists: 
                         try:
-                            s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
+                            if "num_episodes" in show:
+                                num_episodes = show["num_episodes"]
+                                s = Shows(title=title, year=year, url=url, image_preview=image, date=date,
+                                    num_episodes=num_episodes)
+                            else:
+                                s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
                             s.actors.add(actor)
                             s.save()
                             
-                            a = ActorRoles(show=s, actor=actor, role_name=role)
-                            a.save()
+                            if "is_main" in show:
+                                is_lead = show["is_main"]
+                                a = ActorRoles(show=s, actor=actor, role_name=role, is_lead=is_lead)
+                                a.save()
+                            else:
+                                a = ActorRoles(show=s, actor=actor, role_name=role)
+                                a.save()
                             
                             s.actor_roles.add(a)
                             s.save()
@@ -106,10 +116,11 @@ def parseExternalURL(url):
     s.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
     page = s.get(url)
     page.encoding = 'utf-8'
-    soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
     if findURLtype(url) == "baidu": 
+        soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
         return parseBaiduURL(soup)
     elif findURLtype(url) == "mdl":
+        soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"app"}))
         return parseMDLURL(soup)
     else:
         return ""
@@ -121,6 +132,29 @@ def findURLtype(url):
         return "mdl"
     else:
         return ""
+
+def parseMDLURL(soup):
+    MDL_URL = "https://mydramalist.com"
+    info = []
+
+    drama_list = soup.find_all("table", class_="film-list")[0]
+    dramas = drama_list.find_all("tr")
+    if dramas:
+        #ignore the header of the table
+        dramas = dramas[1:]
+    for drama in dramas: 
+        ind_drama = {}
+        ind_drama["year"] = int(drama.find_all("td", class_="year")[0].text)
+        title_info = drama.find_all("td", class_="title")[0].find_all("a")[0]
+        ind_drama["title"] = title_info.text
+        ind_drama["url"] = MDL_URL + title_info["href"]
+        ind_drama["role"] = drama.find_all("td", class_="role")[0].find_all("div", class_="name")[0].text
+        ind_drama["is_main"] = "Main Role" in drama.find_all("td", class_="role")[0].find_all("div", class_="roleid")[0].text
+        ind_drama["num_episodes"] = int(drama.find_all("td", class_="episodes")[0].text)
+        ind_drama["date"] = None
+        ind_drama["image"] = None
+        info.append(ind_drama)
+    return info
 
 def parseBaiduURL(soup):
     BAIDU_URL = "https://baike.baidu.com"

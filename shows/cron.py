@@ -22,7 +22,7 @@ class ShowsCronJobs(CronJobBase):
         total = len(Shows.objects.all())
         for index, show in enumerate(Shows.objects.all()):
             print("Begin adding show "+ show.title +" into database. No."+str(index+1)+"/"+str(total)+"...")
-            result = parseExternalURL(show.url)
+            result = parseExternalURL(show.url, show)
             if result:
                 try:
                     info = result[0]
@@ -37,6 +37,8 @@ class ShowsCronJobs(CronJobBase):
                     show.alternate_names = info["alternate_names"]
                     show.english_title = info["english_title"]
                     show.summary = info["summary"]
+                    if not show.date:
+                        show.date = info["date"]
                     show.save()
 
                     #want to add main lead info into actor roles 
@@ -51,14 +53,13 @@ class ShowsCronJobs(CronJobBase):
                                 role.save()
                 except:
                     print("Couldn't parse.")
-
-            show.last_updated = datetime.datetime.today.date()
+            show.last_updated = datetime.datetime.today().date()
             show.save()
-            
+
         print("Show cron job complete! \n")
 
 def update_episodes_out(show, new_eps):
-    if show.last_updated != datetime.datetime.today.date():
+    if show.last_updated != datetime.datetime.today().date():
         if show.episodes_out:
             diff = new_eps-show.episodes_out
             if diff > 0: 
@@ -105,7 +106,7 @@ def add_genres(list_genres):
             pass
     return genres_added
 
-def parseExternalURL(url):
+def parseExternalURL(url, show):
     s = requests.Session()
     s.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
     try:
@@ -116,7 +117,7 @@ def parseExternalURL(url):
     soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
     soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("body"))
     if findURLtype(url) == "baidu": 
-        return [parseBaiduURL(soup_main, soup_summary), "baidu"]
+        return [parseBaiduURL(soup_main, soup_summary, show), "baidu"]
     elif findURLtype(url) == "mdl":
         return parseMDLURL(soup)
     else:
@@ -130,10 +131,10 @@ def findURLtype(url):
     else:
         return ""
 
-def parseBaiduURL(soup_main, soup_summary):
+def parseBaiduURL(soup_main, soup_summary, show):
     BAIDU_URL = "https://baike.baidu.com"
     dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, 
-    "genres": None, "summary": None, "num_episodes_out": None}
+    "genres": None, "summary": None, "num_episodes_out": None, "date": None}
 
     info = soup_main.find_all("div", class_="basic-info")
     if info: 
@@ -149,7 +150,7 @@ def parseBaiduURL(soup_main, soup_summary):
         dic["summary"] = get_baidu_summary(soup_sum[0])
 
     #hack for html to see which one is the right one to take
-    search_for = [">外文名", ">其它译名", ">主", ">集", ">类"]
+    search_for = [">外文名", ">其它译名", ">主", ">集", ">类", "首播时间"]
 
     info_titles = info.find_all("dt")
     info_info = info.find_all("dd")
@@ -162,6 +163,8 @@ def parseBaiduURL(soup_main, soup_summary):
                     dic["english_title"] = info_info[index].text.replace("\n", "")
                 elif character == ">其它译名":
                     dic["alternate_names"] = info_info[index].text.replace("\n", "")
+                elif character == "首播时间":
+                    dic["date"] = parse_baidu_date(info_info[index].text, show)
                 elif character == ">主":
                     #could possibly be links, but we only want the names
                     has_a = info_info[index].find_all("a")
@@ -192,6 +195,16 @@ def parseBaiduURL(soup_main, soup_summary):
     dic["num_episodes_out"] = get_num_episodes_out(soup_main)
 
     return dic
+
+def parse_baidu_date(text, show): 
+    try:
+        year = int(text[:text.find(u'年')])
+        month = int(text[text.index(u'年')+1: text.index(u'月')])
+        day = int(text[text.index(u'月')+1: text.index(u'日')])
+        date = datetime.date(year, month, day)
+        return date
+    except:
+        return None
 
 def get_num_episodes_out(soup):
     soup = soup.find_all("div", class_="pagers")
