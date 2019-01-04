@@ -73,7 +73,7 @@ class ActorsCronJobs(CronJobBase):
                                     e.save()
                             elif not date and int(year) >= today.year:
                                 if not Events.objects.filter(show=s, event=Events.NS).exists():
-                                    e = Events(subject=Events.SHOW, show=s, event=Events.NS)
+                                    e = Events(subject=Events.SHOW, show=s, event=Events.NS, actor=actor)
                                     e.save()
                         except:
                             print("saving in updateActorInfo didn't work")

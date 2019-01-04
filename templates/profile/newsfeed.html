@@ -33,9 +33,11 @@
 			<div class='profile-show-picture align-middle image' style='background-image: url({{i.news.event.show.image_preview}})'></div>
 		</div>
 		<!-- main info -->
-		<div class='col-7 pl-3 text-left justify-content-center align-self-center'>
+		<div class='col-7 pl-3 pr-0 text-left justify-content-center align-self-center'>
 		{% if i.news.event.event == "SNE" %}
 			<p class='mb-0 f-14'>{{i.news.event.show.title}} has just released <span class='semi-bold'>Episodes {{i.new_episodes}}</span>.</p>
+		{% elif i.news.event.event == "NS" %}
+			<p class='mb-0 f-14'>{{i.news.event.actor.stage_name}} ({{i.news.event.actor.native_name}}) will act in <a href="{% url 'find-show' show_id=i.news.event.show.id %}">{{i.news.event.show.title}}</a>.</p>
 		{% endif %}
 		</div>
 		<!-- time created --> 
