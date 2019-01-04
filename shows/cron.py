@@ -27,20 +27,28 @@ class ShowsCronJobs(CronJobBase):
                 try:
                     info = result[0]
                     show.num_episodes = info["num_episodes"]
-                    if info["num_episodes_out"] != show.episodes_out:
+                    if info["num_episodes_out"] != show.episodes_out and info["num_episodes_out"] != None:
                         update_episodes_out(show, info["num_episodes_out"])
                         show.episodes_out = info["num_episodes_out"]
+
                     list_genres = sanitize_genres(info["genres"])
                     genres_added = add_genres(list_genres)
                     for genre in genres_added:
                         show.genres.add(genre)
+                        
                     show.alternate_names = info["alternate_names"]
                     show.english_title = info["english_title"]
                     show.summary = info["summary"]
-                    if not show.date:
-                        show.date = info["date"]
-                    show.save()
 
+                    if not show.date and info["date"] != None:
+                        show.date = format_date(info["date"])
+                    if not show.end_date and info["end_date"] != None:
+                        show.end_date = format_date(info["end_date"])
+
+                    if not show.image_preview and info["image_preview"] != None:
+                        show.image_preview = info["image_preview"]
+
+                    show.save()
                     #want to add main lead info into actor roles 
                     for name in info["main_characters"]:
                         name = name.replace("\n", "").strip()
@@ -58,6 +66,15 @@ class ShowsCronJobs(CronJobBase):
 
         print("Show cron job complete! \n")
 
+def format_date(date):
+    date_list = date.split("-")
+    print(date_list)
+    for d in range(len(date_list)):
+        if int(date_list[d]) < 1: 
+            date_list[d] = "01"
+    date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
+    return date
+
 def update_episodes_out(show, new_eps):
     if show.last_updated != datetime.datetime.today().date():
         if show.episodes_out:
@@ -69,12 +86,15 @@ def update_episodes_out(show, new_eps):
             e = Events(subject=Events.SHOW, show=show, event=Events.SNE, num_new_episodes=new_eps)
             e.save()
 
+''' takes in a string of genres and returns a list of genres'''
 def sanitize_genres(list_genres):
     #possible delimiters
     if not list_genres:
         return []
 
-    if u'、' in list_genres:
+    if "," in list_genres:
+        genres = list_genres.split(",")
+    elif u'、' in list_genres:
         genres = list_genres.split(u'、')
     elif "/" in list_genres:
         genres = list_genres.split("/")
@@ -114,27 +134,86 @@ def parseExternalURL(url, show):
     except:
         return []
     page.encoding = 'utf-8'
-    soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
-    soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("body"))
     if findURLtype(url) == "baidu": 
+        soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
+        soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("body"))
         return [parseBaiduURL(soup_main, soup_summary, show), "baidu"]
     elif findURLtype(url) == "mdl":
-        return parseMDLURL(soup)
+        soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class": "app-body"}))
+        return [parseMDLURL(soup, show), "mdl"]
     else:
         return []
 
 def findURLtype(url): 
     if "baike.baidu.com/item" in url: 
         return "baidu"
-    elif "mydramalist.com/people" in url:
+    elif "mydramalist.com/" in url:
         return "mdl"
     else:
         return ""
 
+def parseMDLURL(soup, show):
+    MDL_URL = "https://mydramalist.com"
+    dic = {"english_title": show.title, "alternate_names": "", "main_characters":[], "num_episodes": None, 
+    "genres": None, "summary": "", "num_episodes_out": None, "date": None, "end_date": None,
+    "image_preview": None, "country": "South Korea", "native_title": None}
+
+    #find the right box for date!
+    date_content = soup.find_all("div", class_="content-side")[0].find_all("div", class_="box")
+    for index, poss_boxes in enumerate(date_content):
+        if poss_boxes.find_all("h3"):
+            if "Details" in poss_boxes.find_all("h3")[0].text:
+                date_index = index
+    if date_index != None:
+        dates = get_MDL_date(date_content[date_index])
+        dic['date'] = dates[0]
+        dic['end_date'] = dates[1]
+
+        #can also get country 
+        for i in date_content[date_index].find_all("li"):
+            if "Country" in i.find_all("b")[0].text:
+                dic["country"] = i.text[i.text.index(":")+1:].strip()
+
+    details = soup.find_all("div", class_="col-lg-8")[0]
+    dic["image_preview"] = MDL_URL + details.find_all("div", class_="cover")[0].find_all("a")[1]['href']
+    synopsis = details.find_all("div", class_="show-synopsis")[0].find_all("p")
+    for s in synopsis:
+        dic["summary"] += s.text
+
+    show_details_box = details.find_all("div", class_="show-detailsxss")[0].find_all("ul", class_="list")[0]
+    for b in show_details_box.find_all("li", class_="list-item"):
+        if "Native Title" in b.find_all("b")[0].text:
+            dic["native_title"] = b.find_all("a")[0].text
+        elif "Also Known As" in b.find_all("b")[0].text:
+            alternate_names = []
+            for i in b.find_all("a"):
+                alternate_names.append(i.text)
+            dic["alternate_names"] = ", ".join(alternate_names)
+        elif "Genres" in b.find_all("b")[0].text:
+            dic["genres"] = ",".join([i.text.strip() for i in b.find_all("a")])
+
+    return dic
+
+def get_MDL_date(soup):
+    try:
+        date_info = soup.find_all("li", {"xitemprop": "datePublished"})[0].text
+        has_end = "-" in date_info
+        date_info = date_info[date_info.index(":")+1:].replace(",", "").strip().split("-")
+        date_info[0] = re.sub(r"\s+" , " ", date_info[0].strip())
+        start_date = datetime.strptime(date_info[0], '%b %d %Y').date()
+        end_date = None
+        if has_end: 
+            date_info[1] = re.sub(r"\s+" , " ", date_info[0].strip())
+            end_date = datetime.datetime.strptime(date_info[1], '%b %d %Y').date()
+        return [str(start_date), str(end_date)]
+    except:
+        return [None, None]
+
 def parseBaiduURL(soup_main, soup_summary, show):
-    BAIDU_URL = "https://baike.baidu.com"
-    dic = {"english_title": None, "alternate_names": None, "main_characters":[], "num_episodes": None, 
-    "genres": None, "summary": None, "num_episodes_out": None, "date": None}
+    dic = {"english_title": show.english_title, "alternate_names": show.alternate_names, 
+    "main_characters":[], "num_episodes": show.num_episodes, 
+    "genres": None, "summary": None, "num_episodes_out": None, "date": None, "country": "China",
+    "end_date": None, "image_preview": show.image_preview}
 
     info = soup_main.find_all("div", class_="basic-info")
     if info: 

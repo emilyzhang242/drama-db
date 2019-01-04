@@ -10,6 +10,8 @@ class Shows(models.Model):
 
 	year = models.IntegerField(null=True)
 	date = models.DateField(null=True)
+	end_date = models.DateField(null=True)
+	country = models.CharField(max_length=50, null=True)
 	
 	follower_count = models.IntegerField(null=False, default=0)
 	favorited_count = models.IntegerField(null=False, default=0)
@@ -21,6 +23,7 @@ class Shows(models.Model):
 	num_episodes = models.IntegerField(null=True)
 	episodes_out = models.IntegerField(null=True)
 
+	native_title = models.CharField(max_length=200, null=True)
 	english_title = models.CharField(max_length=300, null=True)
 	alternate_names = models.CharField(max_length=300, null=True)
 

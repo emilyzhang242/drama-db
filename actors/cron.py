@@ -46,6 +46,12 @@ class ActorsCronJobs(CronJobBase):
                                 s = Shows(title=title, year=year, url=url, image_preview=image, date=date)
                             s.save()
                             s.actors.add(actor)
+
+                            #mdl want to save as english title, we'll go back and replace native title later
+                            if "native_title" in show:
+                                s.native_title = show["native_title"]
+                            if "english_title" in show:
+                                s.english_title = show["english_title"]
                             s.save()
                             
                             if "is_main" in show:
@@ -147,6 +153,7 @@ def parseMDLURL(soup):
         ind_drama["year"] = int(drama.find_all("td", class_="year")[0].text)
         title_info = drama.find_all("td", class_="title")[0].find_all("a")[0]
         ind_drama["title"] = title_info.text
+        ind_drama["english_title"] = title_info.text
         ind_drama["url"] = MDL_URL + title_info["href"]
         ind_drama["role"] = drama.find_all("td", class_="role")[0].find_all("div", class_="name")[0].text
         ind_drama["is_main"] = "Main Role" in drama.find_all("td", class_="role")[0].find_all("div", class_="roleid")[0].text
@@ -197,6 +204,7 @@ def parseBaiduURL(soup):
         ind_drama = {}
 
         ind_drama["title"] = title
+        ind_drama["native_title"] = title
         if url:
             ind_drama["url"] = BAIDU_URL + url[0]['href']
         else:
