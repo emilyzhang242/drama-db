@@ -35,15 +35,15 @@ class ShowsCronJobs(CronJobBase):
                     genres_added = add_genres(list_genres)
                     for genre in genres_added:
                         show.genres.add(genre)
-                        
+
                     show.alternate_names = info["alternate_names"]
                     show.english_title = info["english_title"]
                     show.summary = info["summary"]
 
                     if not show.date and info["date"] != None:
-                        show.date = format_date(info["date"])
+                        show.date = info["date"]
                     if not show.end_date and info["end_date"] != None:
-                        show.end_date = format_date(info["end_date"])
+                        show.end_date = info["end_date"]
 
                     if not show.image_preview and info["image_preview"] != None:
                         show.image_preview = info["image_preview"]
@@ -61,20 +61,13 @@ class ShowsCronJobs(CronJobBase):
                                 role.save()
                 except:
                     print("Couldn't parse.")
-            show.last_updated = datetime.datetime.today().date()
-            show.save()
+        show.last_updated = datetime.datetime.today().date()
+        show.save()
 
         print("Show cron job complete! \n")
 
-def format_date(date):
-    date_list = date.split("-")
-    print(date_list)
-    for d in range(len(date_list)):
-        if int(date_list[d]) < 1: 
-            date_list[d] = "01"
-    date = datetime.date(int(date_list[0]), int(date_list[1]), int(date_list[2]))
-    return date
-
+'''we want to show only if there's a diff number of episodes out. Also, we only want to show if 
+the show hasn't been added for the first time, so the check for today checks for that'''
 def update_episodes_out(show, new_eps):
     if show.last_updated != datetime.datetime.today().date():
         if show.episodes_out:
@@ -135,9 +128,8 @@ def parseExternalURL(url, show):
         return []
     page.encoding = 'utf-8'
     if findURLtype(url) == "baidu": 
-        soup_main = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class":"main-content"}))
         soup_summary = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("body"))
-        return [parseBaiduURL(soup_main, soup_summary, show), "baidu"]
+        return [parseBaiduURL(soup_summary, show), "baidu"]
     elif findURLtype(url) == "mdl":
         soup = BeautifulSoup(page.content, "lxml", parse_only=SoupStrainer("div", {"class": "app-body"}))
         return [parseMDLURL(soup, show), "mdl"]
@@ -175,7 +167,7 @@ def parseMDLURL(soup, show):
                 dic["country"] = i.text[i.text.index(":")+1:].strip()
 
     details = soup.find_all("div", class_="col-lg-8")[0]
-    dic["image_preview"] = MDL_URL + details.find_all("div", class_="cover")[0].find_all("a")[1]['href']
+    dic["image_preview"] = details.find_all("div", class_="cover")[0].find_all("img")[0]['src']
     synopsis = details.find_all("div", class_="show-synopsis")[0].find_all("p")
     for s in synopsis:
         dic["summary"] += s.text
@@ -205,11 +197,13 @@ def get_MDL_date(soup):
         if has_end: 
             date_info[1] = re.sub(r"\s+" , " ", date_info[0].strip())
             end_date = datetime.datetime.strptime(date_info[1], '%b %d %Y').date()
-        return [str(start_date), str(end_date)]
+        return [start_date, end_date]
     except:
         return [None, None]
 
-def parseBaiduURL(soup_main, soup_summary, show):
+def parseBaiduURL(soup_summary, show):
+
+    soup_main = soup_summary.find_all("div", class_="main-content")[0]
     dic = {"english_title": show.english_title, "alternate_names": show.alternate_names, 
     "main_characters":[], "num_episodes": show.num_episodes, 
     "genres": None, "summary": None, "num_episodes_out": None, "date": None, "country": "China",
