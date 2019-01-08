@@ -40,8 +40,24 @@ class ShowsCronJobs(CronJobBase):
                     show.english_title = info["english_title"]
                     show.summary = info["summary"]
 
+                    today = datetime.datetime.today().date()
                     if not show.date and info["date"] != None:
                         show.date = info["date"]
+                        show.year = info["date"].year
+
+                        #update event for upcoming show
+                        if (info["date"] >= today):
+                            if not Events.objects.filter(show=show, event=Events.SU).exists():
+                                e = Events(subject=Events.SHOW, show=show, event=Events.SU)
+                                e.save()
+
+                    #update event for upcoming show
+                    if not show.date and info["date"] == None and int(year) >= today.year:
+                        for actor in show.actors.all():
+                            if not Events.objects.filter(show=show, event=Events.NS, actor=actor).exists():
+                            e = Events(subject=Events.SHOW, show=show, event=Events.NS, actor=actor)
+                            e.save()
+
                     if not show.end_date and info["end_date"] != None:
                         show.end_date = info["end_date"]
 
