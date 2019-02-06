@@ -24,59 +24,56 @@ class ShowsCronJobs(CronJobBase):
             print("Begin adding show "+ show.title +" into database. No."+str(index+1)+"/"+str(total)+"...")
             result = parseExternalURL(show.url, show)
             if result:
-                try:
-                    info = result[0]
-                    show.num_episodes = info["num_episodes"]
-                    if info["num_episodes_out"] != show.episodes_out and info["num_episodes_out"] != None:
-                        update_episodes_out(show, info["num_episodes_out"])
-                        show.episodes_out = info["num_episodes_out"]
+                info = result[0]
+                show.num_episodes = info["num_episodes"]
+                if info["num_episodes_out"] != show.episodes_out and info["num_episodes_out"] != None:
+                    update_episodes_out(show, info["num_episodes_out"])
+                    show.episodes_out = info["num_episodes_out"]
 
-                    list_genres = sanitize_genres(info["genres"])
-                    genres_added = add_genres(list_genres)
-                    for genre in genres_added:
-                        show.genres.add(genre)
+                list_genres = sanitize_genres(info["genres"])
+                genres_added = add_genres(list_genres)
+                for genre in genres_added:
+                    show.genres.add(genre)
 
-                    show.alternate_names = info["alternate_names"]
-                    show.english_title = info["english_title"]
-                    show.summary = info["summary"]
+                show.alternate_names = info["alternate_names"]
+                show.english_title = info["english_title"]
+                show.summary = info["summary"]
 
-                    today = datetime.datetime.today().date()
-                    if not show.date and info["date"] != None:
-                        show.date = info["date"]
-                        show.year = info["date"].year
-
-                        #update event for upcoming show
-                        if (info["date"] >= today):
-                            if not Events.objects.filter(show=show, event=Events.SU).exists():
-                                e = Events(subject=Events.SHOW, show=show, event=Events.SU)
-                                e.save()
+                today = datetime.datetime.today().date()
+                if not show.date and info["date"] != None:
+                    show.date = info["date"]
+                    show.year = info["date"].year
 
                     #update event for upcoming show
-                    if not show.date and info["date"] == None and int(year) >= today.year:
-                        for actor in show.actors.all():
-                            if not Events.objects.filter(show=show, event=Events.NS, actor=actor).exists():
-                            e = Events(subject=Events.SHOW, show=show, event=Events.NS, actor=actor)
+                    if (info["date"] >= today):
+                        if not Events.objects.filter(show=show, event=Events.SU).exists():
+                            e = Events(subject=Events.SHOW, show=show, event=Events.SU)
                             e.save()
 
-                    if not show.end_date and info["end_date"] != None:
-                        show.end_date = info["end_date"]
+                #update event for upcoming show
+                if not show.date and info["date"] == None and show.year >= today.year:
+                    for actor in show.actors.all():
+                        if not Events.objects.filter(show=show, event=Events.NS, actor=actor).exists():
+                            e = Events(subject=Events.SHOW, show=show, event=Events.NS, actor=actor)
+                            e.save()
+                if not show.end_date and info["end_date"] != None:
+                    show.end_date = info["end_date"]
 
-                    if not show.image_preview and info["image_preview"] != None:
-                        show.image_preview = info["image_preview"]
+                if not show.image_preview and info["image_preview"] != None:
+                    show.image_preview = info["image_preview"]
 
-                    show.save()
-                    #want to add main lead info into actor roles 
-                    for name in info["main_characters"]:
-                        name = name.replace("\n", "").strip()
-                        if result[1] == "baidu":
-                            actor = Actors.objects.filter(native_name=name)
-                            if actor.exists():
-                                actor = actor[0]
-                                role = ActorRoles.objects.filter(actor_id=actor.id, show_id=show.id)[0]
-                                role.is_lead = True
-                                role.save()
-                except:
-                    print("Couldn't parse.")
+                show.save()
+                #want to add main lead info into actor roles 
+                for name in info["main_characters"]:
+                    name = name.replace("\n", "").strip()
+                    if result[1] == "baidu":
+                        actor = Actors.objects.filter(native_name=name)
+                        if actor.exists():
+                            actor = actor[0]
+                            role = ActorRoles.objects.filter(actor_id=actor.id, show_id=show.id)[0]
+                            role.is_lead = True
+                            role.save()
+
         show.last_updated = datetime.datetime.today().date()
         show.save()
 

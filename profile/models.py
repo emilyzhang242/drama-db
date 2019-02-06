@@ -53,9 +53,9 @@ class Events(models.Model):
 		)
 
 	EVENTS = (
-		(NS, "New Show"),
+		(NS, "New Show"), #has a year but no date 
 		(SS, "Show Started"), #show started broadcasting ie there's a date now,
-		(SU, "Show Upcoming"), #show will show sometime in the future, no date or future date
+		(SU, "Show Upcoming"), #show will show sometime in the future, has a future date
 		(SNE, "Show New Episodes") 
 		)
 

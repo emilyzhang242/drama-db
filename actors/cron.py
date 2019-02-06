@@ -76,8 +76,9 @@ class ActorsCronJobs(CronJobBase):
                         #update date 
                         show_date = s.date
                         #this means there was an update on when it's coming out!
-                        if date and (not show_date):
-                            #event update for when a show is coming out!
+                        today = datetime.datetime.today().date()
+                        if date and (not show_date) and date <= today:
+                            #event update for when a show is starting! 
                             e = Events(subject=Events.SHOW, show=s, event=Events.SS)
                             e.save()
 
