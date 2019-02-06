@@ -16,7 +16,8 @@ from bs4 import BeautifulSoup
 def shows_home(request):
 
 	#grab actor info from models
-	shows = Shows.objects.all()
+	sort = request.GET.get('sort')
+	shows = sort_shows(sort)
 	info = []
 
 	for show in shows: 
@@ -39,7 +40,8 @@ def shows_home(request):
 	parameters = {
 		"page": "shows",
 		"shows": shows,
-		"info": paged_info
+		"info": paged_info,
+		"sort": sort
 	}
 
 	return TemplateResponse(
@@ -47,6 +49,13 @@ def shows_home(request):
 		'shows/shows_home.html',
 		parameters
 		)
+
+def sort_shows(sort):
+	if sort == "alphabetical":
+		shows = Shows.objects.order_by('title')
+	else:
+		shows = Shows.objects.order_by('-year')
+	return shows
 
 def find_show(request, show_id):
 	show = Shows.objects.get(id=show_id)
