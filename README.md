@@ -1,7 +1,7 @@
 # drama-db
 
 <h2>INSTALLATION INSTRUCTIONS</h2>
-<h3>Installing GULP</h3>
+<h4>Installing GULP</h4>
 <ul>
 	<li>Create gulpfile.js according to <a href="https://stackoverflow.com/questions/38937095/no-gulpfile-found">these</a> instructions.</li>
 	<li>npm install gulp</li>
@@ -14,19 +14,27 @@
 	<li>pip install requests</li>
 	<li>pip install beautifulsoup4</li>
 </ul>
-<h2>RUNNING ENVIRONMENT</h2> 
-<h3>Run Website</h3>
+<h2>RUNNING ENVIRONMENT AND COMMANDS</h2> 
+<h4>Run Website</h4>
 <ul>
 	<li>source env/bin/activate</li>
 	<li>python manage.py runserver</li>
 	<li>navigate to 127.0.0.1:8000</li>
 </ul>
-<h3>Make Migrations</h3>
+<h4>Make Migrations</h4>
 <ul>
 	<li>python manage.py makemigrations</li>
 	<li>python manage.py migrate</li>
 </ul>
-<h3>Cron Jobs</h3>
+<h4>Run Cron Jobs</h4>
+<ul>
+	<li>python manage.py runcrons --force</li>	
+</ul>
+<h4>Load Fixtures</h4>
+<ul>
+	<li>python manage.py loaddata fixture_name</code></li>
+</ul>
+<h4>Reference</h4>
 <ul>
 	<li>https://stackoverflow.com/questions/15395479/why-ive-got-no-crontab-entry-on-os-x-when-using-vim</li>
 	<li>https://django-cron.readthedocs.io/en/latest/installation.html</li>
