@@ -10,15 +10,15 @@
 </ul>
 <p>Please note, gulp must be version 4.x or it won't work! Follow instructions <a href="https://github.com/pattern-lab/edition-node-gulp/wiki/Updating-to-Gulp-4">here</a> to uninstall previous version and install new version.</p>
 <h3>Beautiful Soup</h3>
-	<code>pip install requests</code>
-	<code>pip install beautifulsoup4</code>
+<code>pip install requests</code>
+<code>pip install beautifulsoup4</code>
 <h2>RUNNING ENVIRONMENT AND COMMANDS</h2> 
 <h4>Run Website</h4>
-	<code>source env/bin/activate</code>
-	<code>python manage.py runserver</code>
-	<code>navigate to 127.0.0.1:8000</code>
+<code>source env/bin/activate</code><br>
+<code>python manage.py runserver</code><br>
+<code>navigate to 127.0.0.1:8000</code>
 <h4>Make Migrations</h4>
-<code>python manage.py makemigrations</code>
+<code>python manage.py makemigrations</code><br>
 <code>python manage.py migrate</code>
 <h4>Run Cron Jobs</h4>
 	<code>python manage.py runcrons --force</code>	
